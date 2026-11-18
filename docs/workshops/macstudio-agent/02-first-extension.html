@@ -1,0 +1,912 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>02 - Your First VS Code Extension &#8212; AI Tools Learning Handbook</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=6a604523" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../../../_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
+
+    <script src="../../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../../_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script data-sd-tabs-storage-prefix="sphinx-design-tab-id-" src="../../../_static/design-tabs.js?v=fcb327ea"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'docs/workshops/macstudio-agent/02-first-extension';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="canonical" href="https://gisyaliny.github.io/AI/docs/workshops/macstudio-agent/02-first-extension.html" />
+    <link rel="icon" href="../../../_static/fav.ico"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="03 - SSH Bridge and Streaming Responses" href="03-ssh-and-streaming.html" />
+    <link rel="prev" title="01 - Architecture and Connection" href="01-architecture-and-connection.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../../../_static/searchtools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    <script src="../../../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="AI Tools Learning Handbook - Home"/>
+    <img src="../../../_static/logo.png" class="logo__image only-dark pst-js-only" alt="AI Tools Learning Handbook - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Vibe Coding</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../vibe-coding/01-environment-and-basics.html">1. Environment Setup &amp; Basic Interaction (Environment Setup &amp; Basic Interaction)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../vibe-coding/02-complex-tasks-and-terminal.html">2. Complex Tasks &amp; Terminal Control</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../vibe-coding/03-multimodal-and-context.html">3. Multimodal &amp; Context Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../vibe-coding/04-advanced-features.html">4. Advanced Features &amp; Customization</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Research</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../research/01-ai-prompts-for-research.html">5. AI Prompts &amp; Skills for Academic Research</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Local LLM</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../local-llm/01-deploy-local-llm.html">6. Deploy Open-Source LLMs Locally with Ollama &amp; AnythingLLM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../local-llm/02-mastering-ollama.html">7. — Mastering Ollama: Local Models, APIs, RAG, Tools, and Production Patterns</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">RAG</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../rag/01-what-is-rag.html">8. What is RAG? (Retrieval-Augmented Generation)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rag/02-implementing-rag.html">9. Implementing RAG with Python</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rag/03-graph-rag.html">10. Graph RAG: Knowledge Graphs Meet Retrieval</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Workshops</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">00 - Build a Mac Studio Coding Agent for VS Code</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="01-architecture-and-connection.html">01 - Architecture and Connection</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">02 - Your First VS Code Extension</a></li>
+<li class="toctree-l2"><a class="reference internal" href="03-ssh-and-streaming.html">03 - SSH Bridge and Streaming Responses</a></li>
+<li class="toctree-l2"><a class="reference internal" href="04-project-tools.html">04 - Project Tools and the Agent Loop</a></li>
+<li class="toctree-l2"><a class="reference internal" href="05-controller-and-interface.html">05 - Controller and Sidebar Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="06-capstone-and-tests.html">06 - Capstone: Fix, Review, and Verify</a></li>
+<li class="toctree-l2"><a class="reference internal" href="07-package-and-models.html">07 - Packaging and Model Selection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="08-mcp-skills-and-next-steps.html">08 - MCP, Skills, and Next Steps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="validation.html">09 - Validation and Reproducibility</a></li>
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/gisyaliny/AI" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/gisyaliny/AI/edit/main/docs/workshops/macstudio-agent/02-first-extension.md" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/gisyaliny/AI/issues/new?title=Issue%20on%20page%20%2Fdocs/workshops/macstudio-agent/02-first-extension.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../../_sources/docs/workshops/macstudio-agent/02-first-extension.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>02 - Your First VS Code Extension</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#build-your-first-extension">3. Build your first extension</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#create-a-clean-source-folder">3.1 Create a clean source folder</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#define-the-finished-extension-contract">4. Define the finished extension contract</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#read-more">Read More</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#knowledge-quiz">Knowledge Quiz</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="your-first-vs-code-extension">
+<span id="macstudio-lab-02"></span><h1>02 - Your First VS Code Extension<a class="headerlink" href="#your-first-vs-code-extension" title="Link to this heading">#</a></h1>
+<p><strong>Format:</strong> hands-on lab · <strong>Suggested time:</strong> 35 minutes · <strong>Original course lessons:</strong> 3–4.</p>
+<div class="tip admonition">
+<p class="admonition-title">Learning objectives</p>
+<p>Create a manifest, register a command, and launch an isolated Extension Development Host.</p>
+</div>
+<p><strong>Start here:</strong> <a class="reference internal" href="index.html"><span class="std std-doc">Workshop guide</span></a>. Download the reference bundle there before the lab. Each file block is complete unless marked Illustration. In this workshop, “Lesson” refers to the original numbered sections retained below.</p>
+<section id="build-your-first-extension">
+<h2>3. Build your first extension<a class="headerlink" href="#build-your-first-extension" title="Link to this heading">#</a></h2>
+<section id="create-a-clean-source-folder">
+<h3>3.1 Create a clean source folder<a class="headerlink" href="#create-a-clean-source-folder" title="Link to this heading">#</a></h3>
+<p><strong>Run on Windows:</strong></p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">New-Item</span> <span class="n">-ItemType</span> <span class="n">Directory</span> <span class="n">-Path</span> <span class="s2">"$env:USERPROFILE\Documents\macstudio-assistant-course"</span>
+<span class="nb">Set-Location</span> <span class="s2">"$env:USERPROFILE\Documents\macstudio-assistant-course"</span>
+<span class="nb">New-Item</span> <span class="n">-ItemType</span> <span class="n">Directory</span> <span class="n">-Path</span> <span class="n">src</span><span class="p">,</span><span class="n">media</span><span class="p">,</span><span class="n">test</span><span class="p">,.</span><span class="n">vscode</span>
+<span class="n">code</span> <span class="p">.</span>
+</pre></div>
+</div>
+<p>If that folder already exists, choose a different empty name. This is the extension source folder, not the project the agent will later edit.</p>
+<p><strong>Create <code class="docutils literal notranslate"><span class="pre">package.json</span></code>:</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"macstudio-assistant"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"displayName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Mac Studio Assistant"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"version"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0.2.0"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"publisher"</span><span class="p">:</span><span class="w"> </span><span class="s2">"yyang-local"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"engines"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">"vscode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"^1.96.0"</span><span class="w"> </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">"main"</span><span class="p">:</span><span class="w"> </span><span class="s2">"./src/extension.js"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"activationEvents"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"onCommand:macstudio.open"</span><span class="p">],</span>
+<span class="w">  </span><span class="nt">"contributes"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"commands"</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="nt">"command"</span><span class="p">:</span><span class="w"> </span><span class="s2">"macstudio.open"</span><span class="p">,</span><span class="w"> </span><span class="nt">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Mac Studio: Open chat"</span><span class="p">}]</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Create <code class="docutils literal notranslate"><span class="pre">src/extension.js</span></code>:</strong></p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">const</span><span class="w"> </span><span class="nx">vscode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">require</span><span class="p">(</span><span class="s1">'vscode'</span><span class="p">);</span>
+
+<span class="kd">function</span><span class="w"> </span><span class="nx">activate</span><span class="p">(</span><span class="nx">context</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">context</span><span class="p">.</span><span class="nx">subscriptions</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span>
+<span class="w">    </span><span class="nx">vscode</span><span class="p">.</span><span class="nx">commands</span><span class="p">.</span><span class="nx">registerCommand</span><span class="p">(</span><span class="s1">'macstudio.open'</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nx">vscode</span><span class="p">.</span><span class="nb">window</span><span class="p">.</span><span class="nx">showInformationMessage</span><span class="p">(</span><span class="s1">'Your extension is running.'</span><span class="p">);</span>
+<span class="w">    </span><span class="p">})</span>
+<span class="w">  </span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">activate</span><span class="w"> </span><span class="p">};</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">require('vscode')</span></code> works inside the extension host because VS Code supplies the module. Running <code class="docutils literal notranslate"><span class="pre">node</span> <span class="pre">src/extension.js</span></code> in an ordinary terminal is not a valid activation test. No npm installation is necessary for this first checkpoint.</p>
+<p><strong>Create <code class="docutils literal notranslate"><span class="pre">.vscode/launch.json</span></code>:</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">"version"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0.2.0"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"configurations"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Run Mac Studio extension"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"extensionHost"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"request"</span><span class="p">:</span><span class="w"> </span><span class="s2">"launch"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"args"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="s2">"--disable-extensions"</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">"--extensionDevelopmentPath=${workspaceFolder}"</span>
+<span class="w">      </span><span class="p">]</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Press <strong>F5</strong> in the source window. A second window, the <strong>Extension Development Host</strong>, opens. In that second window, press <code class="docutils literal notranslate"><span class="pre">Ctrl+Shift+P</span></code>, run <strong>Mac Studio: Open chat</strong>, and look for the notification. The launch configuration disables other installed extensions for this development session to avoid conflicts with the installed edition.</p>
+<p>This is the standard extension debugging workflow; see Microsoft’s <a class="reference external" href="https://code.visualstudio.com/api/get-started/your-first-extension">first extension guide</a>.</p>
+<p><strong>Checkpoint:</strong> You can change the message, stop and restart debugging, and see the new message. You now know which window contains source code and which window runs the extension.</p>
+</section>
+</section>
+<section id="define-the-finished-extension-contract">
+<h2>4. Define the finished extension contract<a class="headerlink" href="#define-the-finished-extension-contract" title="Link to this heading">#</a></h2>
+<p>The manifest is the contract between your extension and VS Code. It declares commands, settings, the activity-bar container, and the view ID. The identifiers must agree with the JavaScript you will write later.</p>
+<p><strong>Replace <code class="docutils literal notranslate"><span class="pre">package.json</span></code> with the complete manifest below.</strong> The example publisher is for local development; it is not permission to publish to a marketplace account.</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"macstudio-assistant"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"displayName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Mac Studio Assistant"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"A coding assistant powered by a remote Mac, with reviewed client-side edits."</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"version"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0.2.0"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"publisher"</span><span class="p">:</span><span class="w"> </span><span class="s2">"yyang-local"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"license"</span><span class="p">:</span><span class="w"> </span><span class="s2">"MIT"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"engines"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"vscode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"^1.96.0"</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">"categories"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="s2">"AI"</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">"Other"</span>
+<span class="w">  </span><span class="p">],</span>
+<span class="w">  </span><span class="nt">"main"</span><span class="p">:</span><span class="w"> </span><span class="s2">"./src/extension.js"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"extensionKind"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="s2">"workspace"</span>
+<span class="w">  </span><span class="p">],</span>
+<span class="w">  </span><span class="nt">"activationEvents"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="s2">"onView:macstudio.chat"</span>
+<span class="w">  </span><span class="p">],</span>
+<span class="w">  </span><span class="nt">"capabilities"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"untrustedWorkspaces"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">"supported"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">"virtualWorkspaces"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">"contributes"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"viewsContainers"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">"activitybar"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"macstudio"</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Mac Studio"</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"icon"</span><span class="p">:</span><span class="w"> </span><span class="s2">"media/icon.svg"</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="p">]</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">"views"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">"macstudio"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"macstudio.chat"</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Assistant"</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"webview"</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="p">]</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">"commands"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">      </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">"command"</span><span class="p">:</span><span class="w"> </span><span class="s2">"macstudio.open"</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Mac Studio: Open chat"</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">"command"</span><span class="p">:</span><span class="w"> </span><span class="s2">"macstudio.connect"</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Mac Studio: Check connection"</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">"command"</span><span class="p">:</span><span class="w"> </span><span class="s2">"macstudio.settings"</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Mac Studio: Connection settings"</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">"command"</span><span class="p">:</span><span class="w"> </span><span class="s2">"macstudio.attach"</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Mac Studio: Attach selection or file"</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">"command"</span><span class="p">:</span><span class="w"> </span><span class="s2">"macstudio.newChat"</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Mac Studio: New chat"</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">"command"</span><span class="p">:</span><span class="w"> </span><span class="s2">"macstudio.setApiKey"</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Mac Studio: Set API key"</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">],</span>
+<span class="w">    </span><span class="nt">"menus"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">"editor/context"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">"command"</span><span class="p">:</span><span class="w"> </span><span class="s2">"macstudio.attach"</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"group"</span><span class="p">:</span><span class="w"> </span><span class="s2">"navigation@90"</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="p">]</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">"configuration"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Mac Studio Assistant"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"properties"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">"macstudio.sshHost"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"default"</span><span class="p">:</span><span class="w"> </span><span class="s2">"macstudio"</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"scope"</span><span class="p">:</span><span class="w"> </span><span class="s2">"machine"</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"SSH config alias or user@host. Host fingerprint must already be trusted."</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="nt">"macstudio.sshIdentityFile"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"default"</span><span class="p">:</span><span class="w"> </span><span class="s2">"~/.ssh/id_ed25519"</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"scope"</span><span class="p">:</span><span class="w"> </span><span class="s2">"machine"</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Local private key path. Leave empty to use SSH config or agent."</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="nt">"macstudio.sshExecutable"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"default"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ssh"</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"scope"</span><span class="p">:</span><span class="w"> </span><span class="s2">"machine"</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Local OpenSSH executable."</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="nt">"macstudio.remotePython"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"default"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/usr/bin/python3"</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"scope"</span><span class="p">:</span><span class="w"> </span><span class="s2">"machine"</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Python 3 executable on the Mac."</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="nt">"macstudio.remoteConfig"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"default"</span><span class="p">:</span><span class="w"> </span><span class="s2">"~/.openclaw/openclaw.json"</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"scope"</span><span class="p">:</span><span class="w"> </span><span class="s2">"machine"</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Remote OpenClaw JSON configuration; only used by legacy modes."</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="nt">"macstudio.mode"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"enum"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="s2">"direct"</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">"openclaw"</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">"qwen"</span>
+<span class="w">          </span><span class="p">],</span>
+<span class="w">          </span><span class="nt">"default"</span><span class="p">:</span><span class="w"> </span><span class="s2">"direct"</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Direct uses the configured API. Other modes use the remote OpenClaw configuration."</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="nt">"macstudio.maxOutputTokens"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"integer"</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"default"</span><span class="p">:</span><span class="w"> </span><span class="mi">4096</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"minimum"</span><span class="p">:</span><span class="w"> </span><span class="mi">256</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"maximum"</span><span class="p">:</span><span class="w"> </span><span class="mi">16384</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="nt">"macstudio.timeoutSeconds"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"integer"</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"default"</span><span class="p">:</span><span class="w"> </span><span class="mi">600</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"minimum"</span><span class="p">:</span><span class="w"> </span><span class="mi">30</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"maximum"</span><span class="p">:</span><span class="w"> </span><span class="mi">3600</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="nt">"macstudio.maxToolRounds"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"integer"</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"default"</span><span class="p">:</span><span class="w"> </span><span class="mi">12</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"minimum"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"maximum"</span><span class="p">:</span><span class="w"> </span><span class="mi">30</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="nt">"macstudio.baseUrl"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"default"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://127.0.0.1:11436/v1"</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"scope"</span><span class="p">:</span><span class="w"> </span><span class="s2">"machine"</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Model API loopback URL on the Mac, reached through SSH."</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="nt">"macstudio.modelId"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"default"</span><span class="p">:</span><span class="w"> </span><span class="s2">"qwen3.8-flash-next-q6"</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"scope"</span><span class="p">:</span><span class="w"> </span><span class="s2">"machine"</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Explicit model ID for direct mode."</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">"scripts"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"test"</span><span class="p">:</span><span class="w"> </span><span class="s2">"node --test test/core.test.js"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"test:live"</span><span class="p">:</span><span class="w"> </span><span class="s2">"node test/live.js"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"test:host"</span><span class="p">:</span><span class="w"> </span><span class="s2">"node test/run-host.js"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"package"</span><span class="p">:</span><span class="w"> </span><span class="s2">"vsce package --allow-missing-repository"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"test:bridge"</span><span class="p">:</span><span class="w"> </span><span class="s2">"python test/bridge_test.py"</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">"devDependencies"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"@vscode/vsce"</span><span class="p">:</span><span class="w"> </span><span class="s2">"3.9.2"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"@vscode/test-electron"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2.5.2"</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">main</span></code> entry points to executable JavaScript. <code class="docutils literal notranslate"><span class="pre">extensionKind:</span> <span class="pre">[&quot;workspace&quot;]</span></code> means the extension belongs with the workspace; in this course the workspace is local Windows. If you instead open a Remote-SSH workspace, the execution location can change. This course’s “Windows commands” assumptions no longer apply unchanged.</p>
+<p><code class="docutils literal notranslate"><span class="pre">untrustedWorkspaces.supported:</span> <span class="pre">false</span></code> disables this extension in Restricted Mode. File and command methods also check trust at runtime. See <a class="reference external" href="https://code.visualstudio.com/api/extension-guides/workspace-trust">Workspace Trust for extension authors</a>.</p>
+<p>Connection settings use <code class="docutils literal notranslate"><span class="pre">scope:</span> <span class="pre">&quot;machine&quot;</span></code> so they are machine-specific rather than taken from a project’s settings. The API key is absent from the manifest because it belongs in SecretStorage.</p>
+<p><strong>Create <code class="docutils literal notranslate"><span class="pre">media/icon.svg</span></code>:</strong></p>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;svg</span><span class="w"> </span><span class="na">xmlns=</span><span class="s">"http://www.w3.org/2000/svg"</span><span class="w"> </span><span class="na">viewBox=</span><span class="s">"0 0 24 24"</span><span class="w"> </span><span class="na">fill=</span><span class="s">"none"</span><span class="w"> </span><span class="na">stroke=</span><span class="s">"currentColor"</span><span class="w"> </span><span class="na">stroke-width=</span><span class="s">"1.5"</span><span class="nt">&gt;&lt;rect</span><span class="w"> </span><span class="na">x=</span><span class="s">"3"</span><span class="w"> </span><span class="na">y=</span><span class="s">"3"</span><span class="w"> </span><span class="na">width=</span><span class="s">"18"</span><span class="w"> </span><span class="na">height=</span><span class="s">"13"</span><span class="w"> </span><span class="na">rx=</span><span class="s">"3"</span><span class="nt">/&gt;&lt;path</span><span class="w"> </span><span class="na">d=</span><span class="s">"M8 21h8M12 16v5M7 8l3 2-3 2m6 0h4"</span><span class="nt">/&gt;&lt;/svg&gt;</span>
+</pre></div>
+</div>
+<p><strong>Create <code class="docutils literal notranslate"><span class="pre">.gitignore</span></code>:</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>node_modules/
+.vscode-test/
+test-results/
+*.vsix
+__pycache__/
+</pre></div>
+</div>
+<p><strong>Run on Windows, in the source folder:</strong></p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="n">npm</span><span class="p">.</span><span class="n">cmd</span> <span class="n">install</span>
+</pre></div>
+</div>
+<p>Keep the resulting <code class="docutils literal notranslate"><span class="pre">package-lock.json</span></code>. If using the included completed reference, run <code class="docutils literal notranslate"><span class="pre">npm.cmd</span> <span class="pre">ci</span></code> instead: it already has a lockfile. Runtime code uses built-in Node/Python APIs and VS Code APIs; the npm dependencies are for packaging and integration tests.</p>
+<p><strong>Checkpoint:</strong> Installation succeeds and the manifest parses. The final sidebar is not ready yet. Continue through Lesson 10 before testing the complete UI. Your old hello-world controller will be replaced in Lesson 9.</p>
+<div class="important admonition">
+<p class="admonition-title">Lab acceptance evidence</p>
+<p>Show the hello-world notification from your own F5 session and identify the source window versus the test window.</p>
+</div>
+<blockquote>
+<div><p><strong>Image Suggestion (Nanobanana Prompt)</strong>: Create a clean educational illustration for “Your First VS Code Extension”, using a neutral VS Code-inspired desktop palette, legible monospace labels, a Windows workstation and a Mac Studio where relevant, and clearly marked “Illustration” text. Emphasize the lab’s actual control or execution boundary. Include no real credentials, personal paths, or fabricated test results. Use even lighting and a flat technical-documentation style rather than decorative effects.</p>
+</div></blockquote>
+<p><strong>Continue:</strong> <a class="reference internal" href="01-architecture-and-connection.html"><span class="std std-doc">Previous</span></a> · <a class="reference internal" href="03-ssh-and-streaming.html"><span class="std std-doc">Next</span></a> · <a class="reference internal" href="index.html"><span class="std std-doc">Workshop guide</span></a></p>
+</section>
+<section id="read-more">
+<h2>Read More<a class="headerlink" href="#read-more" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://code.visualstudio.com/api/get-started/your-first-extension">VS Code extension tutorial</a> — Extension activation and debugging.</p></li>
+<li><p><a class="reference external" href="https://code.visualstudio.com/api/extension-guides/webview">Webview API</a> — UI messages, resources, and content security.</p></li>
+<li><p><a class="reference external" href="https://code.visualstudio.com/api/extension-guides/workspace-trust">Workspace Trust</a> — Trust boundaries for extension authors.</p></li>
+<li><p><a class="reference external" href="https://modelcontextprotocol.io/docs/learn/architecture">MCP architecture</a> — Hosts, clients, servers, and capability discovery.</p></li>
+<li><p><a class="reference external" href="https://docs.openclaw.ai/tools/skills">OpenClaw skills</a> — Optional server-side instruction packages.</p></li>
+</ul>
+</section>
+<section id="knowledge-quiz">
+<h2>Knowledge Quiz<a class="headerlink" href="#knowledge-quiz" title="Link to this heading">#</a></h2>
+<p><strong>1. Why not run extension.js with ordinary Node?</strong></p>
+<details>
+<summary>Answer</summary>
+<p>VS Code supplies the vscode module inside its extension host.</p>
+</details>
+<p><strong>2. What is package.json responsible for?</strong></p>
+<details>
+<summary>Answer</summary>
+<p>It declares entry points, commands, settings, views, compatibility, and packaging metadata.</p>
+</details>
+<p><strong>3. Why disable other extensions in the development session?</strong></p>
+<details>
+<summary>Answer</summary>
+<p>To avoid ID conflicts with the installed reference and reduce interference during testing.</p>
+</details>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./docs\workshops\macstudio-agent"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="01-architecture-and-connection.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">01 - Architecture and Connection</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="03-ssh-and-streaming.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">03 - SSH Bridge and Streaming Responses</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#build-your-first-extension">3. Build your first extension</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#create-a-clean-source-folder">3.1 Create a clean source folder</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#define-the-finished-extension-contract">4. Define the finished extension contract</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#read-more">Read More</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#knowledge-quiz">Knowledge Quiz</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By AI Workshop Contributors
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2026.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
+<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

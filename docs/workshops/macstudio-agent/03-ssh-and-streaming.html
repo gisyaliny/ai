@@ -1,0 +1,899 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>03 - SSH Bridge and Streaming Responses &#8212; AI Tools Learning Handbook</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=6a604523" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../../../_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
+
+    <script src="../../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../../_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script data-sd-tabs-storage-prefix="sphinx-design-tab-id-" src="../../../_static/design-tabs.js?v=fcb327ea"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'docs/workshops/macstudio-agent/03-ssh-and-streaming';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="canonical" href="https://gisyaliny.github.io/AI/docs/workshops/macstudio-agent/03-ssh-and-streaming.html" />
+    <link rel="icon" href="../../../_static/fav.ico"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="04 - Project Tools and the Agent Loop" href="04-project-tools.html" />
+    <link rel="prev" title="02 - Your First VS Code Extension" href="02-first-extension.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../../../_static/searchtools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    <script src="../../../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="AI Tools Learning Handbook - Home"/>
+    <img src="../../../_static/logo.png" class="logo__image only-dark pst-js-only" alt="AI Tools Learning Handbook - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Vibe Coding</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../vibe-coding/01-environment-and-basics.html">1. Environment Setup &amp; Basic Interaction (Environment Setup &amp; Basic Interaction)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../vibe-coding/02-complex-tasks-and-terminal.html">2. Complex Tasks &amp; Terminal Control</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../vibe-coding/03-multimodal-and-context.html">3. Multimodal &amp; Context Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../vibe-coding/04-advanced-features.html">4. Advanced Features &amp; Customization</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Research</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../research/01-ai-prompts-for-research.html">5. AI Prompts &amp; Skills for Academic Research</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Local LLM</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../local-llm/01-deploy-local-llm.html">6. Deploy Open-Source LLMs Locally with Ollama &amp; AnythingLLM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../local-llm/02-mastering-ollama.html">7. — Mastering Ollama: Local Models, APIs, RAG, Tools, and Production Patterns</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">RAG</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../rag/01-what-is-rag.html">8. What is RAG? (Retrieval-Augmented Generation)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rag/02-implementing-rag.html">9. Implementing RAG with Python</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rag/03-graph-rag.html">10. Graph RAG: Knowledge Graphs Meet Retrieval</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Workshops</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">00 - Build a Mac Studio Coding Agent for VS Code</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="01-architecture-and-connection.html">01 - Architecture and Connection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="02-first-extension.html">02 - Your First VS Code Extension</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">03 - SSH Bridge and Streaming Responses</a></li>
+<li class="toctree-l2"><a class="reference internal" href="04-project-tools.html">04 - Project Tools and the Agent Loop</a></li>
+<li class="toctree-l2"><a class="reference internal" href="05-controller-and-interface.html">05 - Controller and Sidebar Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="06-capstone-and-tests.html">06 - Capstone: Fix, Review, and Verify</a></li>
+<li class="toctree-l2"><a class="reference internal" href="07-package-and-models.html">07 - Packaging and Model Selection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="08-mcp-skills-and-next-steps.html">08 - MCP, Skills, and Next Steps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="validation.html">09 - Validation and Reproducibility</a></li>
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/gisyaliny/AI" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/gisyaliny/AI/edit/main/docs/workshops/macstudio-agent/03-ssh-and-streaming.md" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/gisyaliny/AI/issues/new?title=Issue%20on%20page%20%2Fdocs/workshops/macstudio-agent/03-ssh-and-streaming.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../../_sources/docs/workshops/macstudio-agent/03-ssh-and-streaming.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>03 - SSH Bridge and Streaming Responses</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#build-the-remote-python-bridge">5. Build the remote Python bridge</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#add-ssh-transport-and-streaming">6. Add SSH transport and streaming</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#understand-streaming-before-parsing-it">6.1 Understand streaming before parsing it</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#create-the-complete-transport">6.2 Create the complete transport</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#make-the-first-request-without-the-sidebar">6.3 Make the first request without the sidebar</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#read-more">Read More</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#knowledge-quiz">Knowledge Quiz</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="ssh-bridge-and-streaming-responses">
+<span id="macstudio-lab-03"></span><h1>03 - SSH Bridge and Streaming Responses<a class="headerlink" href="#ssh-bridge-and-streaming-responses" title="Link to this heading">#</a></h1>
+<p><strong>Format:</strong> hands-on lab · <strong>Suggested time:</strong> 50 minutes · <strong>Original course lessons:</strong> 5–6.</p>
+<div class="tip admonition">
+<p class="admonition-title">Learning objectives</p>
+<p>Write the Python bridge and Node transport; assemble SSE fragments; make a real model request.</p>
+</div>
+<p><strong>Start here:</strong> <a class="reference internal" href="index.html"><span class="std std-doc">Workshop guide</span></a>. Download the reference bundle there before the lab. Each file block is complete unless marked Illustration. In this workshop, “Lesson” refers to the original numbered sections retained below.</p>
+<section id="build-the-remote-python-bridge">
+<h2>5. Build the remote Python bridge<a class="headerlink" href="#build-the-remote-python-bridge" title="Link to this heading">#</a></h2>
+<p>Create <code class="docutils literal notranslate"><span class="pre">src/bridge.py</span></code> in the Windows source tree. It is shipped as text with the extension. The Node transport will send its program text to Python on the Mac; you do not need to copy or install the file on the Mac manually.</p>
+<p>Its input is one JSON object on standard input. A probe calls <code class="docutils literal notranslate"><span class="pre">/models</span></code>; an inference request calls <code class="docutils literal notranslate"><span class="pre">/chat/completions</span></code>. Successful standard output is protocol data only. Diagnostic errors go to standard error so they cannot corrupt the response stream.</p>
+<p><strong>Create <code class="docutils literal notranslate"><span class="pre">src/bridge.py</span></code>:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">"""Ephemeral SSH bridge. Credentials are passed over SSH or loaded remotely; stdout is protocol only."""</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">urllib.request</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">urllib.error</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">urllib.parse</span><span class="w"> </span><span class="kn">import</span> <span class="n">urlparse</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
+    <span class="n">request</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">stdin</span><span class="p">)</span>
+    <span class="n">mode</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'mode'</span><span class="p">,</span> <span class="s1">'openclaw'</span><span class="p">)</span>
+    <span class="n">payload</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'payload'</span><span class="p">,</span> <span class="p">{})</span>
+    <span class="k">if</span> <span class="n">mode</span> <span class="o">!=</span> <span class="s1">'direct'</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="n">request</span><span class="p">[</span><span class="s1">'config'</span><span class="p">]),</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">'utf-8'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">config</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s1">'direct'</span><span class="p">:</span>
+        <span class="n">direct</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'direct'</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="n">base</span> <span class="o">=</span> <span class="n">direct</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'baseUrl'</span><span class="p">,</span> <span class="s1">''</span><span class="p">)</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s1">'/'</span><span class="p">)</span>
+        <span class="n">parsed</span> <span class="o">=</span> <span class="n">urlparse</span><span class="p">(</span><span class="n">base</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">parsed</span><span class="o">.</span><span class="n">scheme</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">'http'</span><span class="p">,</span> <span class="s1">'https'</span><span class="p">)</span> <span class="ow">or</span> <span class="n">parsed</span><span class="o">.</span><span class="n">hostname</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">'localhost'</span><span class="p">,</span> <span class="s1">'127.0.0.1'</span><span class="p">,</span> <span class="s1">'::1'</span><span class="p">)</span> <span class="ow">or</span> <span class="n">parsed</span><span class="o">.</span><span class="n">username</span> <span class="ow">or</span> <span class="n">parsed</span><span class="o">.</span><span class="n">password</span> <span class="ow">or</span> <span class="n">parsed</span><span class="o">.</span><span class="n">query</span> <span class="ow">or</span> <span class="n">parsed</span><span class="o">.</span><span class="n">fragment</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'Direct endpoint must be a loopback HTTP(S) URL on the Mac'</span><span class="p">)</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="n">direct</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'apiKey'</span><span class="p">)</span>
+        <span class="n">payload</span><span class="p">[</span><span class="s1">'model'</span><span class="p">]</span> <span class="o">=</span> <span class="n">direct</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'model'</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">payload</span><span class="p">[</span><span class="s1">'model'</span><span class="p">],</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">payload</span><span class="p">[</span><span class="s1">'model'</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'Model ID is required'</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">mode</span> <span class="o">==</span> <span class="s1">'openclaw'</span><span class="p">:</span>
+        <span class="n">gateway</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'gateway'</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="n">base</span> <span class="o">=</span> <span class="s1">'http://127.0.0.1:'</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">gateway</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'port'</span><span class="p">,</span> <span class="mi">18789</span><span class="p">)))</span> <span class="o">+</span> <span class="s1">'/v1'</span>
+        <span class="n">auth</span> <span class="o">=</span> <span class="n">gateway</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'auth'</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="n">auth</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'token'</span><span class="p">)</span> <span class="k">if</span> <span class="n">auth</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'mode'</span><span class="p">,</span> <span class="s1">'token'</span><span class="p">)</span> <span class="o">==</span> <span class="s1">'token'</span> <span class="k">else</span> <span class="n">auth</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'password'</span><span class="p">)</span>
+        <span class="n">payload</span><span class="p">[</span><span class="s1">'model'</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'openclaw/main'</span>
+    <span class="k">elif</span> <span class="n">mode</span> <span class="o">==</span> <span class="s1">'qwen'</span><span class="p">:</span>
+        <span class="n">primary</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s1">'agents'</span><span class="p">][</span><span class="s1">'defaults'</span><span class="p">][</span><span class="s1">'model'</span><span class="p">][</span><span class="s1">'primary'</span><span class="p">]</span>
+        <span class="n">provider_id</span><span class="p">,</span> <span class="n">model_id</span> <span class="o">=</span> <span class="n">primary</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">'/'</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">provider</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s1">'models'</span><span class="p">][</span><span class="s1">'providers'</span><span class="p">][</span><span class="n">provider_id</span><span class="p">]</span>
+        <span class="n">base</span><span class="p">,</span> <span class="n">key</span> <span class="o">=</span> <span class="n">provider</span><span class="p">[</span><span class="s1">'baseUrl'</span><span class="p">]</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s1">'/'</span><span class="p">),</span> <span class="n">provider</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'apiKey'</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">urlparse</span><span class="p">(</span><span class="n">base</span><span class="p">)</span><span class="o">.</span><span class="n">hostname</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">'localhost'</span><span class="p">,</span> <span class="s1">'127.0.0.1'</span><span class="p">,</span> <span class="s1">'::1'</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'Direct model must run on the remote Mac loopback interface'</span><span class="p">)</span>
+        <span class="n">payload</span><span class="p">[</span><span class="s1">'model'</span><span class="p">]</span> <span class="o">=</span> <span class="n">model_id</span>
+        <span class="n">payload</span><span class="p">[</span><span class="s1">'chat_template_kwargs'</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'enable_thinking'</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s1">'reasoning_effort'</span><span class="p">:</span> <span class="s1">'none'</span><span class="p">}</span>
+        <span class="n">payload</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">temperature</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">top_p</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">presence_penalty</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'Unknown mode'</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">key</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'Remote credential is missing or uses an unsupported SecretRef'</span><span class="p">)</span>
+    <span class="n">probe</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'operation'</span><span class="p">)</span> <span class="o">==</span> <span class="s1">'probe'</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="n">base</span> <span class="o">+</span> <span class="p">(</span><span class="s1">'/models'</span> <span class="k">if</span> <span class="n">probe</span> <span class="k">else</span> <span class="s1">'/chat/completions'</span><span class="p">)</span>
+    <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'Authorization'</span><span class="p">:</span> <span class="s1">'Bearer '</span> <span class="o">+</span> <span class="n">key</span><span class="p">,</span> <span class="s1">'Content-Type'</span><span class="p">:</span> <span class="s1">'application/json'</span><span class="p">}</span>
+    <span class="n">req</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">Request</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">None</span> <span class="k">if</span> <span class="n">probe</span> <span class="k">else</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(),</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">with</span> <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">req</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'timeout'</span><span class="p">,</span> <span class="mi">600</span><span class="p">)))</span> <span class="k">as</span> <span class="n">response</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">probe</span><span class="p">:</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">({</span><span class="s1">'ok'</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">'mode'</span><span class="p">:</span> <span class="n">mode</span><span class="p">,</span> <span class="s1">'models'</span><span class="p">:</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="s1">'id'</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'data'</span><span class="p">,</span> <span class="p">[])]}),</span> <span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">response</span><span class="p">:</span>
+                    <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">buffer</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+                    <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">buffer</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+    <span class="k">except</span> <span class="n">urllib</span><span class="o">.</span><span class="n">error</span><span class="o">.</span><span class="n">HTTPError</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+        <span class="n">detail</span> <span class="o">=</span> <span class="n">error</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">4096</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">errors</span><span class="o">=</span><span class="s1">'replace'</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="s1">'[redacted]'</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">error</span><span class="o">.</span><span class="n">code</span> <span class="o">==</span> <span class="mi">404</span> <span class="ow">and</span> <span class="n">mode</span> <span class="o">==</span> <span class="s1">'openclaw'</span><span class="p">:</span>
+            <span class="n">detail</span> <span class="o">=</span> <span class="s1">'Enable gateway.http.endpoints.chatCompletions.enabled on the Mac.'</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">'Remote HTTP </span><span class="si">%s</span><span class="s1">: </span><span class="si">%s</span><span class="s1">'</span> <span class="o">%</span> <span class="p">(</span><span class="n">error</span><span class="o">.</span><span class="n">code</span><span class="p">,</span> <span class="n">detail</span><span class="p">))</span> <span class="kn">from</span><span class="w"> </span><span class="kc">None</span>
+
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+<span class="k">except</span> <span class="ne">BrokenPipeError</span><span class="p">:</span>
+    <span class="k">pass</span>
+<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">error</span><span class="p">),</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Read the <code class="docutils literal notranslate"><span class="pre">direct</span></code> branch first. It validates a loopback HTTP(S) URL, uses the explicit model ID, and adds the Bearer token. The two other branches are compatibility modes; you do not need OpenClaw for the beginner path.</p>
+<p>The loopback check avoids intentionally routing the direct-mode credential to an arbitrary host in the URL. It is not a comprehensive network sandbox: the trusted local service, redirects, local proxy configuration, and the account environment still matter. Do not use untrusted endpoints or treat this implementation as a security boundary against a hostile local service.</p>
+<p>The API key exists temporarily in the Windows extension and remote process memory. Base64 encoding of the program is not encryption. SSH provides transport encryption. The key travels through standard input, not as a command-line argument in the remote Python command.</p>
+<p>The source preserves legacy configuration behavior: <code class="docutils literal notranslate"><span class="pre">direct</span></code> needs no OpenClaw file; <code class="docutils literal notranslate"><span class="pre">qwen</span></code> and <code class="docutils literal notranslate"><span class="pre">openclaw</span></code> read the configured JSON file. This reader does not implement JSON5 or dynamically resolved secret references.</p>
+<p><strong>Checkpoint:</strong> Compile without executing network requests:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">-c</span> <span class="s2">"import ast,pathlib; ast.parse(pathlib.Path('src/bridge.py').read_text(encoding='utf-8')); print('Python syntax OK')"</span>
+</pre></div>
+</div>
+</section>
+<section id="add-ssh-transport-and-streaming">
+<h2>6. Add SSH transport and streaming<a class="headerlink" href="#add-ssh-transport-and-streaming" title="Link to this heading">#</a></h2>
+<section id="understand-streaming-before-parsing-it">
+<h3>6.1 Understand streaming before parsing it<a class="headerlink" href="#understand-streaming-before-parsing-it" title="Link to this heading">#</a></h3>
+<p>The model’s streaming response uses <strong>Server-Sent Events / SSE（服务器发送事件）</strong>. A typical text fragment looks like this:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>data: {"choices":[{"delta":{"content":"Hello"}}]}
+
+data: {"choices":[{"delta":{"content":" world"}}]}
+
+data: [DONE]
+</pre></div>
+</div>
+<p>This is an illustrative wire fragment, not a file to create. A chunk arriving from SSH is not necessarily a full event or even a full JSON string. Buffer until the blank line marking an event boundary. Tool names and argument strings may arrive in fragments too. Assemble them before parsing arguments or executing a tool.</p>
+</section>
+<section id="create-the-complete-transport">
+<h3>6.2 Create the complete transport<a class="headerlink" href="#create-the-complete-transport" title="Link to this heading">#</a></h3>
+<p><strong>Create <code class="docutils literal notranslate"><span class="pre">src/transport.js</span></code>:</strong></p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="s1">'use strict'</span><span class="p">;</span>
+<span class="kd">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">spawn</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">require</span><span class="p">(</span><span class="s1">'node:child_process'</span><span class="p">);</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">fs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">require</span><span class="p">(</span><span class="s1">'node:fs'</span><span class="p">);</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">require</span><span class="p">(</span><span class="s1">'node:path'</span><span class="p">);</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">os</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">require</span><span class="p">(</span><span class="s1">'node:os'</span><span class="p">);</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">bridge</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">fs</span><span class="p">.</span><span class="nx">readFileSync</span><span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">__dirname</span><span class="p">,</span><span class="w"> </span><span class="s1">'bridge.py'</span><span class="p">),</span><span class="w"> </span><span class="s1">'utf8'</span><span class="p">);</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">quote</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">value</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="s2">"'"</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nb">String</span><span class="p">(</span><span class="nx">value</span><span class="p">).</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/'/g</span><span class="p">,</span><span class="w"> </span><span class="s2">"'\\''"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s2">"'"</span><span class="p">;</span>
+
+<span class="kd">class</span><span class="w"> </span><span class="nx">SSEReader</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kr">constructor</span><span class="p">(</span><span class="nx">onEvent</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">buffer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">''</span><span class="p">;</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">onEvent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">onEvent</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">  </span><span class="nx">push</span><span class="p">(</span><span class="nx">chunk</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">this</span><span class="p">.</span><span class="nx">buffer</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="nx">chunk</span><span class="p">;</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">buffer</span><span class="p">.</span><span class="nx">length</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mf">2</span><span class="nx">_000_000</span><span class="p">)</span><span class="w"> </span><span class="k">throw</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="ne">Error</span><span class="p">(</span><span class="s1">'Server event exceeded size limit'</span><span class="p">);</span>
+<span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="nx">match</span><span class="p">;</span>
+<span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">((</span><span class="nx">match</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sr">/\r?\n\r?\n/</span><span class="p">.</span><span class="nx">exec</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">buffer</span><span class="p">)))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="kd">const</span><span class="w"> </span><span class="nx">block</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">buffer</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mf">0</span><span class="p">,</span><span class="w"> </span><span class="nx">match</span><span class="p">.</span><span class="nx">index</span><span class="p">);</span>
+<span class="w">      </span><span class="k">this</span><span class="p">.</span><span class="nx">buffer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">buffer</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="nx">match</span><span class="p">.</span><span class="nx">index</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">match</span><span class="p">[</span><span class="mf">0</span><span class="p">].</span><span class="nx">length</span><span class="p">);</span>
+<span class="w">      </span><span class="kd">const</span><span class="w"> </span><span class="nx">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">block</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="sr">/\r?\n/</span><span class="p">).</span><span class="nx">filter</span><span class="p">(</span><span class="nx">x</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">x</span><span class="p">.</span><span class="nx">startsWith</span><span class="p">(</span><span class="s1">'data:'</span><span class="p">)).</span><span class="nx">map</span><span class="p">(</span><span class="nx">x</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">x</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mf">5</span><span class="p">).</span><span class="nx">trimStart</span><span class="p">()).</span><span class="nx">join</span><span class="p">(</span><span class="s1">'\n'</span><span class="p">);</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">data</span><span class="p">)</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">onEvent</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">function</span><span class="w"> </span><span class="nx">sshRequest</span><span class="p">(</span><span class="nx">options</span><span class="p">,</span><span class="w"> </span><span class="nx">request</span><span class="p">,</span><span class="w"> </span><span class="nx">signal</span><span class="p">,</span><span class="w"> </span><span class="nx">onData</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nb">Promise</span><span class="p">((</span><span class="nx">resolve</span><span class="p">,</span><span class="w"> </span><span class="nx">reject</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">signal</span><span class="o">?</span><span class="p">.</span><span class="nx">aborted</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="nx">reject</span><span class="p">(</span><span class="ow">new</span><span class="w"> </span><span class="ne">Error</span><span class="p">(</span><span class="s1">'Stopped'</span><span class="p">));</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="sr">/^[a-zA-Z0-9_][a-zA-Z0-9_.@:\-]*$/</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">options</span><span class="p">.</span><span class="nx">host</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="s1">''</span><span class="p">))</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="nx">reject</span><span class="p">(</span><span class="ow">new</span><span class="w"> </span><span class="ne">Error</span><span class="p">(</span><span class="s1">'Invalid SSH host'</span><span class="p">));</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">args</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s1">'-T'</span><span class="p">,</span><span class="w"> </span><span class="s1">'-o'</span><span class="p">,</span><span class="w"> </span><span class="s1">'BatchMode=yes'</span><span class="p">,</span><span class="w"> </span><span class="s1">'-o'</span><span class="p">,</span><span class="w"> </span><span class="s1">'StrictHostKeyChecking=yes'</span><span class="p">,</span><span class="w"> </span><span class="s1">'-o'</span><span class="p">,</span><span class="w"> </span><span class="s1">'ConnectTimeout=12'</span><span class="p">,</span><span class="w"> </span><span class="s1">'-o'</span><span class="p">,</span><span class="w"> </span><span class="s1">'ServerAliveInterval=20'</span><span class="p">,</span><span class="w"> </span><span class="s1">'-o'</span><span class="p">,</span><span class="w"> </span><span class="s1">'ServerAliveCountMax=3'</span><span class="p">];</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">options</span><span class="p">.</span><span class="nx">identity</span><span class="p">)</span><span class="w"> </span><span class="nx">args</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="s1">'-o'</span><span class="p">,</span><span class="w"> </span><span class="s1">'IdentitiesOnly=yes'</span><span class="p">,</span><span class="w"> </span><span class="s1">'-i'</span><span class="p">,</span><span class="w"> </span><span class="nx">options</span><span class="p">.</span><span class="nx">identity</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/^~(?=[/\\])/</span><span class="p">,</span><span class="w"> </span><span class="nx">os</span><span class="p">.</span><span class="nx">homedir</span><span class="p">()));</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">encoded</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">Buffer</span><span class="p">.</span><span class="kr">from</span><span class="p">(</span><span class="nx">bridge</span><span class="p">).</span><span class="nx">toString</span><span class="p">(</span><span class="s1">'base64'</span><span class="p">);</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">code</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sb">`import base64;exec(compile(base64.b64decode('</span><span class="si">${</span><span class="nx">encoded</span><span class="si">}</span><span class="sb">'),'&lt;macstudio-bridge&gt;','exec'))`</span><span class="p">;</span>
+<span class="w">    </span><span class="nx">args</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">options</span><span class="p">.</span><span class="nx">host</span><span class="p">,</span><span class="w"> </span><span class="sb">`</span><span class="si">${</span><span class="nx">quote</span><span class="p">(</span><span class="nx">options</span><span class="p">.</span><span class="nx">python</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="s1">'/usr/bin/python3'</span><span class="p">)</span><span class="si">}</span><span class="sb"> -u -c </span><span class="si">${</span><span class="nx">quote</span><span class="p">(</span><span class="nx">code</span><span class="p">)</span><span class="si">}</span><span class="sb">`</span><span class="p">);</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">child</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">spawn</span><span class="p">(</span><span class="nx">options</span><span class="p">.</span><span class="nx">executable</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="s1">'ssh'</span><span class="p">,</span><span class="w"> </span><span class="nx">args</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">windowsHide</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="nx">stdio</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="s1">'pipe'</span><span class="p">,</span><span class="w"> </span><span class="s1">'pipe'</span><span class="p">,</span><span class="w"> </span><span class="s1">'pipe'</span><span class="p">]</span><span class="w"> </span><span class="p">});</span>
+<span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="nx">stderr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">''</span><span class="p">,</span><span class="w"> </span><span class="nx">output</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">''</span><span class="p">,</span><span class="w"> </span><span class="nx">failure</span><span class="p">,</span><span class="w"> </span><span class="nx">timer</span><span class="p">;</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">abort</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">failure</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="ne">Error</span><span class="p">(</span><span class="s1">'Stopped; remote operations may still be finishing.'</span><span class="p">);</span><span class="w"> </span><span class="nx">child</span><span class="p">.</span><span class="nx">kill</span><span class="p">();</span><span class="w"> </span><span class="p">};</span>
+<span class="w">    </span><span class="nx">signal</span><span class="o">?</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">'abort'</span><span class="p">,</span><span class="w"> </span><span class="nx">abort</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">once</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="w"> </span><span class="p">});</span>
+<span class="w">    </span><span class="nx">timer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">setTimeout</span><span class="p">(()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">failure</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="ne">Error</span><span class="p">(</span><span class="s1">'Connection or inference timed out. Check the VPN and Mac service.'</span><span class="p">);</span><span class="w"> </span><span class="nx">child</span><span class="p">.</span><span class="nx">kill</span><span class="p">();</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="p">((</span><span class="nx">request</span><span class="p">.</span><span class="nx">timeout</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="mf">600</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mf">15</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">1000</span><span class="p">);</span>
+<span class="w">    </span><span class="nx">child</span><span class="p">.</span><span class="nx">stdout</span><span class="p">.</span><span class="nx">setEncoding</span><span class="p">(</span><span class="s1">'utf8'</span><span class="p">);</span><span class="w"> </span><span class="nx">child</span><span class="p">.</span><span class="nx">stderr</span><span class="p">.</span><span class="nx">setEncoding</span><span class="p">(</span><span class="s1">'utf8'</span><span class="p">);</span>
+<span class="w">    </span><span class="nx">child</span><span class="p">.</span><span class="nx">stdout</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">'data'</span><span class="p">,</span><span class="w"> </span><span class="nx">data</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">try</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">onData</span><span class="p">)</span><span class="w"> </span><span class="nx">onData</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
+<span class="w">        </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">output</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="nx">data</span><span class="p">;</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">output</span><span class="p">.</span><span class="nx">length</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mf">2</span><span class="nx">_000_000</span><span class="p">)</span><span class="w"> </span><span class="k">throw</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="ne">Error</span><span class="p">(</span><span class="s1">'Response too large'</span><span class="p">);</span><span class="w"> </span><span class="p">}</span>
+<span class="w">      </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="nx">error</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">failure</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">error</span><span class="p">;</span><span class="w"> </span><span class="nx">child</span><span class="p">.</span><span class="nx">kill</span><span class="p">();</span><span class="w"> </span><span class="p">}</span>
+<span class="w">    </span><span class="p">});</span>
+<span class="w">    </span><span class="nx">child</span><span class="p">.</span><span class="nx">stderr</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">'data'</span><span class="p">,</span><span class="w"> </span><span class="nx">data</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">stderr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="nx">stderr</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">data</span><span class="p">).</span><span class="nx">slice</span><span class="p">(</span><span class="o">-</span><span class="mf">4096</span><span class="p">);</span><span class="w"> </span><span class="p">});</span>
+<span class="w">    </span><span class="nx">child</span><span class="p">.</span><span class="nx">stdin</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">'error'</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{});</span>
+<span class="w">    </span><span class="nx">child</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">'error'</span><span class="p">,</span><span class="w"> </span><span class="nx">error</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">failure</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">error</span><span class="p">;</span><span class="w"> </span><span class="p">});</span>
+<span class="w">    </span><span class="nx">child</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">'close'</span><span class="p">,</span><span class="w"> </span><span class="nx">code</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nx">clearTimeout</span><span class="p">(</span><span class="nx">timer</span><span class="p">);</span><span class="w"> </span><span class="nx">signal</span><span class="o">?</span><span class="p">.</span><span class="nx">removeEventListener</span><span class="p">(</span><span class="s1">'abort'</span><span class="p">,</span><span class="w"> </span><span class="nx">abort</span><span class="p">);</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">failure</span><span class="p">)</span><span class="w"> </span><span class="nx">reject</span><span class="p">(</span><span class="nx">failure</span><span class="p">);</span>
+<span class="w">      </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">code</span><span class="w"> </span><span class="o">!==</span><span class="w"> </span><span class="mf">0</span><span class="p">)</span><span class="w"> </span><span class="nx">reject</span><span class="p">(</span><span class="ow">new</span><span class="w"> </span><span class="ne">Error</span><span class="p">(</span><span class="nx">stderr</span><span class="p">.</span><span class="nx">trim</span><span class="p">()</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="sb">`SSH exited (</span><span class="si">${</span><span class="nx">code</span><span class="si">}</span><span class="sb">)`</span><span class="p">));</span>
+<span class="w">      </span><span class="k">else</span><span class="w"> </span><span class="nx">resolve</span><span class="p">(</span><span class="nx">output</span><span class="p">);</span>
+<span class="w">    </span><span class="p">});</span>
+<span class="w">    </span><span class="nx">child</span><span class="p">.</span><span class="nx">stdin</span><span class="p">.</span><span class="nx">end</span><span class="p">(</span><span class="nb">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">({</span><span class="w"> </span><span class="p">...</span><span class="nx">request</span><span class="p">,</span><span class="w"> </span><span class="nx">direct</span><span class="o">:</span><span class="w"> </span><span class="nx">options</span><span class="p">.</span><span class="nx">direct</span><span class="p">,</span><span class="w"> </span><span class="nx">config</span><span class="o">:</span><span class="w"> </span><span class="nx">options</span><span class="p">.</span><span class="nx">config</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="s1">'~/.openclaw/openclaw.json'</span><span class="w"> </span><span class="p">}));</span>
+<span class="w">  </span><span class="p">});</span>
+<span class="p">}</span>
+
+<span class="k">async</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="nx">completion</span><span class="p">(</span><span class="nx">options</span><span class="p">,</span><span class="w"> </span><span class="nx">payload</span><span class="p">,</span><span class="w"> </span><span class="nx">signal</span><span class="p">,</span><span class="w"> </span><span class="nx">onText</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{})</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">message</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">role</span><span class="o">:</span><span class="w"> </span><span class="s1">'assistant'</span><span class="p">,</span><span class="w"> </span><span class="nx">content</span><span class="o">:</span><span class="w"> </span><span class="s1">''</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="nx">calls</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nb">Map</span><span class="p">();</span>
+<span class="w">  </span><span class="kd">let</span><span class="w"> </span><span class="nx">done</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"> </span><span class="nx">finish</span><span class="p">;</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">reader</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">SSEReader</span><span class="p">(</span><span class="nx">data</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">data</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="s1">'[DONE]'</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">done</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span><span class="p">;</span><span class="w"> </span><span class="k">return</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">event</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">error</span><span class="p">)</span><span class="w"> </span><span class="k">throw</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="ne">Error</span><span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">error</span><span class="p">.</span><span class="nx">message</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="s1">'Remote API error'</span><span class="p">);</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">choice</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">event</span><span class="p">.</span><span class="nx">choices</span><span class="o">?</span><span class="p">.[</span><span class="mf">0</span><span class="p">];</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="nx">choice</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="p">;</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">choice</span><span class="p">.</span><span class="nx">finish_reason</span><span class="p">)</span><span class="w"> </span><span class="nx">finish</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">choice</span><span class="p">.</span><span class="nx">finish_reason</span><span class="p">;</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">delta</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">choice</span><span class="p">.</span><span class="nx">delta</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="p">{};</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">delta</span><span class="p">.</span><span class="nx">content</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">message</span><span class="p">.</span><span class="nx">content</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="nx">delta</span><span class="p">.</span><span class="nx">content</span><span class="p">;</span><span class="w"> </span><span class="nx">onText</span><span class="p">(</span><span class="nx">delta</span><span class="p">.</span><span class="nx">content</span><span class="p">);</span><span class="w"> </span><span class="p">}</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">message</span><span class="p">.</span><span class="nx">content</span><span class="p">.</span><span class="nx">length</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mf">500</span><span class="nx">_000</span><span class="p">)</span><span class="w"> </span><span class="k">throw</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="ne">Error</span><span class="p">(</span><span class="s1">'Reply exceeded size limit'</span><span class="p">);</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kd">const</span><span class="w"> </span><span class="nx">part</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="nx">delta</span><span class="p">.</span><span class="nx">tool_calls</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="p">[])</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="kd">const</span><span class="w"> </span><span class="nx">index</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">part</span><span class="p">.</span><span class="nx">index</span><span class="w"> </span><span class="o">??</span><span class="w"> </span><span class="mf">0</span><span class="p">;</span>
+<span class="w">      </span><span class="kd">const</span><span class="w"> </span><span class="nx">call</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">calls</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="nx">index</span><span class="p">)</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">id</span><span class="o">:</span><span class="w"> </span><span class="s1">''</span><span class="p">,</span><span class="w"> </span><span class="nx">type</span><span class="o">:</span><span class="w"> </span><span class="s1">'function'</span><span class="p">,</span><span class="w"> </span><span class="kd">function</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">name</span><span class="o">:</span><span class="w"> </span><span class="s1">''</span><span class="p">,</span><span class="w"> </span><span class="nb">arguments</span><span class="o">:</span><span class="w"> </span><span class="s1">''</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">};</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">part</span><span class="p">.</span><span class="nx">id</span><span class="p">)</span><span class="w"> </span><span class="nx">call</span><span class="p">.</span><span class="nx">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">part</span><span class="p">.</span><span class="nx">id</span><span class="p">;</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">part</span><span class="p">.</span><span class="kd">function</span><span class="o">?</span><span class="p">.</span><span class="nx">name</span><span class="p">)</span><span class="w"> </span><span class="nx">call</span><span class="p">.</span><span class="kd">function</span><span class="p">.</span><span class="nx">name</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="nx">part</span><span class="p">.</span><span class="kd">function</span><span class="p">.</span><span class="nx">name</span><span class="p">;</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">part</span><span class="p">.</span><span class="kd">function</span><span class="o">?</span><span class="p">.</span><span class="nb">arguments</span><span class="p">)</span><span class="w"> </span><span class="nx">call</span><span class="p">.</span><span class="kd">function</span><span class="p">.</span><span class="nb">arguments</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="nx">part</span><span class="p">.</span><span class="kd">function</span><span class="p">.</span><span class="nb">arguments</span><span class="p">;</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">call</span><span class="p">.</span><span class="kd">function</span><span class="p">.</span><span class="nb">arguments</span><span class="p">.</span><span class="nx">length</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mf">200</span><span class="nx">_000</span><span class="p">)</span><span class="w"> </span><span class="k">throw</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="ne">Error</span><span class="p">(</span><span class="s1">'Tool arguments exceeded size limit'</span><span class="p">);</span>
+<span class="w">      </span><span class="nx">calls</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="nx">index</span><span class="p">,</span><span class="w"> </span><span class="nx">call</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">});</span>
+<span class="w">  </span><span class="k">await</span><span class="w"> </span><span class="nx">sshRequest</span><span class="p">(</span><span class="nx">options</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">mode</span><span class="o">:</span><span class="w"> </span><span class="nx">options</span><span class="p">.</span><span class="nx">mode</span><span class="p">,</span><span class="w"> </span><span class="nx">timeout</span><span class="o">:</span><span class="w"> </span><span class="nx">options</span><span class="p">.</span><span class="nx">timeout</span><span class="p">,</span><span class="w"> </span><span class="nx">payload</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">...</span><span class="nx">payload</span><span class="p">,</span><span class="w"> </span><span class="nx">stream</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="nx">signal</span><span class="p">,</span><span class="w"> </span><span class="nx">chunk</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">reader</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">chunk</span><span class="p">));</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="nx">done</span><span class="p">)</span><span class="w"> </span><span class="k">throw</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="ne">Error</span><span class="p">(</span><span class="s1">'Incomplete response. Unfinished tool calls were not executed.'</span><span class="p">);</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">finish</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="s1">'length'</span><span class="p">)</span><span class="w"> </span><span class="k">throw</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="ne">Error</span><span class="p">(</span><span class="s1">'Output limit reached. Reduce the task or increase the output limit.'</span><span class="p">);</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">calls</span><span class="p">.</span><span class="nx">size</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">message</span><span class="p">.</span><span class="nx">tool_calls</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[...</span><span class="nx">calls</span><span class="p">.</span><span class="nx">values</span><span class="p">()];</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kd">const</span><span class="w"> </span><span class="nx">call</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="nx">message</span><span class="p">.</span><span class="nx">tool_calls</span><span class="p">)</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="nx">call</span><span class="p">.</span><span class="nx">id</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="o">!</span><span class="nx">call</span><span class="p">.</span><span class="kd">function</span><span class="p">.</span><span class="nx">name</span><span class="p">)</span><span class="w"> </span><span class="k">throw</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="ne">Error</span><span class="p">(</span><span class="s1">'Incomplete tool call'</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="nx">message</span><span class="p">.</span><span class="nx">content</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="o">!</span><span class="nx">calls</span><span class="p">.</span><span class="nx">size</span><span class="p">)</span><span class="w"> </span><span class="k">throw</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="ne">Error</span><span class="p">(</span><span class="s1">'Empty model response'</span><span class="p">);</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="nx">message</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">SSEReader</span><span class="p">,</span><span class="w"> </span><span class="nx">sshRequest</span><span class="p">,</span><span class="w"> </span><span class="nx">completion</span><span class="w"> </span><span class="p">};</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">spawn()</span></code> receives an argument array so local shell expansion does not interpret the host or code. The remote command still requires shell quoting; <code class="docutils literal notranslate"><span class="pre">quote()</span></code> handles embedded single quotes. Host validation rejects option-shaped values such as <code class="docutils literal notranslate"><span class="pre">-oProxyCommand=...</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">BatchMode=yes</span></code> prevents hidden password waits. <code class="docutils literal notranslate"><span class="pre">StrictHostKeyChecking=yes</span></code> requires a previously trusted server. Specifying a key uses <code class="docutils literal notranslate"><span class="pre">IdentitiesOnly=yes</span></code> so the test matches the intended credential.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">completion()</span></code> function produces an assistant message. If it contains tool calls, those calls are complete enough for the controller to dispatch only after the stream ends. A missing <code class="docutils literal notranslate"><span class="pre">[DONE]</span></code>, malformed JSON, or output-length finish condition prevents unfinished tool execution.</p>
+<p>This parser expects the service behavior exercised by our live tests, including a <code class="docutils literal notranslate"><span class="pre">[DONE]</span></code> sentinel. “OpenAI-compatible” is not a guarantee that every server streams identically. Validate a replacement service before trusting its tools.</p>
+</section>
+<section id="make-the-first-request-without-the-sidebar">
+<h3>6.3 Make the first request without the sidebar<a class="headerlink" href="#make-the-first-request-without-the-sidebar" title="Link to this heading">#</a></h3>
+<p><strong>Create <code class="docutils literal notranslate"><span class="pre">test/smoke.js</span></code>:</strong></p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">sshRequest</span><span class="p">,</span><span class="w"> </span><span class="nx">completion</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">require</span><span class="p">(</span><span class="s1">'../src/transport'</span><span class="p">);</span>
+
+<span class="k">async</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="nx">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">MACSTUDIO_API_KEY</span><span class="p">)</span><span class="w"> </span><span class="k">throw</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="ne">Error</span><span class="p">(</span><span class="s1">'Set MACSTUDIO_API_KEY first'</span><span class="p">);</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">options</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">host</span><span class="o">:</span><span class="w"> </span><span class="s1">'macstudio'</span><span class="p">,</span><span class="w"> </span><span class="nx">identity</span><span class="o">:</span><span class="w"> </span><span class="s1">'~/.ssh/id_ed25519'</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">python</span><span class="o">:</span><span class="w"> </span><span class="s1">'/usr/bin/python3'</span><span class="p">,</span><span class="w"> </span><span class="nx">mode</span><span class="o">:</span><span class="w"> </span><span class="s1">'direct'</span><span class="p">,</span><span class="w"> </span><span class="nx">timeout</span><span class="o">:</span><span class="w"> </span><span class="mf">120</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">direct</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nx">baseUrl</span><span class="o">:</span><span class="w"> </span><span class="s1">'http://127.0.0.1:11436/v1'</span><span class="p">,</span>
+<span class="w">      </span><span class="nx">model</span><span class="o">:</span><span class="w"> </span><span class="s1">'qwen3.8-flash-next-q6'</span><span class="p">,</span>
+<span class="w">      </span><span class="nx">apiKey</span><span class="o">:</span><span class="w"> </span><span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">MACSTUDIO_API_KEY</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">};</span>
+<span class="w">  </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">await</span><span class="w"> </span><span class="nx">sshRequest</span><span class="p">(</span><span class="nx">options</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="nx">mode</span><span class="o">:</span><span class="w"> </span><span class="s1">'direct'</span><span class="p">,</span><span class="w"> </span><span class="nx">operation</span><span class="o">:</span><span class="w"> </span><span class="s1">'probe'</span><span class="p">,</span><span class="w"> </span><span class="nx">timeout</span><span class="o">:</span><span class="w"> </span><span class="mf">20</span><span class="p">}));</span>
+<span class="w">  </span><span class="k">await</span><span class="w"> </span><span class="nx">completion</span><span class="p">(</span><span class="nx">options</span><span class="p">,</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">messages</span><span class="o">:</span><span class="w"> </span><span class="p">[{</span><span class="nx">role</span><span class="o">:</span><span class="w"> </span><span class="s1">'user'</span><span class="p">,</span><span class="w"> </span><span class="nx">content</span><span class="o">:</span><span class="w"> </span><span class="s1">'Explain what an extension host does in one sentence.'</span><span class="p">}],</span>
+<span class="w">    </span><span class="nx">max_tokens</span><span class="o">:</span><span class="w"> </span><span class="mf">256</span>
+<span class="w">  </span><span class="p">},</span><span class="w"> </span><span class="kc">undefined</span><span class="p">,</span><span class="w"> </span><span class="nx">text</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">process</span><span class="p">.</span><span class="nx">stdout</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="nx">text</span><span class="p">));</span>
+<span class="w">  </span><span class="nx">process</span><span class="p">.</span><span class="nx">stdout</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="s1">'\n'</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nx">main</span><span class="p">().</span><span class="k">catch</span><span class="p">(</span><span class="nx">error</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">error</span><span class="p">.</span><span class="nx">message</span><span class="p">);</span><span class="w"> </span><span class="nx">process</span><span class="p">.</span><span class="nx">exitCode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1</span><span class="p">;</span><span class="w"> </span><span class="p">});</span>
+</pre></div>
+</div>
+<p>For terminal-only tests, set the API key in this PowerShell process. The following works in Windows PowerShell by prompting for a secure string and converting it only for the child process environment. The environment value is still plaintext while the test runs; do not print it or save it in a script.</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nv">$courseSecret</span> <span class="p">=</span> <span class="nb">Read-Host</span> <span class="s1">'Local API key'</span> <span class="n">-AsSecureString</span>
+<span class="nv">$env:MACSTUDIO_API_KEY</span> <span class="p">=</span> <span class="no">[System.Net.NetworkCredential]</span><span class="p">::</span><span class="n">new</span><span class="p">(</span><span class="s1">''</span><span class="p">,</span> <span class="nv">$courseSecret</span><span class="p">).</span><span class="n">Password</span>
+<span class="n">node</span> <span class="n">test</span><span class="p">/</span><span class="n">smoke</span><span class="p">.</span><span class="n">js</span>
+<span class="nb">Remove-Item</span> <span class="n">Env</span><span class="p">:</span><span class="n">MACSTUDIO_API_KEY</span>
+<span class="nb">Remove-Variable</span> <span class="n">courseSecret</span>
+</pre></div>
+</div>
+<p><strong>Checkpoint:</strong> You see a model list followed by a streamed explanation. If this fails, fix the transport before debugging the UI. The production extension will use a password input and SecretStorage rather than this environment-variable workflow.</p>
+<div class="important admonition">
+<p class="admonition-title">Lab acceptance evidence</p>
+<p>Run test/smoke.js and capture the advertised model IDs and a streamed reply without recording the API key.</p>
+</div>
+<blockquote>
+<div><p><strong>Image Suggestion (Nanobanana Prompt)</strong>: Create a clean educational illustration for “SSH Bridge and Streaming Responses”, using a neutral VS Code-inspired desktop palette, legible monospace labels, a Windows workstation and a Mac Studio where relevant, and clearly marked “Illustration” text. Emphasize the lab’s actual control or execution boundary. Include no real credentials, personal paths, or fabricated test results. Use even lighting and a flat technical-documentation style rather than decorative effects.</p>
+</div></blockquote>
+<p><strong>Continue:</strong> <a class="reference internal" href="02-first-extension.html"><span class="std std-doc">Previous</span></a> · <a class="reference internal" href="04-project-tools.html"><span class="std std-doc">Next</span></a> · <a class="reference internal" href="index.html"><span class="std std-doc">Workshop guide</span></a></p>
+</section>
+</section>
+<section id="read-more">
+<h2>Read More<a class="headerlink" href="#read-more" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://code.visualstudio.com/api/get-started/your-first-extension">VS Code extension tutorial</a> — Extension activation and debugging.</p></li>
+<li><p><a class="reference external" href="https://code.visualstudio.com/api/extension-guides/webview">Webview API</a> — UI messages, resources, and content security.</p></li>
+<li><p><a class="reference external" href="https://code.visualstudio.com/api/extension-guides/workspace-trust">Workspace Trust</a> — Trust boundaries for extension authors.</p></li>
+<li><p><a class="reference external" href="https://modelcontextprotocol.io/docs/learn/architecture">MCP architecture</a> — Hosts, clients, servers, and capability discovery.</p></li>
+<li><p><a class="reference external" href="https://docs.openclaw.ai/tools/skills">OpenClaw skills</a> — Optional server-side instruction packages.</p></li>
+</ul>
+</section>
+<section id="knowledge-quiz">
+<h2>Knowledge Quiz<a class="headerlink" href="#knowledge-quiz" title="Link to this heading">#</a></h2>
+<p><strong>1. Does Base64 encrypt the bridge?</strong></p>
+<details>
+<summary>Answer</summary>
+<p>No. Base64 encodes program text; SSH provides transport encryption.</p>
+</details>
+<p><strong>2. Why must the parser buffer chunks?</strong></p>
+<details>
+<summary>Answer</summary>
+<p>A transport chunk can contain only part of an SSE event, JSON string, or tool argument.</p>
+</details>
+<p><strong>3. What happens if DONE never arrives?</strong></p>
+<details>
+<summary>Answer</summary>
+<p>The transport rejects the incomplete response rather than executing unfinished tool calls.</p>
+</details>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./docs\workshops\macstudio-agent"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="02-first-extension.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">02 - Your First VS Code Extension</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="04-project-tools.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">04 - Project Tools and the Agent Loop</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#build-the-remote-python-bridge">5. Build the remote Python bridge</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#add-ssh-transport-and-streaming">6. Add SSH transport and streaming</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#understand-streaming-before-parsing-it">6.1 Understand streaming before parsing it</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#create-the-complete-transport">6.2 Create the complete transport</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#make-the-first-request-without-the-sidebar">6.3 Make the first request without the sidebar</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#read-more">Read More</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#knowledge-quiz">Knowledge Quiz</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By AI Workshop Contributors
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2026.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
+<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

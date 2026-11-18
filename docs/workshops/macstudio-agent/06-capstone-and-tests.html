@@ -1,0 +1,962 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>06 - Capstone: Fix, Review, and Verify &#8212; AI Tools Learning Handbook</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=6a604523" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../../../_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
+
+    <script src="../../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../../_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script data-sd-tabs-storage-prefix="sphinx-design-tab-id-" src="../../../_static/design-tabs.js?v=fcb327ea"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'docs/workshops/macstudio-agent/06-capstone-and-tests';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="canonical" href="https://gisyaliny.github.io/AI/docs/workshops/macstudio-agent/06-capstone-and-tests.html" />
+    <link rel="icon" href="../../../_static/fav.ico"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="07 - Packaging and Model Selection" href="07-package-and-models.html" />
+    <link rel="prev" title="05 - Controller and Sidebar Interface" href="05-controller-and-interface.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../../../_static/searchtools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    <script src="../../../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="AI Tools Learning Handbook - Home"/>
+    <img src="../../../_static/logo.png" class="logo__image only-dark pst-js-only" alt="AI Tools Learning Handbook - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Vibe Coding</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../vibe-coding/01-environment-and-basics.html">1. Environment Setup &amp; Basic Interaction (Environment Setup &amp; Basic Interaction)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../vibe-coding/02-complex-tasks-and-terminal.html">2. Complex Tasks &amp; Terminal Control</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../vibe-coding/03-multimodal-and-context.html">3. Multimodal &amp; Context Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../vibe-coding/04-advanced-features.html">4. Advanced Features &amp; Customization</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Research</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../research/01-ai-prompts-for-research.html">5. AI Prompts &amp; Skills for Academic Research</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Local LLM</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../local-llm/01-deploy-local-llm.html">6. Deploy Open-Source LLMs Locally with Ollama &amp; AnythingLLM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../local-llm/02-mastering-ollama.html">7. — Mastering Ollama: Local Models, APIs, RAG, Tools, and Production Patterns</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">RAG</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../rag/01-what-is-rag.html">8. What is RAG? (Retrieval-Augmented Generation)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rag/02-implementing-rag.html">9. Implementing RAG with Python</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rag/03-graph-rag.html">10. Graph RAG: Knowledge Graphs Meet Retrieval</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Workshops</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">00 - Build a Mac Studio Coding Agent for VS Code</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="01-architecture-and-connection.html">01 - Architecture and Connection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="02-first-extension.html">02 - Your First VS Code Extension</a></li>
+<li class="toctree-l2"><a class="reference internal" href="03-ssh-and-streaming.html">03 - SSH Bridge and Streaming Responses</a></li>
+<li class="toctree-l2"><a class="reference internal" href="04-project-tools.html">04 - Project Tools and the Agent Loop</a></li>
+<li class="toctree-l2"><a class="reference internal" href="05-controller-and-interface.html">05 - Controller and Sidebar Interface</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">06 - Capstone: Fix, Review, and Verify</a></li>
+<li class="toctree-l2"><a class="reference internal" href="07-package-and-models.html">07 - Packaging and Model Selection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="08-mcp-skills-and-next-steps.html">08 - MCP, Skills, and Next Steps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="validation.html">09 - Validation and Reproducibility</a></li>
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/gisyaliny/AI" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/gisyaliny/AI/edit/main/docs/workshops/macstudio-agent/06-capstone-and-tests.md" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/gisyaliny/AI/issues/new?title=Issue%20on%20page%20%2Fdocs/workshops/macstudio-agent/06-capstone-and-tests.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../../_sources/docs/workshops/macstudio-agent/06-capstone-and-tests.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>06 - Capstone: Fix, Review, and Verify</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#complete-a-coding-task-from-request-to-verified-change">11. Complete a coding task from request to verified change</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#failure-drill-prevent-a-stale-overwrite">Failure drill: prevent a stale overwrite</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#failure-drill-inspect-command-rejection">Failure drill: inspect command rejection</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#attach-only-relevant-context">Attach only relevant context</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#test-each-boundary">12. Test each boundary</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#test-the-python-bridge-without-a-model">12.1 Test the Python bridge without a model</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#test-actual-tool-calling-and-continuation">12.2 Test actual tool calling and continuation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#test-the-actual-vs-code-host">12.3 Test the actual VS Code host</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#keep-the-limits-visible">12.4 Keep the limits visible</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#read-more">Read More</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#knowledge-quiz">Knowledge Quiz</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="capstone-fix-review-and-verify">
+<span id="macstudio-lab-06"></span><h1>06 - Capstone: Fix, Review, and Verify<a class="headerlink" href="#capstone-fix-review-and-verify" title="Link to this heading">#</a></h1>
+<p><strong>Format:</strong> hands-on lab · <strong>Suggested time:</strong> 60 minutes · <strong>Original course lessons:</strong> 11–12.</p>
+<div class="tip admonition">
+<p class="admonition-title">Learning objectives</p>
+<p>Fix a deliberately broken function and verify the full edit workflow; run offline, live, and host tests.</p>
+</div>
+<p><strong>Start here:</strong> <a class="reference internal" href="index.html"><span class="std std-doc">Workshop guide</span></a>. Download the reference bundle there before the lab. Each file block is complete unless marked Illustration. In this workshop, “Lesson” refers to the original numbered sections retained below.</p>
+<section id="complete-a-coding-task-from-request-to-verified-change">
+<h2>11. Complete a coding task from request to verified change<a class="headerlink" href="#complete-a-coding-task-from-request-to-verified-change" title="Link to this heading">#</a></h2>
+<p>Use a toy project first. Keep it outside the extension source tree so you can distinguish the code that implements the assistant from the code it edits.</p>
+<p><strong>Run on Windows in a separate PowerShell terminal:</strong></p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">New-Item</span> <span class="n">-ItemType</span> <span class="n">Directory</span> <span class="n">-Path</span> <span class="s2">"$env:USERPROFILE\Documents\agent-playground"</span>
+<span class="nb">Set-Location</span> <span class="s2">"$env:USERPROFILE\Documents\agent-playground"</span>
+<span class="sh">@'</span>
+<span class="sh">function add(a, b) {</span>
+<span class="sh">  return a - b;</span>
+<span class="sh">}</span>
+<span class="sh">module.exports = { add };</span>
+<span class="sh">'@</span> <span class="p">|</span> <span class="nb">Set-Content</span> <span class="n">-Encoding</span> <span class="n">utf8</span> <span class="n">math</span><span class="p">.</span><span class="n">js</span>
+<span class="sh">@'</span>
+<span class="sh">const assert = require('node:assert/strict');</span>
+<span class="sh">const { add } = require('./math');</span>
+<span class="sh">assert.equal(add(2, 3), 5);</span>
+<span class="sh">console.log('PASS');</span>
+<span class="sh">'@</span> <span class="p">|</span> <span class="nb">Set-Content</span> <span class="n">-Encoding</span> <span class="n">utf8</span> <span class="n">math</span><span class="p">.</span><span class="n">test</span><span class="p">.</span><span class="n">js</span>
+<span class="n">node</span> <span class="n">math</span><span class="p">.</span><span class="n">test</span><span class="p">.</span><span class="n">js</span>
+</pre></div>
+</div>
+<p>The assertion should fail. That is intentional. Open this folder in the Development Host and send:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Read math.js and math.test.js. Explain why the test fails.
+Do not change files or run commands yet.
+</pre></div>
+</div>
+<p>Expect read-tool activity and an explanation that subtraction does not implement addition. Then send:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Propose the smallest change to fix add(). Read the file first.
+Do not use terminal commands to edit it. Leave the change for my review.
+</pre></div>
+</div>
+<p>Expect a pending change card. Open <strong>View diff</strong>. The before side should use <code class="docutils literal notranslate"><span class="pre">a</span> <span class="pre">-</span> <span class="pre">b</span></code>; the after side should use <code class="docutils literal notranslate"><span class="pre">a</span> <span class="pre">+</span> <span class="pre">b</span></code>. Confirm the file has not changed yet. Click <strong>Apply and save</strong>, then send:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Run node math.test.js to verify the applied change.
+</pre></div>
+</div>
+<p>Check the approval dialog: the directory should be your disposable project and the command should be the requested test. Approve once. Expect <code class="docutils literal notranslate"><span class="pre">PASS</span></code> and exit code 0.</p>
+<section id="failure-drill-prevent-a-stale-overwrite">
+<h3>Failure drill: prevent a stale overwrite<a class="headerlink" href="#failure-drill-prevent-a-stale-overwrite" title="Link to this heading">#</a></h3>
+<p>Ask for another small proposal, then manually edit the target file before applying it. The extension should refuse to overwrite your new content. Reject the stale proposal and ask the model to reread the file. Never resolve the failure by deleting the comparison check.</p>
+</section>
+<section id="failure-drill-inspect-command-rejection">
+<h3>Failure drill: inspect command rejection<a class="headerlink" href="#failure-drill-inspect-command-rejection" title="Link to this heading">#</a></h3>
+<p>Ask the model to run <code class="docutils literal notranslate"><span class="pre">node</span> <span class="pre">--version</span></code>, then cancel the approval dialog. The model should receive a denied result, not an invented version string. A refusal should leave the command unexecuted.</p>
+</section>
+<section id="attach-only-relevant-context">
+<h3>Attach only relevant context<a class="headerlink" href="#attach-only-relevant-context" title="Link to this heading">#</a></h3>
+<p>Open a text file, select a function, and choose <strong>File / selection</strong>. Send a question about that selection. The attachment is consumed with the next message. File contents and tool output are lower-trust data; instructions hidden in a source file should not override the user’s request.</p>
+<p><strong>Checkpoint:</strong> A real file changed only after review, and an actual test—not the model’s confidence—verified the result.</p>
+</section>
+</section>
+<section id="test-each-boundary">
+<h2>12. Test each boundary<a class="headerlink" href="#test-each-boundary" title="Link to this heading">#</a></h2>
+<p>Use three levels: offline logic tests, live model-protocol tests, and a real VS Code extension-host test. A passing HTTP request does not prove the tool loop works. A passing tool loop does not prove the Webview loaded. A successful proposed edit does not prove stale edits are rejected.</p>
+<section id="test-the-python-bridge-without-a-model">
+<h3>12.1 Test the Python bridge without a model<a class="headerlink" href="#test-the-python-bridge-without-a-model" title="Link to this heading">#</a></h3>
+<p><strong>Create <code class="docutils literal notranslate"><span class="pre">test/bridge_test.py</span></code>:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">"""Offline regression: direct mode works without OpenClaw and rejects nonlocal URLs."""</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">http.server</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseHTTPRequestHandler</span><span class="p">,</span> <span class="n">HTTPServer</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">threading</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">unittest</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">BridgeTest</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">test_direct_transport</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">class</span><span class="w"> </span><span class="nc">Handler</span><span class="p">(</span><span class="n">BaseHTTPRequestHandler</span><span class="p">):</span>
+            <span class="k">def</span><span class="w"> </span><span class="nf">do_GET</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'Authorization'</span><span class="p">)</span> <span class="o">!=</span> <span class="s1">'Bearer fixture-key'</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">send_response</span><span class="p">(</span><span class="mi">401</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">end_headers</span><span class="p">()</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">wfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">b</span><span class="s1">'Invalid fixture-key'</span><span class="p">)</span>
+                    <span class="k">return</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">send_response</span><span class="p">(</span><span class="mi">200</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">end_headers</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">wfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">b</span><span class="s1">'{"data":[{"id":"fixture-model"}]}'</span><span class="p">)</span>
+
+            <span class="k">def</span><span class="w"> </span><span class="nf">log_message</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+                <span class="k">pass</span>
+
+        <span class="n">server</span> <span class="o">=</span> <span class="n">HTTPServer</span><span class="p">((</span><span class="s1">'127.0.0.1'</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">Handler</span><span class="p">)</span>
+        <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">server</span><span class="o">.</span><span class="n">serve_forever</span><span class="p">,</span> <span class="n">daemon</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">addCleanup</span><span class="p">(</span><span class="n">server</span><span class="o">.</span><span class="n">server_close</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">addCleanup</span><span class="p">(</span><span class="n">server</span><span class="o">.</span><span class="n">shutdown</span><span class="p">)</span>
+        <span class="n">request</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'mode'</span><span class="p">:</span> <span class="s1">'direct'</span><span class="p">,</span> <span class="s1">'operation'</span><span class="p">:</span> <span class="s1">'probe'</span><span class="p">,</span> <span class="s1">'config'</span><span class="p">:</span> <span class="s1">'does-not-exist.json'</span><span class="p">,</span>
+                   <span class="s1">'direct'</span><span class="p">:</span> <span class="p">{</span><span class="s1">'baseUrl'</span><span class="p">:</span> <span class="sa">f</span><span class="s1">'http://127.0.0.1:</span><span class="si">{</span><span class="n">server</span><span class="o">.</span><span class="n">server_port</span><span class="si">}</span><span class="s1">/v1'</span><span class="p">,</span>
+                              <span class="s1">'model'</span><span class="p">:</span> <span class="s1">'fixture-model'</span><span class="p">,</span> <span class="s1">'apiKey'</span><span class="p">:</span> <span class="s1">'fixture-key'</span><span class="p">}}</span>
+
+        <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">():</span>
+            <span class="k">return</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="n">sys</span><span class="o">.</span><span class="n">executable</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">parents</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="s1">'src/bridge.py'</span><span class="p">)],</span>
+                                  <span class="nb">input</span><span class="o">=</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">request</span><span class="p">),</span> <span class="n">text</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+
+        <span class="n">result</span> <span class="o">=</span> <span class="n">run</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">returncode</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">result</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">stdout</span><span class="p">)[</span><span class="s1">'models'</span><span class="p">],</span> <span class="p">[</span><span class="s1">'fixture-model'</span><span class="p">])</span>
+        <span class="k">for</span> <span class="n">url</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">'http://example.com/v1'</span><span class="p">,</span> <span class="s1">'file:///etc/passwd'</span><span class="p">,</span> <span class="s1">'http://user:pass@127.0.0.1/v1'</span><span class="p">]:</span>
+            <span class="n">request</span><span class="p">[</span><span class="s1">'direct'</span><span class="p">][</span><span class="s1">'baseUrl'</span><span class="p">]</span> <span class="o">=</span> <span class="n">url</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">run</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertNotEqual</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">returncode</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertIn</span><span class="p">(</span><span class="s1">'loopback'</span><span class="p">,</span> <span class="n">result</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">'__main__'</span><span class="p">:</span>
+    <span class="n">unittest</span><span class="o">.</span><span class="n">main</span><span class="p">()</span>
+</pre></div>
+</div>
+<p><strong>Run:</strong> <code class="docutils literal notranslate"><span class="pre">npm.cmd</span> <span class="pre">run</span> <span class="pre">test:bridge</span></code>.</p>
+<p>The fixture server runs on local loopback. The test proves direct mode works without an OpenClaw configuration and rejects the tested non-loopback or credential-bearing URLs. It does not test all HTTP failures, redirects, or real credentials. If your execution environment forbids loopback sockets, run this test in a normal local terminal.</p>
+</section>
+<section id="test-actual-tool-calling-and-continuation">
+<h3>12.2 Test actual tool calling and continuation<a class="headerlink" href="#test-actual-tool-calling-and-continuation" title="Link to this heading">#</a></h3>
+<p><strong>Create <code class="docutils literal notranslate"><span class="pre">test/live.js</span></code>:</strong></p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">// Explicit live test: calls the user's Mac; uses fixture text only, never sends messages.</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">assert</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">require</span><span class="p">(</span><span class="s1">'node:assert/strict'</span><span class="p">);</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">fs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">require</span><span class="p">(</span><span class="s1">'node:fs/promises'</span><span class="p">);</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">require</span><span class="p">(</span><span class="s1">'node:path'</span><span class="p">);</span>
+<span class="kd">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">completion</span><span class="p">,</span><span class="w"> </span><span class="nx">sshRequest</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">require</span><span class="p">(</span><span class="s1">'../src/transport'</span><span class="p">);</span>
+<span class="k">async</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="nx">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">results</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[];</span>
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kd">const</span><span class="w"> </span><span class="nx">mode</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="p">(</span><span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">MACSTUDIO_TEST_MODES</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="s1">'direct'</span><span class="p">).</span><span class="nx">split</span><span class="p">(</span><span class="s1">','</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">options</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">host</span><span class="o">:</span><span class="w"> </span><span class="s1">'macstudio'</span><span class="p">,</span><span class="w"> </span><span class="nx">identity</span><span class="o">:</span><span class="w"> </span><span class="s1">'~/.ssh/id_ed25519'</span><span class="p">,</span><span class="w"> </span><span class="nx">mode</span><span class="p">,</span><span class="w"> </span><span class="nx">timeout</span><span class="o">:</span><span class="w"> </span><span class="mf">300</span><span class="w"> </span><span class="p">};</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">mode</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="s1">'direct'</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nx">assert</span><span class="p">.</span><span class="nx">ok</span><span class="p">(</span><span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">MACSTUDIO_API_KEY</span><span class="p">,</span><span class="w"> </span><span class="s1">'Set MACSTUDIO_API_KEY for the live test'</span><span class="p">);</span>
+<span class="w">      </span><span class="nx">options</span><span class="p">.</span><span class="nx">direct</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">baseUrl</span><span class="o">:</span><span class="w"> </span><span class="s1">'http://127.0.0.1:11436/v1'</span><span class="p">,</span><span class="w"> </span><span class="nx">model</span><span class="o">:</span><span class="w"> </span><span class="s1">'qwen3.8-flash-next-q6'</span><span class="p">,</span><span class="w"> </span><span class="nx">apiKey</span><span class="o">:</span><span class="w"> </span><span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">MACSTUDIO_API_KEY</span><span class="w"> </span><span class="p">};</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">probe</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="k">await</span><span class="w"> </span><span class="nx">sshRequest</span><span class="p">(</span><span class="nx">options</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">mode</span><span class="p">,</span><span class="w"> </span><span class="nx">operation</span><span class="o">:</span><span class="w"> </span><span class="s1">'probe'</span><span class="p">,</span><span class="w"> </span><span class="nx">timeout</span><span class="o">:</span><span class="w"> </span><span class="mf">30</span><span class="w"> </span><span class="p">}));</span>
+<span class="w">    </span><span class="nx">assert</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span><span class="nx">probe</span><span class="p">.</span><span class="nx">ok</span><span class="p">,</span><span class="w"> </span><span class="kc">true</span><span class="p">);</span>
+<span class="w">    </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">mode</span><span class="p">,</span><span class="w"> </span><span class="s1">'probe passed'</span><span class="p">);</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">tools</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[{</span><span class="w"> </span><span class="nx">type</span><span class="o">:</span><span class="w"> </span><span class="s1">'function'</span><span class="p">,</span><span class="w"> </span><span class="kd">function</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">name</span><span class="o">:</span><span class="w"> </span><span class="s1">'local_read_file'</span><span class="p">,</span><span class="w"> </span><span class="nx">description</span><span class="o">:</span><span class="w"> </span><span class="s1">'Read a test fixture on the CLIENT PC. The remote host cannot read this file.'</span><span class="p">,</span><span class="w"> </span><span class="nx">parameters</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">type</span><span class="o">:</span><span class="w"> </span><span class="s1">'object'</span><span class="p">,</span><span class="w"> </span><span class="nx">properties</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">path</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">type</span><span class="o">:</span><span class="w"> </span><span class="s1">'string'</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="nx">required</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="s1">'path'</span><span class="p">],</span><span class="w"> </span><span class="nx">additionalProperties</span><span class="o">:</span><span class="w"> </span><span class="kc">false</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">}];</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">session</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'vscode-test:'</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nb">Date</span><span class="p">.</span><span class="nx">now</span><span class="p">();</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">messages</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[{</span><span class="w"> </span><span class="nx">role</span><span class="o">:</span><span class="w"> </span><span class="s1">'system'</span><span class="p">,</span><span class="w"> </span><span class="nx">content</span><span class="o">:</span><span class="w"> </span><span class="s1">'Integration test. Use only the supplied client local_read_file function. Do not send messages, access server files, execute commands, or modify anything.'</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">role</span><span class="o">:</span><span class="w"> </span><span class="s1">'user'</span><span class="p">,</span><span class="w"> </span><span class="nx">content</span><span class="o">:</span><span class="w"> </span><span class="s1">'Call local_read_file with path fixture.txt. After its result, reply only with the code contained in the fixture.'</span><span class="w"> </span><span class="p">}];</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">started</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">Date</span><span class="p">.</span><span class="nx">now</span><span class="p">();</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">first</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">completion</span><span class="p">(</span><span class="nx">options</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">messages</span><span class="p">,</span><span class="w"> </span><span class="nx">tools</span><span class="p">,</span><span class="w"> </span><span class="nx">tool_choice</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">type</span><span class="o">:</span><span class="w"> </span><span class="s1">'function'</span><span class="p">,</span><span class="w"> </span><span class="kd">function</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">name</span><span class="o">:</span><span class="w"> </span><span class="s1">'local_read_file'</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="nx">max_tokens</span><span class="o">:</span><span class="w"> </span><span class="mf">1024</span><span class="p">,</span><span class="w"> </span><span class="nx">user</span><span class="o">:</span><span class="w"> </span><span class="nx">session</span><span class="w"> </span><span class="p">});</span>
+<span class="w">    </span><span class="nx">assert</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span><span class="nx">first</span><span class="p">.</span><span class="nx">tool_calls</span><span class="o">?</span><span class="p">.[</span><span class="mf">0</span><span class="p">]</span><span class="o">?</span><span class="p">.</span><span class="kd">function</span><span class="p">.</span><span class="nx">name</span><span class="p">,</span><span class="w"> </span><span class="s1">'local_read_file'</span><span class="p">);</span>
+<span class="w">    </span><span class="nx">assert</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span><span class="nb">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">first</span><span class="p">.</span><span class="nx">tool_calls</span><span class="p">[</span><span class="mf">0</span><span class="p">].</span><span class="kd">function</span><span class="p">.</span><span class="nb">arguments</span><span class="p">).</span><span class="nx">path</span><span class="p">,</span><span class="w"> </span><span class="s1">'fixture.txt'</span><span class="p">);</span>
+<span class="w">    </span><span class="nx">messages</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">first</span><span class="p">);</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kd">const</span><span class="w"> </span><span class="nx">call</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="nx">first</span><span class="p">.</span><span class="nx">tool_calls</span><span class="p">)</span><span class="w"> </span><span class="nx">messages</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span><span class="w"> </span><span class="nx">role</span><span class="o">:</span><span class="w"> </span><span class="s1">'tool'</span><span class="p">,</span><span class="w"> </span><span class="nx">tool_call_id</span><span class="o">:</span><span class="w"> </span><span class="nx">call</span><span class="p">.</span><span class="nx">id</span><span class="p">,</span><span class="w"> </span><span class="nx">content</span><span class="o">:</span><span class="w"> </span><span class="s1">'Fixture code: WINDOWS_MAC_BRIDGE_OK'</span><span class="w"> </span><span class="p">});</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">last</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">completion</span><span class="p">(</span><span class="nx">options</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">messages</span><span class="p">,</span><span class="w"> </span><span class="nx">tools</span><span class="p">,</span><span class="w"> </span><span class="nx">tool_choice</span><span class="o">:</span><span class="w"> </span><span class="s1">'none'</span><span class="p">,</span><span class="w"> </span><span class="nx">max_tokens</span><span class="o">:</span><span class="w"> </span><span class="mf">1024</span><span class="p">,</span><span class="w"> </span><span class="nx">user</span><span class="o">:</span><span class="w"> </span><span class="nx">session</span><span class="w"> </span><span class="p">});</span>
+<span class="w">    </span><span class="nx">assert</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="nx">last</span><span class="p">.</span><span class="nx">content</span><span class="p">,</span><span class="w"> </span><span class="sr">/WINDOWS_MAC_BRIDGE_OK/</span><span class="p">);</span>
+<span class="w">    </span><span class="nx">results</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span><span class="w"> </span><span class="nx">mode</span><span class="p">,</span><span class="w"> </span><span class="nx">success</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="nx">seconds</span><span class="o">:</span><span class="w"> </span><span class="p">(</span><span class="nb">Date</span><span class="p">.</span><span class="nx">now</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nx">started</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">1000</span><span class="p">,</span><span class="w"> </span><span class="nx">answer</span><span class="o">:</span><span class="w"> </span><span class="nx">last</span><span class="p">.</span><span class="nx">content</span><span class="w"> </span><span class="p">});</span>
+<span class="w">    </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">mode</span><span class="p">,</span><span class="w"> </span><span class="s1">'tool call + tool-result continuation passed'</span><span class="p">,</span><span class="w"> </span><span class="nx">last</span><span class="p">.</span><span class="nx">content</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="k">await</span><span class="w"> </span><span class="nx">fs</span><span class="p">.</span><span class="nx">mkdir</span><span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">__dirname</span><span class="p">,</span><span class="w"> </span><span class="s1">'../test-results'</span><span class="p">),</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">recursive</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="w"> </span><span class="p">});</span>
+<span class="w">  </span><span class="k">await</span><span class="w"> </span><span class="nx">fs</span><span class="p">.</span><span class="nx">writeFile</span><span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">__dirname</span><span class="p">,</span><span class="w"> </span><span class="s1">'../test-results/live.json'</span><span class="p">),</span><span class="w"> </span><span class="nb">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">results</span><span class="p">,</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w"> </span><span class="mf">2</span><span class="p">));</span>
+<span class="p">}</span>
+<span class="nx">main</span><span class="p">().</span><span class="k">catch</span><span class="p">(</span><span class="nx">error</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">error</span><span class="p">.</span><span class="nx">message</span><span class="p">);</span><span class="w"> </span><span class="nx">process</span><span class="p">.</span><span class="nx">exitCode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1</span><span class="p">;</span><span class="w"> </span><span class="p">});</span>
+</pre></div>
+</div>
+<p>Set <code class="docutils literal notranslate"><span class="pre">MACSTUDIO_API_KEY</span></code> with the secure-prompt pattern from Lesson 6, then run:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="n">npm</span><span class="p">.</span><span class="n">cmd</span> <span class="n">run</span> <span class="n">test</span><span class="p">:</span><span class="n">live</span>
+</pre></div>
+</div>
+<p>This test forces a fixture read call, supplies a synthetic tool result, and verifies that the next answer includes the returned fixture code. It tests protocol handling, not actual filesystem access. The default mode is direct; legacy modes are opt-in through <code class="docutils literal notranslate"><span class="pre">MACSTUDIO_TEST_MODES</span></code>.</p>
+<p>Expected output includes:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>direct probe passed
+direct tool call + tool-result continuation passed WINDOWS_MAC_BRIDGE_OK
+</pre></div>
+</div>
+<p>If a different model ignores forced tool selection, emits malformed arguments, or fails continuation, do not call that deployment agent-ready merely because plain chat works. Inspect its serving template and supported parameters.</p>
+</section>
+<section id="test-the-actual-vs-code-host">
+<h3>12.3 Test the actual VS Code host<a class="headerlink" href="#test-the-actual-vs-code-host" title="Link to this heading">#</a></h3>
+<p><strong>Create <code class="docutils literal notranslate"><span class="pre">test/host.js</span></code>:</strong></p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">const</span><span class="w"> </span><span class="nx">vscode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">require</span><span class="p">(</span><span class="s1">'vscode'</span><span class="p">);</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">assert</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">require</span><span class="p">(</span><span class="s1">'node:assert/strict'</span><span class="p">);</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">fs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">require</span><span class="p">(</span><span class="s1">'node:fs/promises'</span><span class="p">);</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">require</span><span class="p">(</span><span class="s1">'node:path'</span><span class="p">);</span>
+<span class="nx">exports</span><span class="p">.</span><span class="nx">run</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">async</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">extension</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">vscode</span><span class="p">.</span><span class="nx">extensions</span><span class="p">.</span><span class="nx">getExtension</span><span class="p">(</span><span class="s1">'yyang-local.macstudio-assistant'</span><span class="p">);</span>
+<span class="w">  </span><span class="nx">assert</span><span class="p">.</span><span class="nx">ok</span><span class="p">(</span><span class="nx">extension</span><span class="p">);</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">assistant</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">extension</span><span class="p">.</span><span class="nx">activate</span><span class="p">();</span>
+<span class="w">  </span><span class="nx">assert</span><span class="p">.</span><span class="nx">ok</span><span class="p">(</span><span class="nx">assistant</span><span class="p">);</span>
+<span class="w">  </span><span class="nx">assert</span><span class="p">.</span><span class="nx">ok</span><span class="p">(</span><span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">MACSTUDIO_API_KEY</span><span class="p">,</span><span class="w"> </span><span class="s1">'Set MACSTUDIO_API_KEY for direct API host test'</span><span class="p">);</span>
+<span class="w">  </span><span class="k">await</span><span class="w"> </span><span class="nx">assistant</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">secrets</span><span class="p">.</span><span class="nx">store</span><span class="p">(</span><span class="s1">'macstudio.apiKey'</span><span class="p">,</span><span class="w"> </span><span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">MACSTUDIO_API_KEY</span><span class="p">);</span>
+<span class="w">  </span><span class="k">await</span><span class="w"> </span><span class="nx">vscode</span><span class="p">.</span><span class="nx">workspace</span><span class="p">.</span><span class="nx">getConfiguration</span><span class="p">(</span><span class="s1">'macstudio'</span><span class="p">).</span><span class="nx">update</span><span class="p">(</span><span class="s1">'mode'</span><span class="p">,</span><span class="w"> </span><span class="s1">'direct'</span><span class="p">,</span><span class="w"> </span><span class="nx">vscode</span><span class="p">.</span><span class="nx">ConfigurationTarget</span><span class="p">.</span><span class="nx">Global</span><span class="p">);</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">connection</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">assistant</span><span class="p">.</span><span class="nx">connect</span><span class="p">();</span>
+<span class="w">  </span><span class="nx">assert</span><span class="p">.</span><span class="nx">ok</span><span class="p">(</span><span class="nx">connection</span><span class="p">.</span><span class="nx">models</span><span class="p">.</span><span class="nx">includes</span><span class="p">(</span><span class="s1">'qwen3.8-flash-next-q6'</span><span class="p">));</span>
+<span class="w">  </span><span class="k">await</span><span class="w"> </span><span class="nx">vscode</span><span class="p">.</span><span class="nx">commands</span><span class="p">.</span><span class="nx">executeCommand</span><span class="p">(</span><span class="s1">'macstudio.open'</span><span class="p">);</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">root</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">vscode</span><span class="p">.</span><span class="nx">workspace</span><span class="p">.</span><span class="nx">workspaceFolders</span><span class="p">[</span><span class="mf">0</span><span class="p">].</span><span class="nx">uri</span><span class="p">.</span><span class="nx">fsPath</span><span class="p">;</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">read</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">assistant</span><span class="p">.</span><span class="nx">executeTool</span><span class="p">(</span><span class="s1">'local_read_file'</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">path</span><span class="o">:</span><span class="w"> </span><span class="s1">'fixture.txt'</span><span class="w"> </span><span class="p">});</span>
+<span class="w">  </span><span class="nx">assert</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="nx">read</span><span class="p">.</span><span class="nx">content</span><span class="p">,</span><span class="w"> </span><span class="sr">/original/</span><span class="p">);</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">proposed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">assistant</span><span class="p">.</span><span class="nx">executeTool</span><span class="p">(</span><span class="s1">'local_propose_edit'</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">path</span><span class="o">:</span><span class="w"> </span><span class="s1">'fixture.txt'</span><span class="p">,</span><span class="w"> </span><span class="nx">old_text</span><span class="o">:</span><span class="w"> </span><span class="s1">'original'</span><span class="p">,</span><span class="w"> </span><span class="nx">new_text</span><span class="o">:</span><span class="w"> </span><span class="s1">'reviewed'</span><span class="p">,</span><span class="w"> </span><span class="nx">summary</span><span class="o">:</span><span class="w"> </span><span class="s1">'Fixture change'</span><span class="w"> </span><span class="p">});</span>
+<span class="w">  </span><span class="nx">assert</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="k">await</span><span class="w"> </span><span class="nx">fs</span><span class="p">.</span><span class="nx">readFile</span><span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">root</span><span class="p">,</span><span class="w"> </span><span class="s1">'fixture.txt'</span><span class="p">),</span><span class="w"> </span><span class="s1">'utf8'</span><span class="p">),</span><span class="w"> </span><span class="sr">/original/</span><span class="p">);</span>
+<span class="w">  </span><span class="k">await</span><span class="w"> </span><span class="nx">assistant</span><span class="p">.</span><span class="nx">preview</span><span class="p">(</span><span class="nx">proposed</span><span class="p">.</span><span class="nx">id</span><span class="p">);</span>
+<span class="w">  </span><span class="k">await</span><span class="w"> </span><span class="nx">assistant</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="nx">proposed</span><span class="p">.</span><span class="nx">id</span><span class="p">);</span>
+<span class="w">  </span><span class="nx">assert</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="k">await</span><span class="w"> </span><span class="nx">fs</span><span class="p">.</span><span class="nx">readFile</span><span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">root</span><span class="p">,</span><span class="w"> </span><span class="s1">'fixture.txt'</span><span class="p">),</span><span class="w"> </span><span class="s1">'utf8'</span><span class="p">),</span><span class="w"> </span><span class="sr">/reviewed/</span><span class="p">);</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">stale</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">assistant</span><span class="p">.</span><span class="nx">executeTool</span><span class="p">(</span><span class="s1">'local_propose_edit'</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">path</span><span class="o">:</span><span class="w"> </span><span class="s1">'fixture.txt'</span><span class="p">,</span><span class="w"> </span><span class="nx">old_text</span><span class="o">:</span><span class="w"> </span><span class="s1">'reviewed'</span><span class="p">,</span><span class="w"> </span><span class="nx">new_text</span><span class="o">:</span><span class="w"> </span><span class="s1">'should-not-apply'</span><span class="p">,</span><span class="w"> </span><span class="nx">summary</span><span class="o">:</span><span class="w"> </span><span class="s1">'Stale fixture'</span><span class="w"> </span><span class="p">});</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nb">document</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">vscode</span><span class="p">.</span><span class="nx">workspace</span><span class="p">.</span><span class="nx">openTextDocument</span><span class="p">(</span><span class="nx">vscode</span><span class="p">.</span><span class="nx">Uri</span><span class="p">.</span><span class="nx">file</span><span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">root</span><span class="p">,</span><span class="w"> </span><span class="s1">'fixture.txt'</span><span class="p">)));</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">edit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">vscode</span><span class="p">.</span><span class="nx">WorkspaceEdit</span><span class="p">();</span><span class="w"> </span><span class="nx">edit</span><span class="p">.</span><span class="nx">insert</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">uri</span><span class="p">,</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">vscode</span><span class="p">.</span><span class="nx">Position</span><span class="p">(</span><span class="mf">0</span><span class="p">,</span><span class="w"> </span><span class="mf">0</span><span class="p">),</span><span class="w"> </span><span class="s1">'user edit\n'</span><span class="p">);</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">vscode</span><span class="p">.</span><span class="nx">workspace</span><span class="p">.</span><span class="nx">applyEdit</span><span class="p">(</span><span class="nx">edit</span><span class="p">);</span>
+<span class="w">  </span><span class="k">await</span><span class="w"> </span><span class="nx">assert</span><span class="p">.</span><span class="nx">rejects</span><span class="p">(</span><span class="nx">assistant</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="nx">stale</span><span class="p">.</span><span class="nx">id</span><span class="p">),</span><span class="w"> </span><span class="sr">/changed/</span><span class="p">);</span>
+<span class="w">  </span><span class="nx">assert</span><span class="p">.</span><span class="nx">ok</span><span class="p">(</span><span class="o">!</span><span class="nb">document</span><span class="p">.</span><span class="nx">getText</span><span class="p">().</span><span class="nx">includes</span><span class="p">(</span><span class="s1">'should-not-apply'</span><span class="p">));</span>
+<span class="w">  </span><span class="k">await</span><span class="w"> </span><span class="nb">document</span><span class="p">.</span><span class="nx">save</span><span class="p">();</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">created</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">assistant</span><span class="p">.</span><span class="nx">executeTool</span><span class="p">(</span><span class="s1">'local_propose_edit'</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">path</span><span class="o">:</span><span class="w"> </span><span class="s1">'new-fixture.txt'</span><span class="p">,</span><span class="w"> </span><span class="nx">old_text</span><span class="o">:</span><span class="w"> </span><span class="s1">''</span><span class="p">,</span><span class="w"> </span><span class="nx">new_text</span><span class="o">:</span><span class="w"> </span><span class="s1">'created only after review'</span><span class="p">,</span><span class="w"> </span><span class="nx">summary</span><span class="o">:</span><span class="w"> </span><span class="s1">'Create fixture'</span><span class="w"> </span><span class="p">});</span>
+<span class="w">  </span><span class="k">await</span><span class="w"> </span><span class="nx">assistant</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="nx">created</span><span class="p">.</span><span class="nx">id</span><span class="p">);</span>
+<span class="w">  </span><span class="nx">assert</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span><span class="k">await</span><span class="w"> </span><span class="nx">fs</span><span class="p">.</span><span class="nx">readFile</span><span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">root</span><span class="p">,</span><span class="w"> </span><span class="s1">'new-fixture.txt'</span><span class="p">),</span><span class="w"> </span><span class="s1">'utf8'</span><span class="p">),</span><span class="w"> </span><span class="s1">'created only after review'</span><span class="p">);</span>
+<span class="w">  </span><span class="k">await</span><span class="w"> </span><span class="nx">assert</span><span class="p">.</span><span class="nx">rejects</span><span class="p">(</span><span class="nx">assistant</span><span class="p">.</span><span class="nx">executeTool</span><span class="p">(</span><span class="s1">'local_read_file'</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">path</span><span class="o">:</span><span class="w"> </span><span class="s1">'../escape.txt'</span><span class="w"> </span><span class="p">}));</span>
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kd">let</span><span class="w"> </span><span class="nx">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0</span><span class="p">;</span><span class="w"> </span><span class="nx">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mf">50</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="o">!</span><span class="nx">assistant</span><span class="p">.</span><span class="nx">webviewReady</span><span class="p">;</span><span class="w"> </span><span class="nx">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nb">Promise</span><span class="p">(</span><span class="nx">resolve</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">setTimeout</span><span class="p">(</span><span class="nx">resolve</span><span class="p">,</span><span class="w"> </span><span class="mf">100</span><span class="p">));</span>
+<span class="w">  </span><span class="nx">assert</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span><span class="nx">assistant</span><span class="p">.</span><span class="nx">webviewReady</span><span class="p">,</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="s1">'Webview script should load and post ready'</span><span class="p">);</span>
+<span class="w">  </span><span class="k">await</span><span class="w"> </span><span class="nx">assistant</span><span class="p">.</span><span class="nx">newChat</span><span class="p">();</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">agentFile</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">root</span><span class="p">,</span><span class="w"> </span><span class="s1">'agent-fixture.js'</span><span class="p">);</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">original</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'export function add(a, b) { return a - b; }\n'</span><span class="p">;</span>
+<span class="w">  </span><span class="k">await</span><span class="w"> </span><span class="nx">fs</span><span class="p">.</span><span class="nx">writeFile</span><span class="p">(</span><span class="nx">agentFile</span><span class="p">,</span><span class="w"> </span><span class="nx">original</span><span class="p">);</span>
+<span class="w">  </span><span class="k">await</span><span class="w"> </span><span class="nx">assistant</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="s1">'Integration test. Use only local_read_file and local_propose_edit on the client file agent-fixture.js. Read it, replace subtraction with addition in add(), and propose the edit for review. Do not run commands, send external messages, or access Mac files. Briefly explain when finished.'</span><span class="p">);</span>
+<span class="w">  </span><span class="nx">assert</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span><span class="k">await</span><span class="w"> </span><span class="nx">fs</span><span class="p">.</span><span class="nx">readFile</span><span class="p">(</span><span class="nx">agentFile</span><span class="p">,</span><span class="w"> </span><span class="s1">'utf8'</span><span class="p">),</span><span class="w"> </span><span class="nx">original</span><span class="p">,</span><span class="w"> </span><span class="s1">'Model may only propose before review'</span><span class="p">);</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">change</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[...</span><span class="nx">assistant</span><span class="p">.</span><span class="nx">pending</span><span class="p">.</span><span class="nx">values</span><span class="p">()].</span><span class="nx">find</span><span class="p">(</span><span class="nx">x</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">x</span><span class="p">.</span><span class="nx">relative</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="s1">'agent-fixture.js'</span><span class="p">);</span>
+<span class="w">  </span><span class="nx">assert</span><span class="p">.</span><span class="nx">ok</span><span class="p">(</span><span class="nx">change</span><span class="p">,</span><span class="w"> </span><span class="s1">'Direct model should request a local edit proposal'</span><span class="p">);</span>
+<span class="w">  </span><span class="nx">assert</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="nx">change</span><span class="p">.</span><span class="nx">updated</span><span class="p">,</span><span class="w"> </span><span class="sr">/a\s*\+\s*b/</span><span class="p">);</span>
+<span class="w">  </span><span class="k">await</span><span class="w"> </span><span class="nx">assistant</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="nx">change</span><span class="p">.</span><span class="nx">id</span><span class="p">);</span>
+<span class="w">  </span><span class="nx">assert</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="k">await</span><span class="w"> </span><span class="nx">fs</span><span class="p">.</span><span class="nx">readFile</span><span class="p">(</span><span class="nx">agentFile</span><span class="p">,</span><span class="w"> </span><span class="s1">'utf8'</span><span class="p">),</span><span class="w"> </span><span class="sr">/a\s*\+\s*b/</span><span class="p">);</span>
+<span class="w">  </span><span class="k">await</span><span class="w"> </span><span class="nx">fs</span><span class="p">.</span><span class="nx">writeFile</span><span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nx">resolve</span><span class="p">(</span><span class="nx">__dirname</span><span class="p">,</span><span class="w"> </span><span class="s1">'../test-results/host.json'</span><span class="p">),</span><span class="w"> </span><span class="nb">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">({</span><span class="w"> </span><span class="nx">activated</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="nx">webviewReady</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="nx">viewOpened</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="nx">diffOpened</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="nx">applied</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="nx">staleEditBlocked</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="nx">createFile</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="nx">traversalBlocked</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="nx">liveDirectEditFlow</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w"> </span><span class="mf">2</span><span class="p">));</span>
+<span class="w">  </span><span class="k">await</span><span class="w"> </span><span class="nx">assistant</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">secrets</span><span class="p">.</span><span class="ow">delete</span><span class="p">(</span><span class="s1">'macstudio.apiKey'</span><span class="p">);</span>
+<span class="w">  </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'PASS: extension activation, webview, actual diff/apply, stale-edit guard, new file, path restrictions, live direct read/propose/apply'</span><span class="p">);</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p><strong>Create <code class="docutils literal notranslate"><span class="pre">test/run-host.js</span></code>:</strong></p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">downloadAndUnzipVSCode</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">require</span><span class="p">(</span><span class="s1">'@vscode/test-electron'</span><span class="p">);</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">fs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">require</span><span class="p">(</span><span class="s1">'node:fs/promises'</span><span class="p">);</span>
+<span class="kd">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">spawn</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">require</span><span class="p">(</span><span class="s1">'node:child_process'</span><span class="p">);</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">require</span><span class="p">(</span><span class="s1">'node:path'</span><span class="p">);</span>
+<span class="k">async</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="nx">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">workspace</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">path</span><span class="p">.</span><span class="nx">resolve</span><span class="p">(</span><span class="nx">__dirname</span><span class="p">,</span><span class="w"> </span><span class="s1">'../test-results/workspace'</span><span class="p">);</span>
+<span class="w">  </span><span class="k">await</span><span class="w"> </span><span class="nx">fs</span><span class="p">.</span><span class="nx">mkdir</span><span class="p">(</span><span class="nx">workspace</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">recursive</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="w"> </span><span class="p">});</span>
+<span class="w">  </span><span class="k">await</span><span class="w"> </span><span class="nx">fs</span><span class="p">.</span><span class="nx">rm</span><span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">workspace</span><span class="p">,</span><span class="w"> </span><span class="s1">'new-fixture.txt'</span><span class="p">),</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">force</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="w"> </span><span class="p">});</span>
+<span class="w">  </span><span class="k">await</span><span class="w"> </span><span class="nx">fs</span><span class="p">.</span><span class="nx">writeFile</span><span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">workspace</span><span class="p">,</span><span class="w"> </span><span class="s1">'fixture.txt'</span><span class="p">),</span><span class="w"> </span><span class="s1">'first\noriginal\nlast\n'</span><span class="p">);</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">executable</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">VSCODE_EXECUTABLE</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">downloadAndUnzipVSCode</span><span class="p">(</span><span class="s1">'stable'</span><span class="p">);</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">log</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">fs</span><span class="p">.</span><span class="nx">open</span><span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nx">resolve</span><span class="p">(</span><span class="nx">__dirname</span><span class="p">,</span><span class="w"> </span><span class="s1">'../test-results/host-run.log'</span><span class="p">),</span><span class="w"> </span><span class="s1">'w'</span><span class="p">);</span>
+<span class="w">  </span><span class="k">await</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nb">Promise</span><span class="p">((</span><span class="nx">resolve</span><span class="p">,</span><span class="w"> </span><span class="nx">reject</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// Pass argument boundaries directly: the workspace path contains spaces.</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">child</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">spawn</span><span class="p">(</span><span class="nx">executable</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="nx">workspace</span><span class="p">,</span><span class="w"> </span><span class="s1">'--disable-extensions'</span><span class="p">,</span><span class="w"> </span><span class="s1">'--disable-updates'</span><span class="p">,</span><span class="w"> </span><span class="s1">'--skip-welcome'</span><span class="p">,</span><span class="w"> </span><span class="s1">'--skip-release-notes'</span><span class="p">,</span><span class="w"> </span><span class="s1">'--disable-workspace-trust'</span><span class="p">,</span><span class="w"> </span><span class="s1">'--user-data-dir'</span><span class="p">,</span><span class="w"> </span><span class="nx">path</span><span class="p">.</span><span class="nx">resolve</span><span class="p">(</span><span class="nx">__dirname</span><span class="p">,</span><span class="w"> </span><span class="s1">'../test-results/vscode-profile'</span><span class="p">),</span><span class="w"> </span><span class="s1">'--extensions-dir'</span><span class="p">,</span><span class="w"> </span><span class="nx">path</span><span class="p">.</span><span class="nx">resolve</span><span class="p">(</span><span class="nx">__dirname</span><span class="p">,</span><span class="w"> </span><span class="s1">'../test-results/extensions'</span><span class="p">),</span><span class="w"> </span><span class="s1">'--extensionDevelopmentPath='</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">path</span><span class="p">.</span><span class="nx">resolve</span><span class="p">(</span><span class="nx">__dirname</span><span class="p">,</span><span class="w"> </span><span class="s1">'..'</span><span class="p">),</span><span class="w"> </span><span class="s1">'--extensionTestsPath='</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">path</span><span class="p">.</span><span class="nx">resolve</span><span class="p">(</span><span class="nx">__dirname</span><span class="p">,</span><span class="w"> </span><span class="s1">'host.js'</span><span class="p">)],</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">windowsHide</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="nx">stdio</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="s1">'ignore'</span><span class="p">,</span><span class="w"> </span><span class="nx">log</span><span class="p">.</span><span class="nx">fd</span><span class="p">,</span><span class="w"> </span><span class="nx">log</span><span class="p">.</span><span class="nx">fd</span><span class="p">]</span><span class="w"> </span><span class="p">});</span>
+<span class="w">    </span><span class="nx">child</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">'error'</span><span class="p">,</span><span class="w"> </span><span class="nx">reject</span><span class="p">);</span>
+<span class="w">    </span><span class="nx">child</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">'close'</span><span class="p">,</span><span class="w"> </span><span class="nx">code</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">code</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="mf">0</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="nx">resolve</span><span class="p">()</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nx">reject</span><span class="p">(</span><span class="ow">new</span><span class="w"> </span><span class="ne">Error</span><span class="p">(</span><span class="s1">'Extension host test failed ('</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">code</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s1">'); see test-results/host-run.log'</span><span class="p">)));</span>
+<span class="w">  </span><span class="p">});</span>
+<span class="w">  </span><span class="k">await</span><span class="w"> </span><span class="nx">log</span><span class="p">.</span><span class="nx">close</span><span class="p">();</span>
+<span class="w">  </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'VS Code extension host tests passed.'</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="nx">main</span><span class="p">().</span><span class="k">catch</span><span class="p">(</span><span class="nx">error</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">error</span><span class="p">);</span><span class="w"> </span><span class="nx">process</span><span class="p">.</span><span class="nx">exitCode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1</span><span class="p">;</span><span class="w"> </span><span class="p">});</span>
+</pre></div>
+</div>
+<p>The runner launches an isolated VS Code profile and a fixture workspace. It tests extension activation, Webview readiness, diffs, approved application, stale-change rejection, new-file creation, and a real model-generated read/propose/apply flow. Automated <code class="docutils literal notranslate"><span class="pre">apply()</span></code> calls here stand in for the human click; they do not exercise a person reading the diff or accepting a shell-command dialog.</p>
+<p>Set <code class="docutils literal notranslate"><span class="pre">MACSTUDIO_API_KEY</span></code> in the terminal as before. If you already have VS Code installed at the usual user location, run:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nv">$env:VSCODE_EXECUTABLE</span> <span class="p">=</span> <span class="s2">"$env:LOCALAPPDATA\Programs\Microsoft VS Code\Code.exe"</span>
+<span class="nb">Test-Path</span> <span class="nv">$env:VSCODE_EXECUTABLE</span>
+<span class="n">npm</span><span class="p">.</span><span class="n">cmd</span> <span class="n">run</span> <span class="n">test</span><span class="p">:</span><span class="n">host</span>
+</pre></div>
+</div>
+<p>If the path check returns <code class="docutils literal notranslate"><span class="pre">False</span></code>, set your actual executable path. If you omit the variable, the runner uses the VS Code test package to obtain a test build, which requires a network download.</p>
+<p>The runner intentionally disables workspace trust for its isolated, generated fixture. Do not transfer that flag to your everyday workflow. It also creates a test profile with temporary SecretStorage data; the success path deletes the key entry. A failed run can leave the test profile on disk. Inspect and remove the specific generated profile if you need to clean it up; never delete your real VS Code user profile.</p>
+<p>Inspect <code class="docutils literal notranslate"><span class="pre">test-results/host.json</span></code>, <code class="docutils literal notranslate"><span class="pre">test-results/live.json</span></code>, and <code class="docutils literal notranslate"><span class="pre">test-results/host-run.log</span></code>. Remove test environment variables when finished:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Remove-Item</span> <span class="n">Env</span><span class="p">:</span><span class="n">MACSTUDIO_API_KEY</span> <span class="n">-ErrorAction</span> <span class="n">SilentlyContinue</span>
+<span class="nb">Remove-Item</span> <span class="n">Env</span><span class="p">:</span><span class="n">VSCODE_EXECUTABLE</span> <span class="n">-ErrorAction</span> <span class="n">SilentlyContinue</span>
+<span class="nb">Remove-Variable</span> <span class="n">courseSecret</span> <span class="n">-ErrorAction</span> <span class="n">SilentlyContinue</span>
+</pre></div>
+</div>
+</section>
+<section id="keep-the-limits-visible">
+<h3>12.4 Keep the limits visible<a class="headerlink" href="#keep-the-limits-visible" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Guard in this reference</p></th>
+<th class="head"><p>Meaning</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>12 model rounds by default</p></td>
+<td><p>A turn cannot run indefinitely through tools</p></td>
+</tr>
+<tr class="row-odd"><td><p>4,096 output tokens by default</p></td>
+<td><p>Not the same as context capacity</p></td>
+</tr>
+<tr class="row-even"><td><p>240,000 serialized history characters</p></td>
+<td><p>A coarse application check, not token counting</p></td>
+</tr>
+<tr class="row-odd"><td><p>400 listed files / 30 search matches</p></td>
+<td><p>Search can be incomplete</p></td>
+</tr>
+<tr class="row-even"><td><p>160,000-byte disk-read limit</p></td>
+<td><p>Large files need a smaller selection or another tool</p></td>
+</tr>
+<tr class="row-odd"><td><p>60-second command timer</p></td>
+<td><p>Commands may time out before they finish</p></td>
+</tr>
+<tr class="row-even"><td><p>Last 24,000 command-output characters</p></td>
+<td><p>Earlier output can be truncated</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The history check occurs at the start of a turn; tool results can add more text during that turn. A production token budgeter should reserve room before every model call. A server advertising 262K context does not mean this application safely fills that window. Do not describe the character guard as a tokenizer.</p>
+<p><strong>Checkpoint:</strong> Record which tests ran, which service/model they used, and which behaviors remain manual or untested.</p>
+<div class="important admonition">
+<p class="admonition-title">Lab acceptance evidence</p>
+<p>Submit a before/after diff, a passing test, and evidence that stale changes and rejected commands are handled correctly.</p>
+</div>
+<blockquote>
+<div><p><strong>Image Suggestion (Nanobanana Prompt)</strong>: Create a clean educational illustration for “Capstone: Fix, Review, and Verify”, using a neutral VS Code-inspired desktop palette, legible monospace labels, a Windows workstation and a Mac Studio where relevant, and clearly marked “Illustration” text. Emphasize the lab’s actual control or execution boundary. Include no real credentials, personal paths, or fabricated test results. Use even lighting and a flat technical-documentation style rather than decorative effects.</p>
+</div></blockquote>
+<p><strong>Continue:</strong> <a class="reference internal" href="05-controller-and-interface.html"><span class="std std-doc">Previous</span></a> · <a class="reference internal" href="07-package-and-models.html"><span class="std std-doc">Next</span></a> · <a class="reference internal" href="index.html"><span class="std std-doc">Workshop guide</span></a></p>
+</section>
+</section>
+<section id="read-more">
+<h2>Read More<a class="headerlink" href="#read-more" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://code.visualstudio.com/api/get-started/your-first-extension">VS Code extension tutorial</a> — Extension activation and debugging.</p></li>
+<li><p><a class="reference external" href="https://code.visualstudio.com/api/extension-guides/webview">Webview API</a> — UI messages, resources, and content security.</p></li>
+<li><p><a class="reference external" href="https://code.visualstudio.com/api/extension-guides/workspace-trust">Workspace Trust</a> — Trust boundaries for extension authors.</p></li>
+<li><p><a class="reference external" href="https://modelcontextprotocol.io/docs/learn/architecture">MCP architecture</a> — Hosts, clients, servers, and capability discovery.</p></li>
+<li><p><a class="reference external" href="https://docs.openclaw.ai/tools/skills">OpenClaw skills</a> — Optional server-side instruction packages.</p></li>
+</ul>
+</section>
+<section id="knowledge-quiz">
+<h2>Knowledge Quiz<a class="headerlink" href="#knowledge-quiz" title="Link to this heading">#</a></h2>
+<p><strong>1. What proves the bug is fixed?</strong></p>
+<details>
+<summary>Answer</summary>
+<p>An applied change and an actual passing test, not the model saying it is fixed.</p>
+</details>
+<p><strong>2. What does the live protocol test not prove?</strong></p>
+<details>
+<summary>Answer</summary>
+<p>Its synthetic tool result does not prove actual filesystem access or UI behavior.</p>
+</details>
+<p><strong>3. Is a 240,000-character history check a token budget?</strong></p>
+<details>
+<summary>Answer</summary>
+<p>No. Characters and tokens differ, and tool results can grow the history during the turn.</p>
+</details>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./docs\workshops\macstudio-agent"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="05-controller-and-interface.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">05 - Controller and Sidebar Interface</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="07-package-and-models.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">07 - Packaging and Model Selection</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#complete-a-coding-task-from-request-to-verified-change">11. Complete a coding task from request to verified change</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#failure-drill-prevent-a-stale-overwrite">Failure drill: prevent a stale overwrite</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#failure-drill-inspect-command-rejection">Failure drill: inspect command rejection</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#attach-only-relevant-context">Attach only relevant context</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#test-each-boundary">12. Test each boundary</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#test-the-python-bridge-without-a-model">12.1 Test the Python bridge without a model</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#test-actual-tool-calling-and-continuation">12.2 Test actual tool calling and continuation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#test-the-actual-vs-code-host">12.3 Test the actual VS Code host</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#keep-the-limits-visible">12.4 Keep the limits visible</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#read-more">Read More</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#knowledge-quiz">Knowledge Quiz</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By AI Workshop Contributors
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2026.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
+<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

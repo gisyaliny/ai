@@ -1,0 +1,1142 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>00 - Build a Mac Studio Coding Agent for VS Code &#8212; AI Tools Learning Handbook</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=6a604523" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../../../_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
+
+    <script src="../../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../../_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script data-sd-tabs-storage-prefix="sphinx-design-tab-id-" src="../../../_static/design-tabs.js?v=fcb327ea"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs"></script>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk@0.2.0/dist/mermaid-layout-elk.esm.min.mjs"></script>
+    <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs";import elkLayouts from "https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk@0.2.0/dist/mermaid-layout-elk.esm.min.mjs";mermaid.registerLayoutLoaders(elkLayouts);mermaid.initialize({startOnLoad:false});</script>
+    <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+    <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs";
+
+const defaultStyle = document.createElement('style');
+defaultStyle.textContent = `pre.mermaid {
+    /* Same as .mermaid-container > pre */
+    display: block;
+    width: 100%;
+}
+
+pre.mermaid > svg {
+    /* Same as .mermaid-container > pre > svg */
+    height: 500px;
+    width: 100%;
+    max-width: 100% !important;
+}
+`;
+document.head.appendChild(defaultStyle);
+
+const fullscreenStyle = document.createElement('style');
+fullscreenStyle.textContent = `.mermaid-container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+.mermaid-container > pre {
+    display: block;
+    width: 100%;
+}
+
+.mermaid-container > pre > svg {
+    height: 500px;
+    width: 100%;
+    max-width: 100% !important;
+}
+
+.mermaid-fullscreen-btn {
+    width: 28px;
+    height: 28px;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    font-size: 14px;
+    line-height: 1;
+    padding: 0;
+    color: #333;
+}
+
+.mermaid-fullscreen-btn:hover {
+    opacity: 100% !important;
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+    transform: scale(1.1);
+}
+
+.mermaid-fullscreen-btn.dark-theme {
+    background: rgba(50, 50, 50, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #e0e0e0;
+}
+
+.mermaid-fullscreen-btn.dark-theme:hover {
+    background: rgba(60, 60, 60, 1);
+    box-shadow: 0 3px 10px rgba(255, 255, 255, 0.2);
+}
+
+.mermaid-fullscreen-modal {
+    display: none;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 95vw;
+    height: 100vh;
+    background: rgba(255, 255, 255, 0.98);
+    z-index: 9999;
+    padding: 20px;
+    overflow: auto;
+}
+
+.mermaid-fullscreen-modal.dark-theme {
+    background: rgba(0, 0, 0, 0.98);
+}
+
+.mermaid-fullscreen-modal.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mermaid-container-fullscreen {
+    position: relative;
+    width: 95vw;
+    height: 90vh;
+    max-width: 95vw;
+    max-height: 90vh;
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    overflow: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mermaid-container-fullscreen.dark-theme {
+    background: #1a1a1a;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+}
+
+.mermaid-container-fullscreen pre.mermaid {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mermaid-container-fullscreen .mermaid svg {
+    height: 100% !important;
+    width: 100% !important;
+    cursor: grab;
+}
+
+.mermaid-fullscreen-close {
+    position: fixed !important;
+    top: 20px !important;
+    right: 20px !important;
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    transition: all 0.2s;
+    font-size: 24px;
+    line-height: 1;
+    color: #333;
+}
+
+.mermaid-fullscreen-close:hover {
+    background: white;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+    transform: scale(1.1);
+}
+
+.mermaid-fullscreen-close.dark-theme {
+    background: rgba(50, 50, 50, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #e0e0e0;
+}
+
+.mermaid-fullscreen-close.dark-theme:hover {
+    background: rgba(60, 60, 60, 1);
+    box-shadow: 0 6px 16px rgba(255, 255, 255, 0.2);
+}
+
+.mermaid-fullscreen-modal .mermaid-fullscreen-btn {
+    display: none !important;
+}`;
+document.head.appendChild(fullscreenStyle);
+
+// Detect if page has dark background
+const isDarkTheme = () => {
+    const bgColor = window.getComputedStyle(document.body).backgroundColor;
+    const match = bgColor.match(/rgb\((\d+),\s*(\d+),\s*(\d+)/);
+    if (match) {
+        const r = parseInt(match[1]);
+        const g = parseInt(match[2]);
+        const b = parseInt(match[3]);
+        const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+        return brightness < 128;
+    }
+    return false;
+};
+
+const load = async () => {
+    await mermaid.run();
+
+    const all_mermaids = document.querySelectorAll(".mermaid");
+    const mermaids_processed = document.querySelectorAll(".mermaid[data-processed='true']");
+
+    if ("False" === "True") {
+        const mermaids_to_add_zoom = -1 === -1 ? all_mermaids.length : -1;
+        if(mermaids_to_add_zoom > 0) {
+            var svgs = d3.selectAll("");
+            if(all_mermaids.length !== mermaids_processed.length) {
+                setTimeout(load, 200);
+                return;
+            } else if(svgs.size() !== mermaids_to_add_zoom) {
+                setTimeout(load, 200);
+                return;
+            } else {
+                svgs.each(function() {
+                    var svg = d3.select(this);
+                    svg.html("<g class='wrapper'>" + svg.html() + "</g>");
+                    var inner = svg.select("g");
+                    var zoom = d3.zoom().on("zoom", function(event) {
+                        inner.attr("transform", event.transform);
+                    });
+                    svg.call(zoom);
+                });
+            }
+        }
+    } else if(all_mermaids.length !== mermaids_processed.length) {
+        // Wait for mermaid to process all diagrams
+        setTimeout(load, 200);
+        return;
+    }
+
+    const darkTheme = isDarkTheme();
+
+    // Stop here if not adding fullscreen capability
+    if ("True" !== "True") return;
+
+    const modal = document.createElement('div');
+    modal.className = 'mermaid-fullscreen-modal' + (darkTheme ? ' dark-theme' : '');
+    modal.setAttribute('role', 'dialog');
+    modal.setAttribute('aria-modal', 'true');
+    modal.setAttribute('aria-label', 'Fullscreen diagram viewer');
+    modal.innerHTML = `
+        <button class="mermaid-fullscreen-close${darkTheme ? ' dark-theme' : ''}" aria-label="Close fullscreen">✕</button>
+        <div class="mermaid-container-fullscreen${darkTheme ? ' dark-theme' : ''}"></div>
+    `;
+    document.body.appendChild(modal);
+
+    const modalContent = modal.querySelector('.mermaid-container-fullscreen');
+    const closeBtn = modal.querySelector('.mermaid-fullscreen-close');
+
+    let previousScrollOffset = [window.scrollX, window.scrollY];
+
+    const closeModal = () => {
+        modal.classList.remove('active');
+        modalContent.innerHTML = '';
+        document.body.style.overflow = ''
+        window.scrollTo({left: previousScrollOffset[0], top: previousScrollOffset[1], behavior: 'instant'});
+    };
+
+    closeBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+    });
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal.classList.contains('active')) {
+            closeModal();
+        }
+    });
+
+    const allButtons = [];
+
+    document.querySelectorAll('.mermaid').forEach((mermaidDiv) => {
+        if (mermaidDiv.parentNode.classList.contains('mermaid-container') ||
+            mermaidDiv.closest('.mermaid-fullscreen-modal')) {
+            return;
+        }
+
+        const container = document.createElement('div');
+        container.className = 'mermaid-container';
+        mermaidDiv.parentNode.insertBefore(container, mermaidDiv);
+        container.appendChild(mermaidDiv);
+
+        const fullscreenBtn = document.createElement('button');
+        fullscreenBtn.className = 'mermaid-fullscreen-btn' + (darkTheme ? ' dark-theme' : '');
+        fullscreenBtn.setAttribute('aria-label', 'View diagram in fullscreen');
+        fullscreenBtn.textContent = '⛶';
+        fullscreenBtn.style.opacity = '50%';
+
+        // Calculate dynamic position based on diagram's margin and padding
+        const diagramStyle = window.getComputedStyle(mermaidDiv);
+        const marginTop = parseFloat(diagramStyle.marginTop) || 0;
+        const marginRight = parseFloat(diagramStyle.marginRight) || 0;
+        const paddingTop = parseFloat(diagramStyle.paddingTop) || 0;
+        const paddingRight = parseFloat(diagramStyle.paddingRight) || 0;
+        fullscreenBtn.style.top = `${marginTop + paddingTop + 4}px`;
+        fullscreenBtn.style.right = `${marginRight + paddingRight + 4}px`;
+
+        fullscreenBtn.addEventListener('click', () => {
+            previousScrollOffset = [window.scroll, window.scrollY];
+            const clone = mermaidDiv.cloneNode(true);
+            modalContent.innerHTML = '';
+            modalContent.appendChild(clone);
+
+            const svg = clone.querySelector('svg');
+            if (svg) {
+                svg.removeAttribute('width');
+                svg.removeAttribute('height');
+                svg.style.width = '100%';
+                svg.style.height = 'auto';
+                svg.style.maxWidth = '100%';
+                svg.style.sdisplay = 'block';
+
+                if ("False" === "True") {
+                    setTimeout(() => {
+                        const g = svg.querySelector('g');
+                        if (g) {
+                            var svgD3 = d3.select(svg);
+                            svgD3.html("<g class='wrapper'>" + svgD3.html() + "</g>");
+                            var inner = svgD3.select("g");
+                            var zoom = d3.zoom().on("zoom", function(event) {
+                                inner.attr("transform", event.transform);
+                            });
+                            svgD3.call(zoom);
+                        }
+                    }, 100);
+                }
+            }
+
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+
+        container.appendChild(fullscreenBtn);
+        allButtons.push(fullscreenBtn);
+    });
+
+    // Update theme classes when theme changes
+    const updateTheme = () => {
+        const dark = isDarkTheme();
+        allButtons.forEach(btn => {
+            if (dark) {
+                btn.classList.add('dark-theme');
+            } else {
+                btn.classList.remove('dark-theme');
+            }
+        });
+        if (dark) {
+            modal.classList.add('dark-theme');
+            modalContent.classList.add('dark-theme');
+            closeBtn.classList.add('dark-theme');
+        } else {
+            modal.classList.remove('dark-theme');
+            modalContent.classList.remove('dark-theme');
+            closeBtn.classList.remove('dark-theme');
+        }
+    };
+
+    // Watch for theme changes
+    const observer = new MutationObserver(updateTheme);
+    observer.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ['class', 'style', 'data-theme']
+    });
+    observer.observe(document.body, {
+        attributes: true,
+        attributeFilter: ['class', 'style']
+    });
+};
+
+window.addEventListener("load", load);
+</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'docs/workshops/macstudio-agent/index';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="canonical" href="https://gisyaliny.github.io/AI/docs/workshops/macstudio-agent/index.html" />
+    <link rel="icon" href="../../../_static/fav.ico"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="01 - Architecture and Connection" href="01-architecture-and-connection.html" />
+    <link rel="prev" title="10. Graph RAG: Knowledge Graphs Meet Retrieval" href="../../rag/03-graph-rag.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../../../_static/searchtools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    <script src="../../../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="AI Tools Learning Handbook - Home"/>
+    <img src="../../../_static/logo.png" class="logo__image only-dark pst-js-only" alt="AI Tools Learning Handbook - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Vibe Coding</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../vibe-coding/01-environment-and-basics.html">1. Environment Setup &amp; Basic Interaction (Environment Setup &amp; Basic Interaction)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../vibe-coding/02-complex-tasks-and-terminal.html">2. Complex Tasks &amp; Terminal Control</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../vibe-coding/03-multimodal-and-context.html">3. Multimodal &amp; Context Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../vibe-coding/04-advanced-features.html">4. Advanced Features &amp; Customization</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Research</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../research/01-ai-prompts-for-research.html">5. AI Prompts &amp; Skills for Academic Research</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Local LLM</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../local-llm/01-deploy-local-llm.html">6. Deploy Open-Source LLMs Locally with Ollama &amp; AnythingLLM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../local-llm/02-mastering-ollama.html">7. — Mastering Ollama: Local Models, APIs, RAG, Tools, and Production Patterns</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">RAG</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../rag/01-what-is-rag.html">8. What is RAG? (Retrieval-Augmented Generation)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rag/02-implementing-rag.html">9. Implementing RAG with Python</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rag/03-graph-rag.html">10. Graph RAG: Knowledge Graphs Meet Retrieval</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Workshops</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">00 - Build a Mac Studio Coding Agent for VS Code</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="01-architecture-and-connection.html">01 - Architecture and Connection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="02-first-extension.html">02 - Your First VS Code Extension</a></li>
+<li class="toctree-l2"><a class="reference internal" href="03-ssh-and-streaming.html">03 - SSH Bridge and Streaming Responses</a></li>
+<li class="toctree-l2"><a class="reference internal" href="04-project-tools.html">04 - Project Tools and the Agent Loop</a></li>
+<li class="toctree-l2"><a class="reference internal" href="05-controller-and-interface.html">05 - Controller and Sidebar Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="06-capstone-and-tests.html">06 - Capstone: Fix, Review, and Verify</a></li>
+<li class="toctree-l2"><a class="reference internal" href="07-package-and-models.html">07 - Packaging and Model Selection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="08-mcp-skills-and-next-steps.html">08 - MCP, Skills, and Next Steps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="validation.html">09 - Validation and Reproducibility</a></li>
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/gisyaliny/AI" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/gisyaliny/AI/edit/main/docs/workshops/macstudio-agent/index.md" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/gisyaliny/AI/issues/new?title=Issue%20on%20page%20%2Fdocs/workshops/macstudio-agent/index.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../../_sources/docs/workshops/macstudio-agent/index.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>00 - Build a Mac Studio Coding Agent for VS Code</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#workshop-outcomes">Workshop outcomes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#download-the-workshop-materials">Download the workshop materials</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites-and-preflight">Prerequisites and preflight</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#agenda-and-pacing">Agenda and pacing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-to-work-through-each-lab">How to work through each lab</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#capstone-and-assessment">Capstone and assessment</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#instructor-notes">Instructor notes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scope-and-follow-up">Scope and follow-up</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#read-more">Read More</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#knowledge-quiz">Knowledge Quiz</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="build-a-mac-studio-coding-agent-for-vs-code">
+<span id="macstudio-workshop"></span><h1>00 - Build a Mac Studio Coding Agent for VS Code<a class="headerlink" href="#build-a-mac-studio-coding-agent-for-vs-code" title="Link to this heading">#</a></h1>
+<p>Build an inspectable coding assistant from a blank extension folder. Your Windows computer runs VS Code and project tools; a Mac Studio runs the model. You will connect them over SSH, implement streaming and tool calling, review code changes, and package a working extension.</p>
+<p><strong>Audience:</strong> beginners with basic JavaScript or Python experience. <strong>Language:</strong> English, with Chinese annotations for key terminology. <strong>Workshop edition:</strong> November 17, 2026. <strong>Reference implementation:</strong> Mac Studio Assistant 0.2.0.</p>
+<section id="workshop-outcomes">
+<h2>Workshop outcomes<a class="headerlink" href="#workshop-outcomes" title="Link to this heading">#</a></h2>
+<p>By the end you can trace an <strong>agent loop（智能体循环）</strong>, implement <strong>built-in tools（内置工具）</strong>, build a <strong>Webview（网页视图）</strong>, and distinguish a proposed edit from an applied and tested change. You will also know what model switching, <strong>MCP（模型上下文协议）</strong>, and <strong>skills（技能指令包）</strong> do—and what this reference does not implement.</p>
+<pre  class="mermaid">
+        flowchart LR
+    U[&quot;Windows: VS Code sidebar&quot;] &lt;--&gt; E[&quot;Windows: extension and reviewed tools&quot;]
+    E &lt;--&gt;|&quot;SSH&quot;| B[&quot;Mac: temporary Python bridge&quot;]
+    B &lt;--&gt;|&quot;loopback HTTP&quot;| M[&quot;Mac: model API&quot;]
+    E &lt;--&gt; F[&quot;Windows project files&quot;]
+    </pre></section>
+<section id="download-the-workshop-materials">
+<h2>Download the workshop materials<a class="headerlink" href="#download-the-workshop-materials" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><a class="reference download internal" download="" href="../../../_downloads/0459fe81fb0711c813e445dda689b342/MacStudio-Beginner-Course.zip"><code class="xref download docutils literal notranslate"><span class="pre">Complete</span> <span class="pre">tutorial</span> <span class="pre">and</span> <span class="pre">reference</span> <span class="pre">source</span></code></a> — includes the English reference project, lockfile, intentionally broken exercise, and original validation record. Extract it locally; do not run it inside a browser notebook.</p></li>
+<li><p><a class="reference internal" href="validation.html"><span class="std std-doc">Validation and reproducibility notes</span></a> — what was tested, when, and what remains a learner check.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The downloadable reference was tested on November 11, 2026. Publication on November 17 does not imply every model service or MCP integration was retested. Hostnames, model IDs, ports, and key paths are examples; use your own deployment. No private keys or real API credentials are included.</p>
+</div>
+</section>
+<section id="prerequisites-and-preflight">
+<h2>Prerequisites and preflight<a class="headerlink" href="#prerequisites-and-preflight" title="Link to this heading">#</a></h2>
+<p>Bring a Windows computer with desktop VS Code, Node.js/npm, OpenSSH, and Python 3. You need access to a Mac with SSH, Python 3, and an already-running OpenAI-compatible model API. The workshop teaches the agent client, not model training or weight installation.</p>
+<p>Complete the SSH and API checks in Lab 1 before a group session. If you cannot access a model, you can still complete the hello-world extension, offline file-tool tests, and UI reading. Mark live checkpoints as <strong>not run</strong>; do not substitute fabricated outputs.</p>
+<p>This book page is the instruction surface. PowerShell commands run in a Windows terminal; Mac commands run on the Mac; extension code runs in the VS Code Development Host. Copyable code blocks are deliberately not executed during Jupyter Book builds.</p>
+</section>
+<section id="agenda-and-pacing">
+<h2>Agenda and pacing<a class="headerlink" href="#agenda-and-pacing" title="Link to this heading">#</a></h2>
+<p>The eight labs total approximately <strong>6 hours 15 minutes</strong>, excluding installation delays and breaks. Use two half-day sessions or four shorter meetings. For a 90-minute demonstration, preconfigure SSH/API access, show Labs 1–3, and demonstrate the completed reference with the Lab 6 toy project; that shorter path is not the full reconstruction.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Lab</p></th>
+<th class="head"><p>Topic</p></th>
+<th class="head"><p>Suggested time</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1</p></td>
+<td><p><a class="reference internal" href="01-architecture-and-connection.html"><span class="std std-doc">Architecture and Connection</span></a></p></td>
+<td><p>45 min</p></td>
+</tr>
+<tr class="row-odd"><td><p>2</p></td>
+<td><p><a class="reference internal" href="02-first-extension.html"><span class="std std-doc">Your First VS Code Extension</span></a></p></td>
+<td><p>35 min</p></td>
+</tr>
+<tr class="row-even"><td><p>3</p></td>
+<td><p><a class="reference internal" href="03-ssh-and-streaming.html"><span class="std std-doc">SSH Bridge and Streaming Responses</span></a></p></td>
+<td><p>50 min</p></td>
+</tr>
+<tr class="row-odd"><td><p>4</p></td>
+<td><p><a class="reference internal" href="04-project-tools.html"><span class="std std-doc">Project Tools and the Agent Loop</span></a></p></td>
+<td><p>45 min</p></td>
+</tr>
+<tr class="row-even"><td><p>5</p></td>
+<td><p><a class="reference internal" href="05-controller-and-interface.html"><span class="std std-doc">Controller and Sidebar Interface</span></a></p></td>
+<td><p>60 min</p></td>
+</tr>
+<tr class="row-odd"><td><p>6</p></td>
+<td><p><a class="reference internal" href="06-capstone-and-tests.html"><span class="std std-doc">Capstone: Fix, Review, and Verify</span></a></p></td>
+<td><p>60 min</p></td>
+</tr>
+<tr class="row-even"><td><p>7</p></td>
+<td><p><a class="reference internal" href="07-package-and-models.html"><span class="std std-doc">Packaging and Model Selection</span></a></p></td>
+<td><p>35 min</p></td>
+</tr>
+<tr class="row-odd"><td><p>8</p></td>
+<td><p><a class="reference internal" href="08-mcp-skills-and-next-steps.html"><span class="std std-doc">MCP, Skills, and Next Steps</span></a></p></td>
+<td><p>45 min</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="how-to-work-through-each-lab">
+<h2>How to work through each lab<a class="headerlink" href="#how-to-work-through-each-lab" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p>Read the learning objectives and execution location.</p></li>
+<li><p>Create or replace only the named file. A complete file block should not be appended to an old implementation.</p></li>
+<li><p>Run the checkpoint and record actual output without credentials.</p></li>
+<li><p>Compare with the downloaded <code class="docutils literal notranslate"><span class="pre">reference/</span></code> folder when stuck.</p></li>
+<li><p>Complete the acceptance evidence and answer the knowledge quiz before continuing.</p></li>
+</ol>
+<p>Some modules are assembled before the complete UI can run. Labs 2–4 explicitly identify those intermediate states. Keep the extension source folder separate from the disposable project that the assistant edits.</p>
+</section>
+<section id="capstone-and-assessment">
+<h2>Capstone and assessment<a class="headerlink" href="#capstone-and-assessment" title="Link to this heading">#</a></h2>
+<p>Your capstone is a broken addition function with a failing test. The assistant must read it, propose a minimal change, leave the file untouched until review, and run the test only after command approval.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Evidence</p></th>
+<th class="head"><p>Acceptance condition</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Connection record</p></td>
+<td><p>Noninteractive SSH and authenticated API discovery succeed</p></td>
+</tr>
+<tr class="row-odd"><td><p>Agent trace</p></td>
+<td><p>A model tool call receives the matching result and continues</p></td>
+</tr>
+<tr class="row-even"><td><p>Reviewed diff</p></td>
+<td><p>Change is proposed before it is applied</p></td>
+</tr>
+<tr class="row-odd"><td><p>Verification</p></td>
+<td><p>Actual test output changes from failure to success</p></td>
+</tr>
+<tr class="row-even"><td><p>Failure drills</p></td>
+<td><p>Stale edit is rejected; cancelled command is not executed</p></td>
+</tr>
+<tr class="row-odd"><td><p>Capability statement</p></td>
+<td><p>Clearly separates implemented tools from optional MCP/skill designs</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="instructor-notes">
+<h2>Instructor notes<a class="headerlink" href="#instructor-notes" title="Link to this heading">#</a></h2>
+<p>Prepare a known-working reference on a separate demo folder. Test the serving model’s tool template before class, reserve time for SSH-agent issues, and avoid having a whole class saturate one model server simultaneously. Pair participants for diff review and ask each to explain which computer executes a command.</p>
+<p>Do not distribute a private SSH key or shared production credentials. Use individual authorized access and disposable exercise files. Remote server tools have their own policy; the Windows command confirmation does not automatically govern them.</p>
+</section>
+<section id="scope-and-follow-up">
+<h2>Scope and follow-up<a class="headerlink" href="#scope-and-follow-up" title="Link to this heading">#</a></h2>
+<p>Implemented: streaming text, local list/read/search tools, edit proposals, native diffs, explicit apply, and approved commands. Optional design exercises: automatic primary-model discovery, a general MCP client, and automatic skill loading. Image input, persistent conversations, and a hardened process sandbox are not delivered features.</p>
+<blockquote>
+<div><p><strong>Image Suggestion (Nanobanana Prompt)</strong>: Create a welcoming workshop cover with a Windows laptop showing a restrained editor sidebar and a Mac Studio on a neutral desk. Label the devices “Project tools” and “Model inference”; add the title “Build a Mac Studio Coding Agent”. Use clean typography, soft daylight, a navy and teal palette, and a small “Concept illustration” caption. Do not show passwords or imply a real screenshot.</p>
+</div></blockquote>
+</section>
+<section id="read-more">
+<h2>Read More<a class="headerlink" href="#read-more" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://code.visualstudio.com/api/get-started/your-first-extension">VS Code extension tutorial</a> — Extension activation and debugging.</p></li>
+<li><p><a class="reference external" href="https://code.visualstudio.com/api/extension-guides/webview">Webview API</a> — UI messages, resources, and content security.</p></li>
+<li><p><a class="reference external" href="https://code.visualstudio.com/api/extension-guides/workspace-trust">Workspace Trust</a> — Trust boundaries for extension authors.</p></li>
+<li><p><a class="reference external" href="https://modelcontextprotocol.io/docs/learn/architecture">MCP architecture</a> — Hosts, clients, servers, and capability discovery.</p></li>
+<li><p><a class="reference external" href="https://docs.openclaw.ai/tools/skills">OpenClaw skills</a> — Optional server-side instruction packages.</p></li>
+</ul>
+</section>
+<section id="knowledge-quiz">
+<h2>Knowledge Quiz<a class="headerlink" href="#knowledge-quiz" title="Link to this heading">#</a></h2>
+<p><strong>1. Does this workshop run the model on Windows?</strong></p>
+<details>
+<summary>Answer</summary>
+<p>No. Windows runs the extension and client project tools; the example model runs on the Mac.</p>
+</details>
+<p><strong>2. What is the capstone evidence?</strong></p>
+<details>
+<summary>Answer</summary>
+<p>A reviewed and applied minimal fix plus actual passing test output and failure-drill results.</p>
+</details>
+<p><strong>3. Does downloading the reference grant MCP access?</strong></p>
+<details>
+<summary>Answer</summary>
+<p>No. Capabilities must be configured and verified in the host that executes them.</p>
+</details>
+</section>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./docs\workshops\macstudio-agent"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../../rag/03-graph-rag.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">10. </span>Graph RAG: Knowledge Graphs Meet Retrieval</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="01-architecture-and-connection.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">01 - Architecture and Connection</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#workshop-outcomes">Workshop outcomes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#download-the-workshop-materials">Download the workshop materials</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites-and-preflight">Prerequisites and preflight</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#agenda-and-pacing">Agenda and pacing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-to-work-through-each-lab">How to work through each lab</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#capstone-and-assessment">Capstone and assessment</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#instructor-notes">Instructor notes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scope-and-follow-up">Scope and follow-up</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#read-more">Read More</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#knowledge-quiz">Knowledge Quiz</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By AI Workshop Contributors
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2026.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
+<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
