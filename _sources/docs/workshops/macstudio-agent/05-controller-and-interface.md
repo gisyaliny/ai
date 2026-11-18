@@ -93,7 +93,7 @@ class Assistant {
           case 'attach': await this.attach(); break;
           case 'clearAttachments': if (!this.busy) { this.attachments = []; this.publish(); } break;
           case 'new': await this.newChat(); break;
-          case 'settings': await vscode.commands.executeCommand('workbench.action.openSettings', '@ext:yyang-local.macstudio-assistant'); break;
+          case 'settings': await vscode.commands.executeCommand('workbench.action.openSettings', '@ext:workshop-example.macstudio-assistant'); break;
           case 'mode':
             if (!this.busy && ['direct', 'openclaw', 'qwen'].includes(event.value)) {
               await this.newChat(); await vscode.workspace.getConfiguration('macstudio').update('mode', event.value, vscode.ConfigurationTarget.Global); this.publish();
@@ -273,7 +273,7 @@ function activate(context) {
   register('macstudio.open', () => vscode.commands.executeCommand('macstudio.chat.focus'));
   register('macstudio.connect', () => assistant.connect());
   register('macstudio.setApiKey', () => assistant.setApiKey());
-  register('macstudio.settings', () => vscode.commands.executeCommand('workbench.action.openSettings', '@ext:yyang-local.macstudio-assistant'));
+  register('macstudio.settings', () => vscode.commands.executeCommand('workbench.action.openSettings', '@ext:workshop-example.macstudio-assistant'));
   register('macstudio.attach', () => assistant.attach());
   register('macstudio.newChat', () => assistant.newChat());
   context.subscriptions.push(vscode.workspace.onDidChangeConfiguration(e => { if (e.affectsConfiguration('macstudio')) assistant.publish(); }));

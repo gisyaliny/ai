@@ -148,10 +148,10 @@ const { completion, sshRequest } = require('../src/transport');
 async function main() {
   const results = [];
   for (const mode of (process.env.MACSTUDIO_TEST_MODES || 'direct').split(',')) {
-    const options = { host: 'macstudio', identity: '~/.ssh/id_ed25519', mode, timeout: 300 };
+    const options = { host: 'macstudio', identity: '~/.ssh/macstudio_course', mode, timeout: 300 };
     if (mode === 'direct') {
       assert.ok(process.env.MACSTUDIO_API_KEY, 'Set MACSTUDIO_API_KEY for the live test');
-      options.direct = { baseUrl: 'http://127.0.0.1:11436/v1', model: 'qwen3.8-flash-next-q6', apiKey: process.env.MACSTUDIO_API_KEY };
+      options.direct = { baseUrl: 'http://127.0.0.1:11436/v1', model: 'YOUR_MODEL_ID', apiKey: process.env.MACSTUDIO_API_KEY };
     }
     const probe = JSON.parse(await sshRequest(options, { mode, operation: 'probe', timeout: 30 }));
     assert.equal(probe.ok, true);
@@ -203,7 +203,7 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs/promises');
 const path = require('node:path');
 exports.run = async function () {
-  const extension = vscode.extensions.getExtension('yyang-local.macstudio-assistant');
+  const extension = vscode.extensions.getExtension('workshop-example.macstudio-assistant');
   assert.ok(extension);
   const assistant = await extension.activate();
   assert.ok(assistant);
@@ -211,7 +211,7 @@ exports.run = async function () {
   await assistant.context.secrets.store('macstudio.apiKey', process.env.MACSTUDIO_API_KEY);
   await vscode.workspace.getConfiguration('macstudio').update('mode', 'direct', vscode.ConfigurationTarget.Global);
   const connection = await assistant.connect();
-  assert.ok(connection.models.includes('qwen3.8-flash-next-q6'));
+  assert.ok(connection.models.includes('YOUR_MODEL_ID'));
   await vscode.commands.executeCommand('macstudio.open');
   const root = vscode.workspace.workspaceFolders[0].uri.fsPath;
   const read = await assistant.executeTool('local_read_file', { path: 'fixture.txt' });

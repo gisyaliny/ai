@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>9. Implementing RAG with Python &#8212; AI Tools Learning Handbook</title>
+    <title>9. 09 - Build a Small Grounded Question-Answering Pipeline Workshop &#8212; AI Tools Learning Handbook</title>
   
   
   
@@ -34,7 +34,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
     <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=6a604523" />
   
@@ -60,14 +60,378 @@
     <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs"></script>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk@0.2.0/dist/mermaid-layout-elk.esm.min.mjs"></script>
+    <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs";import elkLayouts from "https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk@0.2.0/dist/mermaid-layout-elk.esm.min.mjs";mermaid.registerLayoutLoaders(elkLayouts);mermaid.initialize({startOnLoad:false});</script>
+    <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+    <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs";
+
+const defaultStyle = document.createElement('style');
+defaultStyle.textContent = `pre.mermaid {
+    /* Same as .mermaid-container > pre */
+    display: block;
+    width: 100%;
+}
+
+pre.mermaid > svg {
+    /* Same as .mermaid-container > pre > svg */
+    height: 500px;
+    width: 100%;
+    max-width: 100% !important;
+}
+`;
+document.head.appendChild(defaultStyle);
+
+const fullscreenStyle = document.createElement('style');
+fullscreenStyle.textContent = `.mermaid-container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+.mermaid-container > pre {
+    display: block;
+    width: 100%;
+}
+
+.mermaid-container > pre > svg {
+    height: 500px;
+    width: 100%;
+    max-width: 100% !important;
+}
+
+.mermaid-fullscreen-btn {
+    width: 28px;
+    height: 28px;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    font-size: 14px;
+    line-height: 1;
+    padding: 0;
+    color: #333;
+}
+
+.mermaid-fullscreen-btn:hover {
+    opacity: 100% !important;
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+    transform: scale(1.1);
+}
+
+.mermaid-fullscreen-btn.dark-theme {
+    background: rgba(50, 50, 50, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #e0e0e0;
+}
+
+.mermaid-fullscreen-btn.dark-theme:hover {
+    background: rgba(60, 60, 60, 1);
+    box-shadow: 0 3px 10px rgba(255, 255, 255, 0.2);
+}
+
+.mermaid-fullscreen-modal {
+    display: none;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 95vw;
+    height: 100vh;
+    background: rgba(255, 255, 255, 0.98);
+    z-index: 9999;
+    padding: 20px;
+    overflow: auto;
+}
+
+.mermaid-fullscreen-modal.dark-theme {
+    background: rgba(0, 0, 0, 0.98);
+}
+
+.mermaid-fullscreen-modal.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mermaid-container-fullscreen {
+    position: relative;
+    width: 95vw;
+    height: 90vh;
+    max-width: 95vw;
+    max-height: 90vh;
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    overflow: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mermaid-container-fullscreen.dark-theme {
+    background: #1a1a1a;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+}
+
+.mermaid-container-fullscreen pre.mermaid {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mermaid-container-fullscreen .mermaid svg {
+    height: 100% !important;
+    width: 100% !important;
+    cursor: grab;
+}
+
+.mermaid-fullscreen-close {
+    position: fixed !important;
+    top: 20px !important;
+    right: 20px !important;
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    transition: all 0.2s;
+    font-size: 24px;
+    line-height: 1;
+    color: #333;
+}
+
+.mermaid-fullscreen-close:hover {
+    background: white;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+    transform: scale(1.1);
+}
+
+.mermaid-fullscreen-close.dark-theme {
+    background: rgba(50, 50, 50, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #e0e0e0;
+}
+
+.mermaid-fullscreen-close.dark-theme:hover {
+    background: rgba(60, 60, 60, 1);
+    box-shadow: 0 6px 16px rgba(255, 255, 255, 0.2);
+}
+
+.mermaid-fullscreen-modal .mermaid-fullscreen-btn {
+    display: none !important;
+}`;
+document.head.appendChild(fullscreenStyle);
+
+// Detect if page has dark background
+const isDarkTheme = () => {
+    const bgColor = window.getComputedStyle(document.body).backgroundColor;
+    const match = bgColor.match(/rgb\((\d+),\s*(\d+),\s*(\d+)/);
+    if (match) {
+        const r = parseInt(match[1]);
+        const g = parseInt(match[2]);
+        const b = parseInt(match[3]);
+        const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+        return brightness < 128;
+    }
+    return false;
+};
+
+const load = async () => {
+    await mermaid.run();
+
+    const all_mermaids = document.querySelectorAll(".mermaid");
+    const mermaids_processed = document.querySelectorAll(".mermaid[data-processed='true']");
+
+    if ("False" === "True") {
+        const mermaids_to_add_zoom = -1 === -1 ? all_mermaids.length : -1;
+        if(mermaids_to_add_zoom > 0) {
+            var svgs = d3.selectAll("");
+            if(all_mermaids.length !== mermaids_processed.length) {
+                setTimeout(load, 200);
+                return;
+            } else if(svgs.size() !== mermaids_to_add_zoom) {
+                setTimeout(load, 200);
+                return;
+            } else {
+                svgs.each(function() {
+                    var svg = d3.select(this);
+                    svg.html("<g class='wrapper'>" + svg.html() + "</g>");
+                    var inner = svg.select("g");
+                    var zoom = d3.zoom().on("zoom", function(event) {
+                        inner.attr("transform", event.transform);
+                    });
+                    svg.call(zoom);
+                });
+            }
+        }
+    } else if(all_mermaids.length !== mermaids_processed.length) {
+        // Wait for mermaid to process all diagrams
+        setTimeout(load, 200);
+        return;
+    }
+
+    const darkTheme = isDarkTheme();
+
+    // Stop here if not adding fullscreen capability
+    if ("True" !== "True") return;
+
+    const modal = document.createElement('div');
+    modal.className = 'mermaid-fullscreen-modal' + (darkTheme ? ' dark-theme' : '');
+    modal.setAttribute('role', 'dialog');
+    modal.setAttribute('aria-modal', 'true');
+    modal.setAttribute('aria-label', 'Fullscreen diagram viewer');
+    modal.innerHTML = `
+        <button class="mermaid-fullscreen-close${darkTheme ? ' dark-theme' : ''}" aria-label="Close fullscreen">✕</button>
+        <div class="mermaid-container-fullscreen${darkTheme ? ' dark-theme' : ''}"></div>
+    `;
+    document.body.appendChild(modal);
+
+    const modalContent = modal.querySelector('.mermaid-container-fullscreen');
+    const closeBtn = modal.querySelector('.mermaid-fullscreen-close');
+
+    let previousScrollOffset = [window.scrollX, window.scrollY];
+
+    const closeModal = () => {
+        modal.classList.remove('active');
+        modalContent.innerHTML = '';
+        document.body.style.overflow = ''
+        window.scrollTo({left: previousScrollOffset[0], top: previousScrollOffset[1], behavior: 'instant'});
+    };
+
+    closeBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+    });
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal.classList.contains('active')) {
+            closeModal();
+        }
+    });
+
+    const allButtons = [];
+
+    document.querySelectorAll('.mermaid').forEach((mermaidDiv) => {
+        if (mermaidDiv.parentNode.classList.contains('mermaid-container') ||
+            mermaidDiv.closest('.mermaid-fullscreen-modal')) {
+            return;
+        }
+
+        const container = document.createElement('div');
+        container.className = 'mermaid-container';
+        mermaidDiv.parentNode.insertBefore(container, mermaidDiv);
+        container.appendChild(mermaidDiv);
+
+        const fullscreenBtn = document.createElement('button');
+        fullscreenBtn.className = 'mermaid-fullscreen-btn' + (darkTheme ? ' dark-theme' : '');
+        fullscreenBtn.setAttribute('aria-label', 'View diagram in fullscreen');
+        fullscreenBtn.textContent = '⛶';
+        fullscreenBtn.style.opacity = '50%';
+
+        // Calculate dynamic position based on diagram's margin and padding
+        const diagramStyle = window.getComputedStyle(mermaidDiv);
+        const marginTop = parseFloat(diagramStyle.marginTop) || 0;
+        const marginRight = parseFloat(diagramStyle.marginRight) || 0;
+        const paddingTop = parseFloat(diagramStyle.paddingTop) || 0;
+        const paddingRight = parseFloat(diagramStyle.paddingRight) || 0;
+        fullscreenBtn.style.top = `${marginTop + paddingTop + 4}px`;
+        fullscreenBtn.style.right = `${marginRight + paddingRight + 4}px`;
+
+        fullscreenBtn.addEventListener('click', () => {
+            previousScrollOffset = [window.scroll, window.scrollY];
+            const clone = mermaidDiv.cloneNode(true);
+            modalContent.innerHTML = '';
+            modalContent.appendChild(clone);
+
+            const svg = clone.querySelector('svg');
+            if (svg) {
+                svg.removeAttribute('width');
+                svg.removeAttribute('height');
+                svg.style.width = '100%';
+                svg.style.height = 'auto';
+                svg.style.maxWidth = '100%';
+                svg.style.sdisplay = 'block';
+
+                if ("False" === "True") {
+                    setTimeout(() => {
+                        const g = svg.querySelector('g');
+                        if (g) {
+                            var svgD3 = d3.select(svg);
+                            svgD3.html("<g class='wrapper'>" + svgD3.html() + "</g>");
+                            var inner = svgD3.select("g");
+                            var zoom = d3.zoom().on("zoom", function(event) {
+                                inner.attr("transform", event.transform);
+                            });
+                            svgD3.call(zoom);
+                        }
+                    }, 100);
+                }
+            }
+
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+
+        container.appendChild(fullscreenBtn);
+        allButtons.push(fullscreenBtn);
+    });
+
+    // Update theme classes when theme changes
+    const updateTheme = () => {
+        const dark = isDarkTheme();
+        allButtons.forEach(btn => {
+            if (dark) {
+                btn.classList.add('dark-theme');
+            } else {
+                btn.classList.remove('dark-theme');
+            }
+        });
+        if (dark) {
+            modal.classList.add('dark-theme');
+            modalContent.classList.add('dark-theme');
+            closeBtn.classList.add('dark-theme');
+        } else {
+            modal.classList.remove('dark-theme');
+            modalContent.classList.remove('dark-theme');
+            closeBtn.classList.remove('dark-theme');
+        }
+    };
+
+    // Watch for theme changes
+    const observer = new MutationObserver(updateTheme);
+    observer.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ['class', 'style', 'data-theme']
+    });
+    observer.observe(document.body, {
+        attributes: true,
+        attributeFilter: ['class', 'style']
+    });
+};
+
+window.addEventListener("load", load);
+</script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'docs/rag/02-implementing-rag';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
-    <link rel="canonical" href="https://gisyaliny.github.io/AI/docs/rag/02-implementing-rag.html" />
-    <link rel="icon" href="../../_static/fav.ico"/>
+    <link rel="canonical" href="https://gisyaliny.github.io/ai/docs/rag/02-implementing-rag.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="10. Graph RAG: Knowledge Graphs Meet Retrieval" href="03-graph-rag.html" />
-    <link rel="prev" title="8. What is RAG? (Retrieval-Augmented Generation)" href="01-what-is-rag.html" />
+    <link rel="next" title="10. 10 - Retrieve a Two-Hop Evidence Path Workshop" href="03-graph-rag.html" />
+    <link rel="prev" title="8. 08 - Observe Retrieval Before Generation Workshop" href="01-what-is-rag.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
@@ -194,14 +558,8 @@
   
   
   
-    
-    
-      
-    
-    
-    <img src="../../_static/logo.png" class="logo__image only-light" alt="AI Tools Learning Handbook - Home"/>
-    <img src="../../_static/logo.png" class="logo__image only-dark pst-js-only" alt="AI Tools Learning Handbook - Home"/>
   
+    <p class="title logo__title">AI Tools Learning Handbook</p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -213,30 +571,32 @@
 </button></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
-        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Vibe Coding</span></p>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Vibe Coding Workshops</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../vibe-coding/01-environment-and-basics.html">1. Environment Setup &amp; Basic Interaction (Environment Setup &amp; Basic Interaction)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../vibe-coding/02-complex-tasks-and-terminal.html">2. Complex Tasks &amp; Terminal Control</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../vibe-coding/03-multimodal-and-context.html">3. Multimodal &amp; Context Management</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../vibe-coding/04-advanced-features.html">4. Advanced Features &amp; Customization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vibe-coding/01-environment-and-basics.html">1. 01 - Build and Test a Small App Workshop</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vibe-coding/02-complex-tasks-and-terminal.html">2. 02 - Refactor Without Losing Behavior Workshop</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vibe-coding/03-multimodal-and-context.html">3. 03 - Reproduce a Design and Preserve Context Workshop</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vibe-coding/04-advanced-features.html">4. 04 - Create a Reusable Review Skill Workshop</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Research</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Research Workshop</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../research/01-ai-prompts-for-research.html">5. AI Prompts &amp; Skills for Academic Research</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../research/01-ai-prompts-for-research.html">5. 05 - Audit Claims Before Adding Citations Workshop</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Local LLM</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Local LLM Workshops</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../local-llm/01-deploy-local-llm.html">6. Deploy Open-Source LLMs Locally with Ollama &amp; AnythingLLM</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../local-llm/02-mastering-ollama.html">7. — Mastering Ollama: Local Models, APIs, RAG, Tools, and Production Patterns</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../local-llm/01-deploy-local-llm.html">6. 06 - Run a Local Model and Verify the Endpoint Workshop</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../local-llm/02-mastering-ollama.html">7. 07 - From Local Chat to a Grounded API Response Workshop</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">RAG</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">RAG Workshops</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="01-what-is-rag.html">8. What is RAG? (Retrieval-Augmented Generation)</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">9. Implementing RAG with Python</a></li>
-<li class="toctree-l1"><a class="reference internal" href="03-graph-rag.html">10. Graph RAG: Knowledge Graphs Meet Retrieval</a></li>
+<li class="toctree-l1"><a class="reference internal" href="01-what-is-rag.html">8. 08 - Observe Retrieval Before Generation Workshop</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">9. 09 - Build a Small Grounded Question-Answering Pipeline Workshop</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03-graph-rag.html">10. 10 - Retrieve a Two-Hop Evidence Path Workshop</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Workshops</span></p>
 <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../workshops/index.html">AI Hands-on Workshops</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../workshops/invitation.html">Build Your Own Coding Agent — Workshop Invitation</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../workshops/macstudio-agent/index.html">00 - Build a Mac Studio Coding Agent for VS Code</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../workshops/macstudio-agent/01-architecture-and-connection.html">01 - Architecture and Connection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../workshops/macstudio-agent/02-first-extension.html">02 - Your First VS Code Extension</a></li>
@@ -308,7 +668,7 @@
       
       
       
-      <li><a href="https://github.com/gisyaliny/AI" target="_blank"
+      <li><a href="https://github.com/gisyaliny/ai" target="_blank"
    class="btn btn-sm btn-source-repository-button dropdown-item"
    title="Source repository"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -325,7 +685,7 @@
       
       
       
-      <li><a href="https://github.com/gisyaliny/AI/edit/main/docs/rag/02-implementing-rag.md" target="_blank"
+      <li><a href="https://github.com/gisyaliny/ai/edit/main/docs/rag/02-implementing-rag.md" target="_blank"
    class="btn btn-sm btn-source-edit-button dropdown-item"
    title="Suggest edit"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -342,7 +702,7 @@
       
       
       
-      <li><a href="https://github.com/gisyaliny/AI/issues/new?title=Issue%20on%20page%20%2Fdocs/rag/02-implementing-rag.html&body=Your%20issue%20content%20here." target="_blank"
+      <li><a href="https://github.com/gisyaliny/ai/issues/new?title=Issue%20on%20page%20%2Fdocs/rag/02-implementing-rag.html&body=Your%20issue%20content%20here." target="_blank"
    class="btn btn-sm btn-source-issues-button dropdown-item"
    title="Open an issue"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -448,7 +808,7 @@
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Implementing RAG with Python</h1>
+    <h1>09 - Build a Small Grounded Question-Answering Pipeline Workshop</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -458,24 +818,29 @@
             </div>
             <nav aria-label="Page">
                 <ul class="pst-show_toc_level nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">9.1. Prerequisites</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#project-setup">9.2. Project Setup</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-chunking">9.3. Step 1 — Chunking</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-recursive-character-splitting-langchain-style">9.3.1. Advanced: Recursive Character Splitting (LangChain Style)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#workshop-preparation">9.1. Workshop preparation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hands-on-route">9.2. Hands-on route</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#acceptance-evidence">9.3. Acceptance evidence</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#troubleshooting-and-cleanup">9.4. Troubleshooting and cleanup</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reference-and-optional-extensions">9.5. Reference and optional extensions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">9.6. Prerequisites</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#project-setup">9.7. Project Setup</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-chunking">9.8. Step 1 — Chunking</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-recursive-character-splitting-langchain-style">9.8.1. Advanced: Recursive Character Splitting (LangChain Style)</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-embedding">9.4. Step 2 — Embedding</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-3-storing-in-a-vector-database-chromadb">9.5. Step 3 — Storing in a Vector Database (ChromaDB)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-4-retrieval">9.6. Step 4 — Retrieval</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-5-reranking-with-cross-encoder">9.7. Step 5 — Reranking with Cross-Encoder</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-6-generation-with-an-llm">9.8. Step 6 — Generation with an LLM</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#setting-up-your-env-file">9.8.1. Setting up your <code class="docutils literal notranslate"><span class="pre">.env</span></code> file</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-embedding">9.9. Step 2 — Embedding</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-3-storing-in-a-vector-database-chromadb">9.10. Step 3 — Storing in a Vector Database (ChromaDB)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-4-retrieval">9.11. Step 4 — Retrieval</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-5-reranking-with-cross-encoder">9.12. Step 5 — Reranking with Cross-Encoder</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-6-generation-with-an-llm">9.13. Step 6 — Generation with an LLM</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#setting-up-your-env-file">9.13.1. Setting up your <code class="docutils literal notranslate"><span class="pre">.env</span></code> file</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#putting-it-all-together">9.9. Putting It All Together</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#complete-project-structure">9.10. Complete Project Structure</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#read-more">9.11. Read More</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#knowledge-quiz">9.12. Knowledge Quiz</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#putting-it-all-together">9.14. Putting It All Together</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#complete-project-structure">9.15. Complete Project Structure</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#read-more">9.16. Read More</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#knowledge-quiz">9.17. Knowledge Quiz</a></li>
 </ul>
             </nav>
         </div>
@@ -487,12 +852,67 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="implementing-rag-with-python">
-<h1><span class="section-number">9. </span>Implementing RAG with Python<a class="headerlink" href="#implementing-rag-with-python" title="Link to this heading">#</a></h1>
+  <section class="tex2jax_ignore mathjax_ignore" id="build-a-small-grounded-question-answering-pipeline-workshop">
+<h1><span class="section-number">9. </span>09 - Build a Small Grounded Question-Answering Pipeline Workshop<a class="headerlink" href="#build-a-small-grounded-question-answering-pipeline-workshop" title="Link to this heading">#</a></h1>
+<p><strong>Time:</strong> 60 minutes · <strong>Audience:</strong> beginners · <strong>Updated:</strong> November 18, 2026.</p>
+<section id="workshop-preparation">
+<h2><span class="section-number">9.1. </span>Workshop preparation<a class="headerlink" href="#workshop-preparation" title="Link to this heading">#</a></h2>
+<p>Completed retrieval workshop, a local Ollama chat model, and the three Python files from the kit.</p>
+<p>Download the <a class="reference download internal" download="" href="../../_downloads/0b5c1fa20b29575096ee36a77e8402ae/workshop-kit.zip"><code class="xref download docutils literal notranslate"><span class="pre">shared</span> <span class="pre">workshop</span> <span class="pre">kit</span></code></a> and extract it into a disposable folder. <a class="reference internal" href="../workshops/index.html"><span class="std std-doc">Browse all workshops</span></a>. Code blocks run in your local terminal, not on this web page. Record your tool versions and use synthetic inputs.</p>
+</section>
+<section id="hands-on-route">
+<h2><span class="section-number">9.2. </span>Hands-on route<a class="headerlink" href="#hands-on-route" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p>Run the offline assertions before connecting to a model. Read local_rag.py and identify the evidence selection, prompt construction, request and result stages.</p></li>
+<li><p>Set OLLAMA_MODEL as shown in the Ollama API workshop and run <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">local_rag.py</span></code>.</p></li>
+<li><p>Check the first answer against S1; a citation label alone does not prove support. Confirm the unsupported question takes the empty-evidence branch.</p></li>
+<li><p>Add one distractor and one contradictory source. Ask the same question again and record whether the answer expresses the conflict. Do not grade a fluent answer as correct if it hides contradictory evidence.</p></li>
+<li><p>For the optional semantic extension below, replace lexical retrieval with embeddings, keep the same document and question embedding model, and rerun the same evaluation set. Use a currently supported generation model from your provider; do not assume a historical model ID remains available.</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">"""Ollama native API exercise. Set OLLAMA_MODEL to a locally installed model."""</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span><span class="o">,</span><span class="w"> </span><span class="nn">os</span><span class="o">,</span><span class="w"> </span><span class="nn">urllib.request</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">retrieval</span><span class="w"> </span><span class="kn">import</span> <span class="n">retrieve</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">answer</span><span class="p">(</span><span class="n">question</span><span class="p">):</span>
+    <span class="n">evidence</span><span class="o">=</span><span class="n">retrieve</span><span class="p">(</span><span class="n">question</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">evidence</span><span class="p">:</span> <span class="k">return</span> <span class="p">{</span><span class="s1">'answer'</span><span class="p">:</span><span class="s1">'Insufficient evidence'</span><span class="p">,</span><span class="s1">'sources'</span><span class="p">:[]}</span>
+    <span class="n">model</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'OLLAMA_MODEL'</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">model</span><span class="p">:</span> <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">'Set OLLAMA_MODEL to an ID from ollama list'</span><span class="p">)</span>
+    <span class="n">prompt</span><span class="o">=</span><span class="s1">'Use only the evidence below. Cite source IDs. If unsupported, say insufficient evidence.</span><span class="se">\n</span><span class="s1">'</span><span class="o">+</span><span class="nb">repr</span><span class="p">(</span><span class="n">evidence</span><span class="p">)</span><span class="o">+</span><span class="s1">'</span><span class="se">\n</span><span class="s1">Question: '</span><span class="o">+</span><span class="n">question</span>
+    <span class="n">req</span><span class="o">=</span><span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">Request</span><span class="p">(</span><span class="s1">'http://127.0.0.1:11434/api/chat'</span><span class="p">,</span><span class="n">data</span><span class="o">=</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">({</span><span class="s1">'model'</span><span class="p">:</span><span class="n">model</span><span class="p">,</span><span class="s1">'messages'</span><span class="p">:[{</span><span class="s1">'role'</span><span class="p">:</span><span class="s1">'user'</span><span class="p">,</span><span class="s1">'content'</span><span class="p">:</span><span class="n">prompt</span><span class="p">}],</span><span class="s1">'stream'</span><span class="p">:</span><span class="kc">False</span><span class="p">})</span><span class="o">.</span><span class="n">encode</span><span class="p">(),</span><span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s1">'Content-Type'</span><span class="p">:</span><span class="s1">'application/json'</span><span class="p">})</span>
+    <span class="k">with</span> <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">req</span><span class="p">,</span><span class="n">timeout</span><span class="o">=</span><span class="mi">180</span><span class="p">)</span> <span class="k">as</span> <span class="n">r</span><span class="p">:</span> <span class="n">result</span><span class="o">=</span><span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s1">'answer'</span><span class="p">:</span><span class="n">result</span><span class="p">[</span><span class="s1">'message'</span><span class="p">][</span><span class="s1">'content'</span><span class="p">],</span><span class="s1">'sources'</span><span class="p">:[</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">evidence</span><span class="p">]}</span>
+<span class="k">if</span> <span class="vm">__name__</span><span class="o">==</span><span class="s1">'__main__'</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">answer</span><span class="p">(</span><span class="s1">'When does the library open?'</span><span class="p">),</span><span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">answer</span><span class="p">(</span><span class="s1">'parking fees'</span><span class="p">),</span><span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>The complete beginner path uses only Python’s standard library and Ollama. The older multi-library pipeline below is additional reading; install its optional dependencies in a separate environment and verify current APIs before using it.</p>
+</section>
+<section id="acceptance-evidence">
+<h2><span class="section-number">9.3. </span>Acceptance evidence<a class="headerlink" href="#acceptance-evidence" title="Link to this heading">#</a></h2>
+<p>A working local script, cited answer, unsupported-case result and a comparison table for the conflict experiment.</p>
+<p>Create <code class="docutils literal notranslate"><span class="pre">evidence.md</span></code> with your environment, commands, observed outputs, failures and fixes. Label anything you did not run. Do not include secrets, screenshots of account pages, or private paths.</p>
+</section>
+<section id="troubleshooting-and-cleanup">
+<h2><span class="section-number">9.4. </span>Troubleshooting and cleanup<a class="headerlink" href="#troubleshooting-and-cleanup" title="Link to this heading">#</a></h2>
+<p>Import error: run from the kit folder with <a class="reference external" href="http://retrieval.py">retrieval.py</a> alongside local_rag.py. Citation wrong: compare the claim with the source text, not just the ID. Stop any demo server when finished; retain only the small fixture and evidence needed to reproduce your result.</p>
+<pre  class="mermaid">
+        flowchart LR
+    A[&quot;Prepare synthetic fixture&quot;] --&gt; B[&quot;Run guided task&quot;]
+    B --&gt; C[&quot;Check observed result&quot;]
+    C --&gt; D[&quot;Record evidence and limitations&quot;]
+    </pre><blockquote>
+<div><p><strong>Image Suggestion (Nanobanana Prompt)</strong>: A clean technical workshop illustration titled “Build a Small Grounded Question-Answering Pipeline”, with a neutral editor window, a small synthetic fixture, and an evidence checklist. Use legible navy and teal typography on a light background, even lighting, and a visible “Concept illustration” label. Show no account identity, private paths, or simulated success presented as a screenshot.</p>
+</div></blockquote>
+</section>
+<section id="reference-and-optional-extensions">
+<h2><span class="section-number">9.5. </span>Reference and optional extensions<a class="headerlink" href="#reference-and-optional-extensions" title="Link to this heading">#</a></h2>
+<p>The material below provides background. Complete the guided acceptance test above first; vendor interfaces and example model IDs can change. Consult the linked official documentation for the version you use.</p>
 <p>This hands-on tutorial walks you through building a complete RAG system from scratch using Python. You will implement every stage of the pipeline: chunking, embedding, vector storage, retrieval, reranking, and generation.</p>
+</section>
 <hr class="docutils" />
 <section id="prerequisites">
-<h2><span class="section-number">9.1. </span>Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">9.6. </span>Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this heading">#</a></h2>
 <ul class="simple">
 <li><p>Python 3.10+</p></li>
 <li><p>A package manager: <a class="reference external" href="https://docs.astral.sh/uv/">uv</a> (recommended) or pip</p></li>
@@ -502,7 +922,7 @@
 </section>
 <hr class="docutils" />
 <section id="project-setup">
-<h2><span class="section-number">9.2. </span>Project Setup<a class="headerlink" href="#project-setup" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">9.7. </span>Project Setup<a class="headerlink" href="#project-setup" title="Link to this heading">#</a></h2>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create project directory</span>
 mkdir<span class="w"> </span>rag-demo<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>rag-demo
 
@@ -546,7 +966,7 @@ uv<span class="w"> </span>add<span class="w"> </span>sentence-transformers<span 
 </section>
 <hr class="docutils" />
 <section id="step-1-chunking">
-<h2><span class="section-number">9.3. </span>Step 1 — Chunking<a class="headerlink" href="#step-1-chunking" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">9.8. </span>Step 1 — Chunking<a class="headerlink" href="#step-1-chunking" title="Link to this heading">#</a></h2>
 <p>The first step is splitting your document into smaller chunks. Here we use a simple line-based strategy:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span>
 
@@ -568,7 +988,7 @@ uv<span class="w"> </span>add<span class="w"> </span>sentence-transformers<span 
 </pre></div>
 </div>
 <section id="advanced-recursive-character-splitting-langchain-style">
-<h3><span class="section-number">9.3.1. </span>Advanced: Recursive Character Splitting (LangChain Style)<a class="headerlink" href="#advanced-recursive-character-splitting-langchain-style" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">9.8.1. </span>Advanced: Recursive Character Splitting (LangChain Style)<a class="headerlink" href="#advanced-recursive-character-splitting-langchain-style" title="Link to this heading">#</a></h3>
 <p>For production systems, use recursive splitting with overlap:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">recursive_chunk</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">chunk_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">500</span><span class="p">,</span> <span class="n">overlap</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">50</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">"""Split text with overlap to preserve context across boundaries."""</span>
@@ -585,7 +1005,7 @@ uv<span class="w"> </span>add<span class="w"> </span>sentence-transformers<span 
 </section>
 <hr class="docutils" />
 <section id="step-2-embedding">
-<h2><span class="section-number">9.4. </span>Step 2 — Embedding<a class="headerlink" href="#step-2-embedding" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">9.9. </span>Step 2 — Embedding<a class="headerlink" href="#step-2-embedding" title="Link to this heading">#</a></h2>
 <p>Convert each chunk into a vector using a Sentence Transformer embedding model:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sentence_transformers</span><span class="w"> </span><span class="kn">import</span> <span class="n">SentenceTransformer</span>
 
@@ -610,7 +1030,7 @@ uv<span class="w"> </span>add<span class="w"> </span>sentence-transformers<span 
 </section>
 <hr class="docutils" />
 <section id="step-3-storing-in-a-vector-database-chromadb">
-<h2><span class="section-number">9.5. </span>Step 3 — Storing in a Vector Database (ChromaDB)<a class="headerlink" href="#step-3-storing-in-a-vector-database-chromadb" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">9.10. </span>Step 3 — Storing in a Vector Database (ChromaDB)<a class="headerlink" href="#step-3-storing-in-a-vector-database-chromadb" title="Link to this heading">#</a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">chromadb</span>
 
 <span class="c1"># Create an in-memory vector database</span>
@@ -637,7 +1057,7 @@ uv<span class="w"> </span>add<span class="w"> </span>sentence-transformers<span 
 </section>
 <hr class="docutils" />
 <section id="step-4-retrieval">
-<h2><span class="section-number">9.6. </span>Step 4 — Retrieval<a class="headerlink" href="#step-4-retrieval" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">9.11. </span>Step 4 — Retrieval<a class="headerlink" href="#step-4-retrieval" title="Link to this heading">#</a></h2>
 <p>Search the vector database for chunks most similar to the user’s question:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">retrieve</span><span class="p">(</span><span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">top_k</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">"""Find the top_k most relevant chunks for a given query."""</span>
@@ -660,7 +1080,7 @@ uv<span class="w"> </span>add<span class="w"> </span>sentence-transformers<span 
 </section>
 <hr class="docutils" />
 <section id="step-5-reranking-with-cross-encoder">
-<h2><span class="section-number">9.7. </span>Step 5 — Reranking with Cross-Encoder<a class="headerlink" href="#step-5-reranking-with-cross-encoder" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">9.12. </span>Step 5 — Reranking with Cross-Encoder<a class="headerlink" href="#step-5-reranking-with-cross-encoder" title="Link to this heading">#</a></h2>
 <p>Refine the retrieved results using a more accurate Cross-Encoder model:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sentence_transformers</span><span class="w"> </span><span class="kn">import</span> <span class="n">CrossEncoder</span>
 
@@ -690,7 +1110,7 @@ uv<span class="w"> </span>add<span class="w"> </span>sentence-transformers<span 
 </section>
 <hr class="docutils" />
 <section id="step-6-generation-with-an-llm">
-<h2><span class="section-number">9.8. </span>Step 6 — Generation with an LLM<a class="headerlink" href="#step-6-generation-with-an-llm" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">9.13. </span>Step 6 — Generation with an LLM<a class="headerlink" href="#step-6-generation-with-an-llm" title="Link to this heading">#</a></h2>
 <p>Finally, send the reranked chunks and the question to a large language model:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">dotenv</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_dotenv</span>
@@ -726,7 +1146,7 @@ uv<span class="w"> </span>add<span class="w"> </span>sentence-transformers<span 
 </pre></div>
 </div>
 <section id="setting-up-your-env-file">
-<h3><span class="section-number">9.8.1. </span>Setting up your <code class="docutils literal notranslate"><span class="pre">.env</span></code> file<a class="headerlink" href="#setting-up-your-env-file" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">9.13.1. </span>Setting up your <code class="docutils literal notranslate"><span class="pre">.env</span></code> file<a class="headerlink" href="#setting-up-your-env-file" title="Link to this heading">#</a></h3>
 <p>Create a <code class="docutils literal notranslate"><span class="pre">.env</span></code> file in your project root:</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>GEMINI_API_KEY=your_api_key_here
 </pre></div>
@@ -735,7 +1155,7 @@ uv<span class="w"> </span>add<span class="w"> </span>sentence-transformers<span 
 </section>
 <hr class="docutils" />
 <section id="putting-it-all-together">
-<h2><span class="section-number">9.9. </span>Putting It All Together<a class="headerlink" href="#putting-it-all-together" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">9.14. </span>Putting It All Together<a class="headerlink" href="#putting-it-all-together" title="Link to this heading">#</a></h2>
 <p>Here is the complete pipeline in one clean function:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">ask_rag</span><span class="p">(</span><span class="n">question</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">doc_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"my_document.md"</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">"""End-to-end RAG pipeline: chunk → embed → store → retrieve → rerank → generate."""</span>
@@ -760,7 +1180,7 @@ uv<span class="w"> </span>add<span class="w"> </span>sentence-transformers<span 
 </section>
 <hr class="docutils" />
 <section id="complete-project-structure">
-<h2><span class="section-number">9.10. </span>Complete Project Structure<a class="headerlink" href="#complete-project-structure" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">9.15. </span>Complete Project Structure<a class="headerlink" href="#complete-project-structure" title="Link to this heading">#</a></h2>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>rag-demo/
 ├── .env                    # API keys (add to .gitignore!)
 ├── pyproject.toml          # Dependencies managed by uv
@@ -772,7 +1192,7 @@ uv<span class="w"> </span>add<span class="w"> </span>sentence-transformers<span 
 </section>
 <hr class="docutils" />
 <section id="read-more">
-<h2><span class="section-number">9.11. </span>Read More<a class="headerlink" href="#read-more" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">9.16. </span>Read More<a class="headerlink" href="#read-more" title="Link to this heading">#</a></h2>
 <ul class="simple">
 <li><p><a class="reference external" href="https://www.sbert.net/">Sentence Transformers Documentation</a> — Embedding and cross-encoder model library.</p></li>
 <li><p><a class="reference external" href="https://docs.trychroma.com/getting-started">ChromaDB Getting Started</a> — Official ChromaDB quickstart guide.</p></li>
@@ -785,7 +1205,7 @@ uv<span class="w"> </span>add<span class="w"> </span>sentence-transformers<span 
 </section>
 <hr class="docutils" />
 <section id="knowledge-quiz">
-<h2><span class="section-number">9.12. </span>Knowledge Quiz<a class="headerlink" href="#knowledge-quiz" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">9.17. </span>Knowledge Quiz<a class="headerlink" href="#knowledge-quiz" title="Link to this heading">#</a></h2>
 <p><strong>Q1: Why do we use <code class="docutils literal notranslate"><span class="pre">uv</span> <span class="pre">run</span> <span class="pre">jupyter</span> <span class="pre">notebook</span></code> instead of just <code class="docutils literal notranslate"><span class="pre">jupyter</span> <span class="pre">notebook</span></code>?</strong></p>
 <details>
 <summary>Answer</summary>
@@ -840,7 +1260,7 @@ The retrieval would fail completely. Different embedding models map text into in
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title"><span class="section-number">8. </span>What is RAG? (Retrieval-Augmented Generation)</p>
+        <p class="prev-next-title"><span class="section-number">8. </span>08 - Observe Retrieval Before Generation Workshop</p>
       </div>
     </a>
     <a class="right-next"
@@ -848,7 +1268,7 @@ The retrieval would fail completely. Different embedding models map text into in
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">10. </span>Graph RAG: Knowledge Graphs Meet Retrieval</p>
+        <p class="prev-next-title"><span class="section-number">10. </span>10 - Retrieve a Two-Hop Evidence Path Workshop</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -870,24 +1290,29 @@ The retrieval would fail completely. Different embedding models map text into in
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">9.1. Prerequisites</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#project-setup">9.2. Project Setup</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-chunking">9.3. Step 1 — Chunking</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-recursive-character-splitting-langchain-style">9.3.1. Advanced: Recursive Character Splitting (LangChain Style)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#workshop-preparation">9.1. Workshop preparation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hands-on-route">9.2. Hands-on route</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#acceptance-evidence">9.3. Acceptance evidence</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#troubleshooting-and-cleanup">9.4. Troubleshooting and cleanup</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reference-and-optional-extensions">9.5. Reference and optional extensions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">9.6. Prerequisites</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#project-setup">9.7. Project Setup</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-chunking">9.8. Step 1 — Chunking</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-recursive-character-splitting-langchain-style">9.8.1. Advanced: Recursive Character Splitting (LangChain Style)</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-embedding">9.4. Step 2 — Embedding</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-3-storing-in-a-vector-database-chromadb">9.5. Step 3 — Storing in a Vector Database (ChromaDB)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-4-retrieval">9.6. Step 4 — Retrieval</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-5-reranking-with-cross-encoder">9.7. Step 5 — Reranking with Cross-Encoder</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-6-generation-with-an-llm">9.8. Step 6 — Generation with an LLM</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#setting-up-your-env-file">9.8.1. Setting up your <code class="docutils literal notranslate"><span class="pre">.env</span></code> file</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-embedding">9.9. Step 2 — Embedding</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-3-storing-in-a-vector-database-chromadb">9.10. Step 3 — Storing in a Vector Database (ChromaDB)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-4-retrieval">9.11. Step 4 — Retrieval</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-5-reranking-with-cross-encoder">9.12. Step 5 — Reranking with Cross-Encoder</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-6-generation-with-an-llm">9.13. Step 6 — Generation with an LLM</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#setting-up-your-env-file">9.13.1. Setting up your <code class="docutils literal notranslate"><span class="pre">.env</span></code> file</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#putting-it-all-together">9.9. Putting It All Together</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#complete-project-structure">9.10. Complete Project Structure</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#read-more">9.11. Read More</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#knowledge-quiz">9.12. Knowledge Quiz</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#putting-it-all-together">9.14. Putting It All Together</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#complete-project-structure">9.15. Complete Project Structure</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#read-more">9.16. Read More</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#knowledge-quiz">9.17. Knowledge Quiz</a></li>
 </ul>
   </nav></div>
 

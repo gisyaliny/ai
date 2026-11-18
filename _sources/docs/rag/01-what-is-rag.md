@@ -1,4 +1,51 @@
-# What is RAG? (Retrieval-Augmented Generation)
+# 08 - Observe Retrieval Before Generation Workshop
+
+**Time:** 35 minutes · **Audience:** beginners · **Updated:** November 18, 2026.
+
+## Workshop preparation
+
+Python 3.10+ and the workshop kit; no API key or model required.
+
+Download the {download}`shared workshop kit <../workshops/assets/workshop-kit.zip>` and extract it into a disposable folder. [Browse all workshops](../workshops/index.md). Code blocks run in your local terminal, not on this web page. Record your tool versions and use synthetic inputs.
+
+## Hands-on route
+
+1. Read the three source records in retrieval.py and predict which source should answer “library opens”.
+2. Run `python retrieval.py`. Verify S1 is ranked first and the unsupported parking question returns an empty list.
+3. Add a fourth source that also mentions the library but contains no opening time. Run again and inspect distractors.
+4. Try “What time can I borrow books?” and compare it with “library opens”. Write down why lexical matching can miss paraphrases.
+5. Create a table of five questions, expected source IDs, and returned IDs. Report retrieval success separately from answer quality. Do not call the baseline semantic vector search.
+
+```python
+from retrieval import retrieve
+for question in ['library opens', 'library closes', 'makerspace safety',
+                 'parking fees', 'What time can I borrow books?']:
+    print(question, retrieve(question))
+```
+
+## Acceptance evidence
+
+A five-question retrieval evaluation and one documented limitation.
+
+Create `evidence.md` with your environment, commands, observed outputs, failures and fixes. Label anything you did not run. Do not include secrets, screenshots of account pages, or private paths.
+
+## Troubleshooting and cleanup
+
+Empty retrieval can be correct for missing evidence. Adding a generator will not repair a missing source; inspect retrieval first. Stop any demo server when finished; retain only the small fixture and evidence needed to reproduce your result.
+
+```{mermaid}
+flowchart LR
+    A["Prepare synthetic fixture"] --> B["Run guided task"]
+    B --> C["Check observed result"]
+    C --> D["Record evidence and limitations"]
+```
+
+> **Image Suggestion (Nanobanana Prompt)**: A clean technical workshop illustration titled “Observe Retrieval Before Generation”, with a neutral editor window, a small synthetic fixture, and an evidence checklist. Use legible navy and teal typography on a light background, even lighting, and a visible “Concept illustration” label. Show no account identity, private paths, or simulated success presented as a screenshot.
+
+## Reference and optional extensions
+
+The material below provides background. Complete the guided acceptance test above first; vendor interfaces and example model IDs can change. Consult the linked official documentation for the version you use.
+
 
 This chapter explains the **core concepts** behind Retrieval-Augmented Generation from the ground up. By the end, you will understand why RAG exists, how every component works, and when to use it.
 

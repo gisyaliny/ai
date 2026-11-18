@@ -1,6 +1,54 @@
-# Deploy Open-Source LLMs Locally with Ollama & AnythingLLM
+# 06 - Run a Local Model and Verify the Endpoint Workshop
 
-Running large language models (LLMs) on your own machine gives you complete privacy, zero API costs, and the freedom to experiment offline. This tutorial walks you through the entire local AI stack — from installing your first model with **Ollama**, to building a private document Q&A system with **AnythingLLM**, and finally publishing your own fine-tuned model to **Hugging Face**.
+**Time:** 60 minutes · **Audience:** beginners · **Updated:** November 18, 2026.
+
+## Workshop preparation
+
+A supported Ollama installation, enough memory/disk for a chosen small model, and internet for the initial download. CPU fallback may be slow.
+
+Download the {download}`shared workshop kit <../workshops/assets/workshop-kit.zip>` and extract it into a disposable folder. [Browse all workshops](../workshops/index.md). Code blocks run in your local terminal, not on this web page. Record your tool versions and use synthetic inputs.
+
+## Hands-on route
+
+1. Install Ollama using its official installer. Run `ollama --version` and `ollama list` in a terminal.
+2. Choose a small local model compatible with your hardware from the official library. Run `ollama pull MODEL_ID`, replacing MODEL_ID with that exact identifier. Model downloads consume disk and bandwidth.
+3. Run `ollama run MODEL_ID`. Ask a short question and exit the interactive session with `/bye`. Use `ollama ps` to inspect the loaded model; do not assume GPU use.
+4. Query the API with the Python block below. Expect a JSON model listing, not a browser login page.
+5. Optional document lab: connect a local document-Q&A client to this endpoint, import only the synthetic fixture, and ask one supported and one unsupported question. Check the displayed evidence before trusting an answer.
+
+```python
+import json, urllib.request
+with urllib.request.urlopen('http://127.0.0.1:11434/api/tags', timeout=10) as r:
+    print(json.dumps(json.load(r), indent=2))
+```
+
+Local inference has no hosted-model per-token fee, but hardware, electricity, memory and context limits remain. Privacy depends on the entire application stack, including any cloud models or external tools you configure.
+
+## Acceptance evidence
+
+Version record, installed model ID, one real response, and an API model listing.
+
+Create `evidence.md` with your environment, commands, observed outputs, failures and fixes. Label anything you did not run. Do not include secrets, screenshots of account pages, or private paths.
+
+## Troubleshooting and cleanup
+
+Connection refused: check whether the service is running. Out of memory: choose a smaller model/context. Older GPUs are not universally supported; check the runtime support matrix. Stop any demo server when finished; retain only the small fixture and evidence needed to reproduce your result.
+
+```{mermaid}
+flowchart LR
+    A["Prepare synthetic fixture"] --> B["Run guided task"]
+    B --> C["Check observed result"]
+    C --> D["Record evidence and limitations"]
+```
+
+> **Image Suggestion (Nanobanana Prompt)**: A clean technical workshop illustration titled “Run a Local Model and Verify the Endpoint”, with a neutral editor window, a small synthetic fixture, and an evidence checklist. Use legible navy and teal typography on a light background, even lighting, and a visible “Concept illustration” label. Show no account identity, private paths, or simulated success presented as a screenshot.
+
+## Reference and optional extensions
+
+The material below provides background. Complete the guided acceptance test above first; vendor interfaces and example model IDs can change. Consult the linked official documentation for the version you use.
+
+
+Running large language models (LLMs) on your own machine gives you local control and no hosted-model per-token fee for local inference, and the freedom to experiment offline. This tutorial walks you through the entire local AI stack — from installing your first model with **Ollama**, to building a private document Q&A system with **AnythingLLM**, and finally publishing your own fine-tuned model to **Hugging Face**.
 
 ---
 
@@ -8,7 +56,7 @@ Running large language models (LLMs) on your own machine gives you complete priv
 
 | Benefit | Description |
 | :--- | :--- |
-| **Privacy** | Your data never leaves your machine. Critical for proprietary code, medical records, or sensitive research. |
+| **Privacy** | Local-only operation depends on model, telemetry and tool configuration. Critical for proprietary code, medical records, or sensitive research. |
 | **Cost** | No per-token API fees. Run as many queries as your hardware allows. |
 | **Offline** | Works on airplanes, in restricted labs, and behind firewalls. |
 | **Customization** | Swap models, tweak parameters, and build custom workflows freely. |

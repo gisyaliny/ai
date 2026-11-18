@@ -1,61 +1,58 @@
-# Complex Tasks & Terminal Control
+# 02 - Refactor Without Losing Behavior Workshop
 
-After mastering basic interactions, we will learn how to let Claude Code execute terminal commands, manage long-running background tasks, and explore more complex architectural refactoring.
+**Time:** 50 minutes · **Audience:** beginners · **Updated:** November 18, 2026.
 
-## Executing Terminal Commands (Bash)
+## Workshop preparation
 
-Besides conversing with the model, you can directly execute Bash commands within the Claude Code interface.
-- Type `!` to enter Bash mode. Start with an exclamation mark followed by the terminal command, for instance:
-  `! open index.html`
-- Although you can have the large language model write all the code for you, directly calling system commands is a highly efficient aspect of testing and previewing.
+The completed to-do app from the previous workshop; Git; Node only if you choose the optional Vite extension.
 
-## Refactoring Projects using Plan Mode
+Download the {download}`shared workshop kit <../workshops/assets/workshop-kit.zip>` and extract it into a disposable folder. [Browse all workshops](../workshops/index.md). Code blocks run in your local terminal, not on this web page. Record your tool versions and use synthetic inputs.
 
-When we need to refactor a single HTML file project into a modern `React + TypeScript + Vite` architecture, letting the model modify things directly can get chaotic. This is where `Plan Mode` comes in handy:
+## Hands-on route
 
-1. Press `Shift + Tab` to toggle to **Plan Mode**.
-2. Type your complete refactor prompt. If it involves multiple lines, press `Shift + Enter` to start a new line. Alternatively, press `Ctrl + G` to quickly edit long text prompts in a pop-up VSCode window.
-   *Example: `Refactor the current ToDo application to use a React+TypeScript+Vite project structure. Retain all functionality, including the high, medium, and low priority markers.`*
-3. Claude Code will output a detailed plan including the directory structure and a modification checklist. If you are unsatisfied, you can continue modifying it; if satisfied, you can choose to execute the plan and enter the Auto-Accept mode.
+1. Run the previous acceptance cases and record the baseline. Commit the working files with `git add index.html` and `git commit -m "Working baseline"` after reviewing their contents.
+2. Ask for a read-only plan to split HTML, CSS and JavaScript into separate files. Require the same behavior and no new dependencies.
+3. Review the plan, then request implementation. Inspect `git diff` before accepting the result.
+4. Serve the folder with `python -m http.server 8000 --bind 127.0.0.1` in a separate terminal. Visit `http://127.0.0.1:8000`; run the same acceptance cases.
+5. Stop the server with Ctrl+C. Record a regression if any previously passing behavior fails. Ask for a narrow repair and rerun the case.
 
-## Disabling All Permission Checks (dangerously-skip-permissions)
+```text
+Read the app. Propose a behavior-preserving split into index.html, styles.css,
+and app.js. Do not edit yet. List files, risks, and the regression checks.
+```
 
-Even in Auto mode, Claude Code will still ask your permission when executing **terminal commands** like `npm install`. If you want to delegate complete authority:
-- Add a parameter when starting: `claude dangerously-skip-permissions`
-- This will enter the **Bypass Permissions** mode. It will no longer ask whether it's installing dependencies, creating directories, or deleting files.
-  _⚠️ Warning: This grants the AI the exact same system-level terminal execution permissions as you have. It is a double-edged sword offering high efficiency but high risk. Use with extreme caution!_
+Optional: migrate to Vite only after the dependency-free refactor passes. Consult Vite's current runtime requirements instead of assuming every Node release works.
 
-> **Image Suggestion (Nanobanana Prompt)**: A hyper-realistic, dramatic shot of a glowing red futuristic terminal screen displaying a massive hazard warning sign with the text "Bypass Permissions Mode Active" in bold, dripping digital font. The console interface is surrounded by complex holographic code streams floating in the air. The physical terminal has metallic edges, yellow caution tape detailing around the screen, set in a dark, atmospheric sci-fi server room with faint neon red and orange lighting. 8k resolution, cinematic composition.
+## Acceptance evidence
 
-## Background Task Management
+A before/after file map, reviewed diff, passing regression table, and stopped server.
 
-When you execute a command through Claude Code that blocks the terminal, such as a local server `npm run dev`, the model can no longer respond to your text inputs.
-- **Suspend to Background**: Press `Ctrl + B` to push the currently running service to the background.
-- **View Tasks**: Type the `/tasks` command to view the list of commands currently running in the background.
-- **Terminate Task**: In the task list interface, select the target task and press the `K` key to kill the background service process.
+Create `evidence.md` with your environment, commands, observed outputs, failures and fixes. Label anything you did not run. Do not include secrets, screenshots of account pages, or private paths.
 
-![calude code tasks](./img/002.png)
+## Troubleshooting and cleanup
 
----
+Port occupied: choose 8001. Styles missing: check relative link paths. Do not use permission bypass to solve a missing dependency. Stop any demo server when finished; retain only the small fixture and evidence needed to reproduce your result.
+
+```{mermaid}
+flowchart LR
+    A["Prepare synthetic fixture"] --> B["Run guided task"]
+    B --> C["Check observed result"]
+    C --> D["Record evidence and limitations"]
+```
+
+> **Image Suggestion (Nanobanana Prompt)**: A clean technical workshop illustration titled “Refactor Without Losing Behavior”, with a neutral editor window, a small synthetic fixture, and an evidence checklist. Use legible navy and teal typography on a light background, even lighting, and a visible “Concept illustration” label. Show no account identity, private paths, or simulated success presented as a screenshot.
+
 ## Read More
 
-- [Claude Code CLI Reference](https://docs.anthropic.com/en/docs/claude-code/cli-reference) — Full list of CLI commands including `dangerously-skip-permissions`.
-- [Claude Code Permissions and Security](https://docs.anthropic.com/en/docs/claude-code/security) — Understanding permission models and best practices.
-- [Vite Getting Started](https://vite.dev/guide/) — Official Vite documentation for modern frontend tooling.
-- [React + TypeScript Cheatsheet](https://react-typescript-cheatsheet.netlify.app/) — Comprehensive patterns for React with TypeScript.
-
----
+- [Claude Code quickstart](https://code.claude.com/docs/en/quickstart) — Installation and account setup.
+- [Skills](https://code.claude.com/docs/en/skills) — Supported skill paths and invocation.
+- [Permissions](https://code.claude.com/docs/en/permissions) — Review the installed client's permission behavior.
+- [MCP](https://code.claude.com/docs/en/mcp) — Configure a specific trusted server and inspect access.
 
 ## Knowledge Quiz
 
-**Q1: How can you edit a long prompt in VSCode without exiting the Claude Code dialog box?**
-<details>
-<summary>Answer</summary>
-Press `Ctrl + G`. This will pop up a VSCode tab. After editing, save and close it, and the content will be back-filled into Claude Code's input box.
-</details>
+**What evidence makes this lab complete?**
+<details><summary>Answer</summary>The acceptance artifacts listed above and actual observed results. A model's claim of success is insufficient.</details>
 
-**Q2: How do you place a terminal-blocking local development server into the background?**
-<details>
-<summary>Answer</summary>
-Press `Ctrl + B` to send it to the background. Subsequently, you can use `/tasks` to view it and press `K` to close it.
-</details>
+**Does accepting file edits approve every terminal command or remote action?**
+<details><summary>Answer</summary>No. Editing, shell execution and remote tool permissions are separate controls; inspect the actual scope before approving.</details>

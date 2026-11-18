@@ -1,4 +1,50 @@
-# Implementing RAG with Python
+# 09 - Build a Small Grounded Question-Answering Pipeline Workshop
+
+**Time:** 60 minutes · **Audience:** beginners · **Updated:** November 18, 2026.
+
+## Workshop preparation
+
+Completed retrieval workshop, a local Ollama chat model, and the three Python files from the kit.
+
+Download the {download}`shared workshop kit <../workshops/assets/workshop-kit.zip>` and extract it into a disposable folder. [Browse all workshops](../workshops/index.md). Code blocks run in your local terminal, not on this web page. Record your tool versions and use synthetic inputs.
+
+## Hands-on route
+
+1. Run the offline assertions before connecting to a model. Read local_rag.py and identify the evidence selection, prompt construction, request and result stages.
+2. Set OLLAMA_MODEL as shown in the Ollama API workshop and run `python local_rag.py`.
+3. Check the first answer against S1; a citation label alone does not prove support. Confirm the unsupported question takes the empty-evidence branch.
+4. Add one distractor and one contradictory source. Ask the same question again and record whether the answer expresses the conflict. Do not grade a fluent answer as correct if it hides contradictory evidence.
+5. For the optional semantic extension below, replace lexical retrieval with embeddings, keep the same document and question embedding model, and rerun the same evaluation set. Use a currently supported generation model from your provider; do not assume a historical model ID remains available.
+
+```{literalinclude} ../workshops/assets/local_rag.py
+:language: python
+```
+
+The complete beginner path uses only Python's standard library and Ollama. The older multi-library pipeline below is additional reading; install its optional dependencies in a separate environment and verify current APIs before using it.
+
+## Acceptance evidence
+
+A working local script, cited answer, unsupported-case result and a comparison table for the conflict experiment.
+
+Create `evidence.md` with your environment, commands, observed outputs, failures and fixes. Label anything you did not run. Do not include secrets, screenshots of account pages, or private paths.
+
+## Troubleshooting and cleanup
+
+Import error: run from the kit folder with retrieval.py alongside local_rag.py. Citation wrong: compare the claim with the source text, not just the ID. Stop any demo server when finished; retain only the small fixture and evidence needed to reproduce your result.
+
+```{mermaid}
+flowchart LR
+    A["Prepare synthetic fixture"] --> B["Run guided task"]
+    B --> C["Check observed result"]
+    C --> D["Record evidence and limitations"]
+```
+
+> **Image Suggestion (Nanobanana Prompt)**: A clean technical workshop illustration titled “Build a Small Grounded Question-Answering Pipeline”, with a neutral editor window, a small synthetic fixture, and an evidence checklist. Use legible navy and teal typography on a light background, even lighting, and a visible “Concept illustration” label. Show no account identity, private paths, or simulated success presented as a screenshot.
+
+## Reference and optional extensions
+
+The material below provides background. Complete the guided acceptance test above first; vendor interfaces and example model IDs can change. Consult the linked official documentation for the version you use.
+
 
 This hands-on tutorial walks you through building a complete RAG system from scratch using Python. You will implement every stage of the pipeline: chunking, embedding, vector storage, retrieval, reranking, and generation.
 
