@@ -6,7 +6,7 @@
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>7. — Mastering Ollama: Local Models, APIs, RAG, Tools, and Production Patterns &#8212; AI Tools Learning Handbook</title>
   
@@ -16,48 +16,417 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link href="../../_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
 
-  
-  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
-
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b76e3c8a" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
-    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=6a604523" />
   
+  <!-- So that users can add custom icons -->
+  <script defer src="../../_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
-<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
-  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
 
     <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
     <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=f281be69"></script>
-    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="../../_static/togglebutton.js?v=b8b12719"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script data-sd-tabs-storage-prefix="sphinx-design-tab-id-" src="../../_static/design-tabs.js?v=fcb327ea"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs"></script>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk@0.2.0/dist/mermaid-layout-elk.esm.min.mjs"></script>
+    <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs";import elkLayouts from "https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk@0.2.0/dist/mermaid-layout-elk.esm.min.mjs";mermaid.registerLayoutLoaders(elkLayouts);mermaid.initialize({startOnLoad:false});</script>
+    <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+    <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs";
+
+const defaultStyle = document.createElement('style');
+defaultStyle.textContent = `pre.mermaid {
+    /* Same as .mermaid-container > pre */
+    display: block;
+    width: 100%;
+}
+
+pre.mermaid > svg {
+    /* Same as .mermaid-container > pre > svg */
+    height: 500px;
+    width: 100%;
+    max-width: 100% !important;
+}
+`;
+document.head.appendChild(defaultStyle);
+
+const fullscreenStyle = document.createElement('style');
+fullscreenStyle.textContent = `.mermaid-container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+.mermaid-container > pre {
+    display: block;
+    width: 100%;
+}
+
+.mermaid-container > pre > svg {
+    height: 500px;
+    width: 100%;
+    max-width: 100% !important;
+}
+
+.mermaid-fullscreen-btn {
+    width: 28px;
+    height: 28px;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    font-size: 14px;
+    line-height: 1;
+    padding: 0;
+    color: #333;
+}
+
+.mermaid-fullscreen-btn:hover {
+    opacity: 100% !important;
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+    transform: scale(1.1);
+}
+
+.mermaid-fullscreen-btn.dark-theme {
+    background: rgba(50, 50, 50, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #e0e0e0;
+}
+
+.mermaid-fullscreen-btn.dark-theme:hover {
+    background: rgba(60, 60, 60, 1);
+    box-shadow: 0 3px 10px rgba(255, 255, 255, 0.2);
+}
+
+.mermaid-fullscreen-modal {
+    display: none;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 95vw;
+    height: 100vh;
+    background: rgba(255, 255, 255, 0.98);
+    z-index: 9999;
+    padding: 20px;
+    overflow: auto;
+}
+
+.mermaid-fullscreen-modal.dark-theme {
+    background: rgba(0, 0, 0, 0.98);
+}
+
+.mermaid-fullscreen-modal.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mermaid-container-fullscreen {
+    position: relative;
+    width: 95vw;
+    height: 90vh;
+    max-width: 95vw;
+    max-height: 90vh;
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    overflow: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mermaid-container-fullscreen.dark-theme {
+    background: #1a1a1a;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+}
+
+.mermaid-container-fullscreen pre.mermaid {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mermaid-container-fullscreen .mermaid svg {
+    height: 100% !important;
+    width: 100% !important;
+    cursor: grab;
+}
+
+.mermaid-fullscreen-close {
+    position: fixed !important;
+    top: 20px !important;
+    right: 20px !important;
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    transition: all 0.2s;
+    font-size: 24px;
+    line-height: 1;
+    color: #333;
+}
+
+.mermaid-fullscreen-close:hover {
+    background: white;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+    transform: scale(1.1);
+}
+
+.mermaid-fullscreen-close.dark-theme {
+    background: rgba(50, 50, 50, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #e0e0e0;
+}
+
+.mermaid-fullscreen-close.dark-theme:hover {
+    background: rgba(60, 60, 60, 1);
+    box-shadow: 0 6px 16px rgba(255, 255, 255, 0.2);
+}
+
+.mermaid-fullscreen-modal .mermaid-fullscreen-btn {
+    display: none !important;
+}`;
+document.head.appendChild(fullscreenStyle);
+
+// Detect if page has dark background
+const isDarkTheme = () => {
+    const bgColor = window.getComputedStyle(document.body).backgroundColor;
+    const match = bgColor.match(/rgb\((\d+),\s*(\d+),\s*(\d+)/);
+    if (match) {
+        const r = parseInt(match[1]);
+        const g = parseInt(match[2]);
+        const b = parseInt(match[3]);
+        const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+        return brightness < 128;
+    }
+    return false;
+};
+
+const load = async () => {
+    await mermaid.run();
+
+    const all_mermaids = document.querySelectorAll(".mermaid");
+    const mermaids_processed = document.querySelectorAll(".mermaid[data-processed='true']");
+
+    if ("False" === "True") {
+        const mermaids_to_add_zoom = -1 === -1 ? all_mermaids.length : -1;
+        if(mermaids_to_add_zoom > 0) {
+            var svgs = d3.selectAll("");
+            if(all_mermaids.length !== mermaids_processed.length) {
+                setTimeout(load, 200);
+                return;
+            } else if(svgs.size() !== mermaids_to_add_zoom) {
+                setTimeout(load, 200);
+                return;
+            } else {
+                svgs.each(function() {
+                    var svg = d3.select(this);
+                    svg.html("<g class='wrapper'>" + svg.html() + "</g>");
+                    var inner = svg.select("g");
+                    var zoom = d3.zoom().on("zoom", function(event) {
+                        inner.attr("transform", event.transform);
+                    });
+                    svg.call(zoom);
+                });
+            }
+        }
+    } else if(all_mermaids.length !== mermaids_processed.length) {
+        // Wait for mermaid to process all diagrams
+        setTimeout(load, 200);
+        return;
+    }
+
+    const darkTheme = isDarkTheme();
+
+    // Stop here if not adding fullscreen capability
+    if ("True" !== "True") return;
+
+    const modal = document.createElement('div');
+    modal.className = 'mermaid-fullscreen-modal' + (darkTheme ? ' dark-theme' : '');
+    modal.setAttribute('role', 'dialog');
+    modal.setAttribute('aria-modal', 'true');
+    modal.setAttribute('aria-label', 'Fullscreen diagram viewer');
+    modal.innerHTML = `
+        <button class="mermaid-fullscreen-close${darkTheme ? ' dark-theme' : ''}" aria-label="Close fullscreen">✕</button>
+        <div class="mermaid-container-fullscreen${darkTheme ? ' dark-theme' : ''}"></div>
+    `;
+    document.body.appendChild(modal);
+
+    const modalContent = modal.querySelector('.mermaid-container-fullscreen');
+    const closeBtn = modal.querySelector('.mermaid-fullscreen-close');
+
+    let previousScrollOffset = [window.scrollX, window.scrollY];
+
+    const closeModal = () => {
+        modal.classList.remove('active');
+        modalContent.innerHTML = '';
+        document.body.style.overflow = ''
+        window.scrollTo({left: previousScrollOffset[0], top: previousScrollOffset[1], behavior: 'instant'});
+    };
+
+    closeBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+    });
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal.classList.contains('active')) {
+            closeModal();
+        }
+    });
+
+    const allButtons = [];
+
+    document.querySelectorAll('.mermaid').forEach((mermaidDiv) => {
+        if (mermaidDiv.parentNode.classList.contains('mermaid-container') ||
+            mermaidDiv.closest('.mermaid-fullscreen-modal')) {
+            return;
+        }
+
+        const container = document.createElement('div');
+        container.className = 'mermaid-container';
+        mermaidDiv.parentNode.insertBefore(container, mermaidDiv);
+        container.appendChild(mermaidDiv);
+
+        const fullscreenBtn = document.createElement('button');
+        fullscreenBtn.className = 'mermaid-fullscreen-btn' + (darkTheme ? ' dark-theme' : '');
+        fullscreenBtn.setAttribute('aria-label', 'View diagram in fullscreen');
+        fullscreenBtn.textContent = '⛶';
+        fullscreenBtn.style.opacity = '50%';
+
+        // Calculate dynamic position based on diagram's margin and padding
+        const diagramStyle = window.getComputedStyle(mermaidDiv);
+        const marginTop = parseFloat(diagramStyle.marginTop) || 0;
+        const marginRight = parseFloat(diagramStyle.marginRight) || 0;
+        const paddingTop = parseFloat(diagramStyle.paddingTop) || 0;
+        const paddingRight = parseFloat(diagramStyle.paddingRight) || 0;
+        fullscreenBtn.style.top = `${marginTop + paddingTop + 4}px`;
+        fullscreenBtn.style.right = `${marginRight + paddingRight + 4}px`;
+
+        fullscreenBtn.addEventListener('click', () => {
+            previousScrollOffset = [window.scroll, window.scrollY];
+            const clone = mermaidDiv.cloneNode(true);
+            modalContent.innerHTML = '';
+            modalContent.appendChild(clone);
+
+            const svg = clone.querySelector('svg');
+            if (svg) {
+                svg.removeAttribute('width');
+                svg.removeAttribute('height');
+                svg.style.width = '100%';
+                svg.style.height = 'auto';
+                svg.style.maxWidth = '100%';
+                svg.style.sdisplay = 'block';
+
+                if ("False" === "True") {
+                    setTimeout(() => {
+                        const g = svg.querySelector('g');
+                        if (g) {
+                            var svgD3 = d3.select(svg);
+                            svgD3.html("<g class='wrapper'>" + svgD3.html() + "</g>");
+                            var inner = svgD3.select("g");
+                            var zoom = d3.zoom().on("zoom", function(event) {
+                                inner.attr("transform", event.transform);
+                            });
+                            svgD3.call(zoom);
+                        }
+                    }, 100);
+                }
+            }
+
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+
+        container.appendChild(fullscreenBtn);
+        allButtons.push(fullscreenBtn);
+    });
+
+    // Update theme classes when theme changes
+    const updateTheme = () => {
+        const dark = isDarkTheme();
+        allButtons.forEach(btn => {
+            if (dark) {
+                btn.classList.add('dark-theme');
+            } else {
+                btn.classList.remove('dark-theme');
+            }
+        });
+        if (dark) {
+            modal.classList.add('dark-theme');
+            modalContent.classList.add('dark-theme');
+            closeBtn.classList.add('dark-theme');
+        } else {
+            modal.classList.remove('dark-theme');
+            modalContent.classList.remove('dark-theme');
+            closeBtn.classList.remove('dark-theme');
+        }
+    };
+
+    // Watch for theme changes
+    const observer = new MutationObserver(updateTheme);
+    observer.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ['class', 'style', 'data-theme']
+    });
+    observer.observe(document.body, {
+        attributes: true,
+        attributeFilter: ['class', 'style']
+    });
+};
+
+window.addEventListener("load", load);
+</script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'docs/local-llm/02-mastering-ollama';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <link rel="canonical" href="https://gisyaliny.github.io/AI/docs/local-llm/02-mastering-ollama.html" />
     <link rel="icon" href="../../_static/fav.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -66,34 +435,30 @@
     <link rel="prev" title="6. Deploy Open-Source LLMs Locally with Ollama &amp; AnythingLLM" href="01-deploy-local-llm.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../../_static/searchtools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script src="../../searchindex.js"></script>
+  
   </head>
-  
-  
-  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
-
+  <body data-default-mode="">
   
   
   <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
   
   <div id="pst-scroll-pixel-helper"></div>
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
-
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-primary-sidebar-checkbox"/>
-  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-secondary-sidebar-checkbox"/>
-  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
   
-  <div class="search-button__wrapper">
-    <div class="search-button__overlay"></div>
-    <div class="search-button__search-container">
+  
+  <dialog id="pst-search-dialog">
+    
 <form class="bd-search d-flex align-items-center"
       action="../../search.html"
       method="get">
@@ -101,7 +466,6 @@
   <input type="search"
          class="form-control"
          name="q"
-         id="search-input"
          placeholder="Search..."
          aria-label="Search..."
          autocomplete="off"
@@ -109,15 +473,59 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form></div>
-  </div>
+</form>
+  </dialog>
 
   <div class="pst-async-banner-revealer d-none">
   <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
 </div>
 
   
-    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
     </header>
   
 
@@ -126,7 +534,8 @@
       
       
       
-      <div class="bd-sidebar-primary bd-sidebar">
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -156,21 +565,17 @@
     
     
     <img src="../../_static/logo.png" class="logo__image only-light" alt="AI Tools Learning Handbook - Home"/>
-    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt="AI Tools Learning Handbook - Home"/>`);</script>
+    <img src="../../_static/logo.png" class="logo__image only-dark pst-js-only" alt="AI Tools Learning Handbook - Home"/>
   
   
 </a></div>
         <div class="sidebar-primary-item">
 
- <script>
- document.write(`
-   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script></div>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         <p aria-level="2" class="caption" role="heading"><span class="caption-text">Vibe Coding</span></p>
@@ -195,6 +600,21 @@
 <li class="toctree-l1"><a class="reference internal" href="../rag/02-implementing-rag.html">9. Implementing RAG with Python</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../rag/03-graph-rag.html">10. Graph RAG: Knowledge Graphs Meet Retrieval</a></li>
 </ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Workshops</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../workshops/macstudio-agent/index.html">00 - Build a Mac Studio Coding Agent for VS Code</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../workshops/macstudio-agent/01-architecture-and-connection.html">01 - Architecture and Connection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../workshops/macstudio-agent/02-first-extension.html">02 - Your First VS Code Extension</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../workshops/macstudio-agent/03-ssh-and-streaming.html">03 - SSH Bridge and Streaming Responses</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../workshops/macstudio-agent/04-project-tools.html">04 - Project Tools and the Agent Loop</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../workshops/macstudio-agent/05-controller-and-interface.html">05 - Controller and Sidebar Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../workshops/macstudio-agent/06-capstone-and-tests.html">06 - Capstone: Fix, Review, and Verify</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../workshops/macstudio-agent/07-package-and-models.html">07 - Packaging and Model Selection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../workshops/macstudio-agent/08-mcp-skills-and-next-steps.html">08 - MCP, Skills, and Next Steps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../workshops/macstudio-agent/validation.html">09 - Validation and Reproducibility</a></li>
+</ul>
+</details></li>
+</ul>
 
     </div>
 </nav></div>
@@ -202,9 +622,14 @@
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
   </div>
-  
-  <div id="rtd-footer-container"></div>
 
 
       </div>
@@ -351,7 +776,7 @@
 
 
 <button onclick="toggleFullScreen()"
-  class="btn btn-sm btn-fullscreen-button"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
   title="Fullscreen mode"
   data-bs-placement="bottom" data-bs-toggle="tooltip"
 >
@@ -365,25 +790,17 @@
 
 
 
-<script>
-document.write(`
-  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
-  </button>
-`);
-</script>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
 
 
-<script>
-document.write(`
-  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
-  </button>
-`);
-</script>
-<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <span class="fa-solid fa-list"></span>
 </button>
 </div></div>
@@ -405,7 +822,7 @@ document.write(`
                 <h2> Contents </h2>
             </div>
             <nav aria-label="Page">
-                <ul class="visible nav section-nav flex-column">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-you-should-be-able-to-do-after-this-tutorial">7.1. What You Should Be Able to Do After This Tutorial</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mental-model-what-ollama-actually-is">7.2. Mental Model: What Ollama Actually Is</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ollama-vs-llama-vs-llama-cpp-vs-gguf">7.2.1. Ollama vs Llama vs llama.cpp vs GGUF</a></li>
@@ -696,8 +1113,8 @@ Your application = custom product built around the model engine
 <h3><span class="section-number">7.3.1. </span>Install Ollama<a class="headerlink" href="#install-ollama" title="Link to this heading">#</a></h3>
 <div class="sd-tab-set docutils">
 <input checked="checked" id="sd-tab-item-0" name="sd-tab-set-0" type="radio">
-<label class="sd-tab-label" for="sd-tab-item-0">
-macOS</label><div class="sd-tab-content docutils">
+<label aria-controls="sd-tab-item-0-content" class="sd-tab-label" for="sd-tab-item-0">
+macOS</label><div class="sd-tab-content docutils" id="sd-tab-item-0-content">
 <p>Download Ollama from:</p>
 <p><a class="reference external" href="https://ollama.com/download">https://ollama.com/download</a></p>
 <p>Then drag it into <code class="docutils literal notranslate"><span class="pre">/Applications</span></code> and open it once.</p>
@@ -708,8 +1125,8 @@ macOS</label><div class="sd-tab-content docutils">
 <p><strong>Example description:</strong> this command checks whether the Ollama CLI is available in your terminal. If macOS says <code class="docutils literal notranslate"><span class="pre">command</span> <span class="pre">not</span> <span class="pre">found</span></code>, reopen the terminal or restart Ollama so the CLI link can be created.</p>
 </div>
 <input id="sd-tab-item-1" name="sd-tab-set-0" type="radio">
-<label class="sd-tab-label" for="sd-tab-item-1">
-Linux</label><div class="sd-tab-content docutils">
+<label aria-controls="sd-tab-item-1-content" class="sd-tab-label" for="sd-tab-item-1">
+Linux</label><div class="sd-tab-content docutils" id="sd-tab-item-1-content">
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-fsSL<span class="w"> </span>https://ollama.com/install.sh<span class="w"> </span><span class="p">|</span><span class="w"> </span>sh
 ollama<span class="w"> </span>--version
 </pre></div>
@@ -717,8 +1134,8 @@ ollama<span class="w"> </span>--version
 <p><strong>Example description:</strong> the first command downloads and runs Ollama’s Linux installer. The second command confirms that installation succeeded and that the <code class="docutils literal notranslate"><span class="pre">ollama</span></code> executable is available in your shell.</p>
 </div>
 <input id="sd-tab-item-2" name="sd-tab-set-0" type="radio">
-<label class="sd-tab-label" for="sd-tab-item-2">
-Windows</label><div class="sd-tab-content docutils">
+<label aria-controls="sd-tab-item-2-content" class="sd-tab-label" for="sd-tab-item-2">
+Windows</label><div class="sd-tab-content docutils" id="sd-tab-item-2-content">
 <p>Download the installer from:</p>
 <p><a class="reference external" href="https://ollama.com/download">https://ollama.com/download</a></p>
 <p>Then open PowerShell:</p>
@@ -738,24 +1155,24 @@ Windows</label><div class="sd-tab-content docutils">
 <p>Use the command for your operating system.</p>
 <div class="sd-tab-set docutils">
 <input checked="checked" id="sd-tab-item-3" name="sd-tab-set-1" type="radio">
-<label class="sd-tab-label" for="sd-tab-item-3">
-macOS / Linux</label><div class="sd-tab-content docutils">
+<label aria-controls="sd-tab-item-3-content" class="sd-tab-label" for="sd-tab-item-3">
+macOS / Linux</label><div class="sd-tab-content docutils" id="sd-tab-item-3-content">
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>http://localhost:11434/api/tags
 </pre></div>
 </div>
 <p><strong>Example description:</strong> this asks the local Ollama server for the list of installed models. If you receive JSON, the API server is working. This is the fastest health check before debugging Python, JavaScript, Open WebUI, or AnythingLLM connections.</p>
 </div>
 <input id="sd-tab-item-4" name="sd-tab-set-1" type="radio">
-<label class="sd-tab-label" for="sd-tab-item-4">
-Windows PowerShell</label><div class="sd-tab-content docutils">
+<label aria-controls="sd-tab-item-4-content" class="sd-tab-label" for="sd-tab-item-4">
+Windows PowerShell</label><div class="sd-tab-content docutils" id="sd-tab-item-4-content">
 <div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Invoke-RestMethod</span> <span class="n">http</span><span class="p">://</span><span class="n">localhost</span><span class="p">:</span><span class="n">11434</span><span class="p">/</span><span class="n">api</span><span class="p">/</span><span class="n">tags</span>
 </pre></div>
 </div>
 <p><strong>Example description:</strong> <code class="docutils literal notranslate"><span class="pre">Invoke-RestMethod</span></code> is PowerShell’s native HTTP client. It converts the JSON response into PowerShell objects, which makes it easier to inspect model names on Windows.</p>
 </div>
 <input id="sd-tab-item-5" name="sd-tab-set-1" type="radio">
-<label class="sd-tab-label" for="sd-tab-item-5">
-Windows CMD</label><div class="sd-tab-content docutils">
+<label aria-controls="sd-tab-item-5-content" class="sd-tab-label" for="sd-tab-item-5">
+Windows CMD</label><div class="sd-tab-content docutils" id="sd-tab-item-5-content">
 <div class="highlight-cmd notranslate"><div class="highlight"><pre><span></span>curl.exe http://localhost:11434/api/tags
 </pre></div>
 </div>
@@ -765,8 +1182,8 @@ Windows CMD</label><div class="sd-tab-content docutils">
 <p>If the health check fails, start or restart Ollama manually.</p>
 <div class="sd-tab-set docutils">
 <input checked="checked" id="sd-tab-item-6" name="sd-tab-set-2" type="radio">
-<label class="sd-tab-label" for="sd-tab-item-6">
-macOS</label><div class="sd-tab-content docutils">
+<label aria-controls="sd-tab-item-6-content" class="sd-tab-label" for="sd-tab-item-6">
+macOS</label><div class="sd-tab-content docutils" id="sd-tab-item-6-content">
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>open<span class="w"> </span>-a<span class="w"> </span>Ollama
 <span class="c1"># or, if you want to run the server directly in this terminal:</span>
 ollama<span class="w"> </span>serve
@@ -775,8 +1192,8 @@ ollama<span class="w"> </span>serve
 <p><strong>Example description:</strong> opening the app starts Ollama in the menu bar. <code class="docutils literal notranslate"><span class="pre">ollama</span> <span class="pre">serve</span></code> starts the API server in the foreground, which is useful when you want to see server logs while debugging.</p>
 </div>
 <input id="sd-tab-item-7" name="sd-tab-set-2" type="radio">
-<label class="sd-tab-label" for="sd-tab-item-7">
-Linux</label><div class="sd-tab-content docutils">
+<label aria-controls="sd-tab-item-7-content" class="sd-tab-label" for="sd-tab-item-7">
+Linux</label><div class="sd-tab-content docutils" id="sd-tab-item-7-content">
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>systemctl<span class="w"> </span>status<span class="w"> </span>ollama
 sudo<span class="w"> </span>systemctl<span class="w"> </span>restart<span class="w"> </span>ollama
 </pre></div>
@@ -784,8 +1201,8 @@ sudo<span class="w"> </span>systemctl<span class="w"> </span>restart<span class=
 <p><strong>Example description:</strong> on most Linux installs, Ollama runs as a systemd service. <code class="docutils literal notranslate"><span class="pre">status</span></code> checks whether the service is running; <code class="docutils literal notranslate"><span class="pre">restart</span></code> reloads it after configuration or environment changes.</p>
 </div>
 <input id="sd-tab-item-8" name="sd-tab-set-2" type="radio">
-<label class="sd-tab-label" for="sd-tab-item-8">
-Windows PowerShell</label><div class="sd-tab-content docutils">
+<label aria-controls="sd-tab-item-8-content" class="sd-tab-label" for="sd-tab-item-8">
+Windows PowerShell</label><div class="sd-tab-content docutils" id="sd-tab-item-8-content">
 <div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="n">ollama</span> <span class="n">serve</span>
 </pre></div>
 </div>
@@ -863,17 +1280,17 @@ ollama<span class="w"> </span>stop<span class="w"> </span>qwen3.6
 </div>
 <div class="sd-tab-set docutils">
 <input checked="checked" id="sd-tab-item-9" name="sd-tab-set-3" type="radio">
-<label class="sd-tab-label" for="sd-tab-item-9">
-macOS / Linux</label><div class="sd-tab-content docutils">
+<label aria-controls="sd-tab-item-9-content" class="sd-tab-label" for="sd-tab-item-9">
+macOS / Linux</label><div class="sd-tab-content docutils" id="sd-tab-item-9-content">
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>du<span class="w"> </span>-sh<span class="w"> </span>~/.ollama/models<span class="w"> </span><span class="m">2</span>&gt;/dev/null
 </pre></div>
 </div>
 <p><strong>Example description:</strong> this estimates how much disk space your local Ollama models consume. Large models and multiple quantizations can quickly use hundreds of gigabytes.</p>
 </div>
 <input id="sd-tab-item-10" name="sd-tab-set-3" type="radio">
-<label class="sd-tab-label" for="sd-tab-item-10">
-Windows PowerShell</label><div class="sd-tab-content docutils">
-<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Get-ChildItem</span> <span class="s2">&quot;$env:USERPROFILE\.ollama\models&quot;</span> <span class="n">-Recurse</span> <span class="p">|</span> <span class="nb">Measure-Object</span> <span class="n">-Property</span> <span class="n">Length</span> <span class="n">-Sum</span>
+<label aria-controls="sd-tab-item-10-content" class="sd-tab-label" for="sd-tab-item-10">
+Windows PowerShell</label><div class="sd-tab-content docutils" id="sd-tab-item-10-content">
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Get-ChildItem</span> <span class="s2">"$env:USERPROFILE\.ollama\models"</span> <span class="n">-Recurse</span> <span class="p">|</span> <span class="nb">Measure-Object</span> <span class="n">-Property</span> <span class="n">Length</span> <span class="n">-Sum</span>
 </pre></div>
 </div>
 <p><strong>Example description:</strong> this recursively sums model files in the Windows Ollama model directory. The result is shown in bytes, which you can divide by <code class="docutils literal notranslate"><span class="pre">1GB</span></code> for a rough gigabyte estimate.</p>
@@ -1060,7 +1477,7 @@ Apple Silicon: try MLX variants when available
 <h2><span class="section-number">7.7. </span>Interactive Chat: Useful Terminal Techniques<a class="headerlink" href="#interactive-chat-useful-terminal-techniques" title="Link to this heading">#</a></h2>
 <section id="one-shot-prompt">
 <h3><span class="section-number">7.7.1. </span>One-shot prompt<a class="headerlink" href="#one-shot-prompt" title="Link to this heading">#</a></h3>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ollama<span class="w"> </span>run<span class="w"> </span>qwen3.6<span class="w"> </span><span class="s2">&quot;Explain SQL joins in simple terms.&quot;</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ollama<span class="w"> </span>run<span class="w"> </span>qwen3.6<span class="w"> </span><span class="s2">"Explain SQL joins in simple terms."</span>
 </pre></div>
 </div>
 <p><strong>Example description:</strong> this sends one prompt and prints one answer without keeping you in a long interactive workflow. It is useful for quick tests, shell scripts, and comparing model outputs.</p>
@@ -1068,9 +1485,9 @@ Apple Silicon: try MLX variants when available
 <section id="multiline-prompt">
 <h3><span class="section-number">7.7.2. </span>Multiline prompt<a class="headerlink" href="#multiline-prompt" title="Link to this heading">#</a></h3>
 <p>Inside <code class="docutils literal notranslate"><span class="pre">ollama</span> <span class="pre">run</span></code>:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; &quot;&quot;&quot;You are helping design a generic document management system.
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; """You are helping design a generic document management system.
 ... Propose database tables for documents, users, permissions, and audit logs.
-... &quot;&quot;&quot;
+... """
 </pre></div>
 </div>
 <p><strong>Example description:</strong> triple quotes make it easier to send longer instructions. The key operation is giving the model enough structured context without needing an external file.</p>
@@ -1078,7 +1495,7 @@ Apple Silicon: try MLX variants when available
 <section id="image-input-with-a-vision-model">
 <h3><span class="section-number">7.7.3. </span>Image input with a vision model<a class="headerlink" href="#image-input-with-a-vision-model" title="Link to this heading">#</a></h3>
 <p>Only works with vision-capable models.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ollama<span class="w"> </span>run<span class="w"> </span>gemma4<span class="w"> </span><span class="s2">&quot;Describe this image: ./sample-image.jpg&quot;</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ollama<span class="w"> </span>run<span class="w"> </span>gemma4<span class="w"> </span><span class="s2">"Describe this image: ./sample-image.jpg"</span>
 </pre></div>
 </div>
 <p><strong>Example description:</strong> this sends an image path to a vision-capable model. Use it for image description, visual QA, and report writing. Do not assume every text model can read images.</p>
@@ -1095,12 +1512,12 @@ Apple Silicon: try MLX variants when available
 <h3><span class="section-number">7.8.1. </span><code class="docutils literal notranslate"><span class="pre">/api/generate</span></code><a class="headerlink" href="#api-generate" title="Link to this heading">#</a></h3>
 <p>Good for simple prompt completion.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>http://localhost:11434/api/generate<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{</span>
-<span class="s1">    &quot;model&quot;: &quot;qwen3.6&quot;,</span>
-<span class="s1">    &quot;prompt&quot;: &quot;Explain RAG in 5 bullet points.&quot;,</span>
-<span class="s1">    &quot;stream&quot;: false</span>
-<span class="s1">  }&#39;</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-d<span class="w"> </span><span class="s1">'{</span>
+<span class="s1">    "model": "qwen3.6",</span>
+<span class="s1">    "prompt": "Explain RAG in 5 bullet points.",</span>
+<span class="s1">    "stream": false</span>
+<span class="s1">  }'</span>
 </pre></div>
 </div>
 <p><strong>Example description:</strong> <code class="docutils literal notranslate"><span class="pre">/api/generate</span></code> is the simplest endpoint. <code class="docutils literal notranslate"><span class="pre">model</span></code> selects the local model, <code class="docutils literal notranslate"><span class="pre">prompt</span></code> contains the user instruction, and <code class="docutils literal notranslate"><span class="pre">stream:false</span></code> asks Ollama to return one complete JSON response instead of many small streaming chunks.</p>
@@ -1109,15 +1526,15 @@ Apple Silicon: try MLX variants when available
 <h3><span class="section-number">7.8.2. </span><code class="docutils literal notranslate"><span class="pre">/api/chat</span></code><a class="headerlink" href="#api-chat" title="Link to this heading">#</a></h3>
 <p>Better for multi-turn chat-style messages.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>http://localhost:11434/api/chat<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{</span>
-<span class="s1">    &quot;model&quot;: &quot;qwen3.6&quot;,</span>
-<span class="s1">    &quot;messages&quot;: [</span>
-<span class="s1">      {&quot;role&quot;: &quot;system&quot;, &quot;content&quot;: &quot;You are a careful technical tutor.&quot;},</span>
-<span class="s1">      {&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;Explain the difference between SQL and NoSQL.&quot;}</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-d<span class="w"> </span><span class="s1">'{</span>
+<span class="s1">    "model": "qwen3.6",</span>
+<span class="s1">    "messages": [</span>
+<span class="s1">      {"role": "system", "content": "You are a careful technical tutor."},</span>
+<span class="s1">      {"role": "user", "content": "Explain the difference between SQL and NoSQL."}</span>
 <span class="s1">    ],</span>
-<span class="s1">    &quot;stream&quot;: false</span>
-<span class="s1">  }&#39;</span>
+<span class="s1">    "stream": false</span>
+<span class="s1">  }'</span>
 </pre></div>
 </div>
 <p><strong>Example description:</strong> <code class="docutils literal notranslate"><span class="pre">/api/chat</span></code> separates messages by role. The <code class="docutils literal notranslate"><span class="pre">system</span></code> message controls behavior, while the <code class="docutils literal notranslate"><span class="pre">user</span></code> message contains the task. This format is better for apps because it preserves conversation structure.</p>
@@ -1125,12 +1542,12 @@ Apple Silicon: try MLX variants when available
 <section id="streaming-vs-non-streaming">
 <h3><span class="section-number">7.8.3. </span>Streaming vs non-streaming<a class="headerlink" href="#streaming-vs-non-streaming" title="Link to this heading">#</a></h3>
 <p>For easier development:</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="nt">&quot;stream&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="nt">"stream"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span>
 </pre></div>
 </div>
 <p><strong>Example description:</strong> non-streaming is simpler because your code receives one complete JSON object. It is best for scripts, tests, and backend jobs.</p>
 <p>For ChatGPT-like UI:</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="nt">&quot;stream&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="nt">"stream"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
 </pre></div>
 </div>
 <p><strong>Example description:</strong> streaming returns partial tokens as the model generates them. It makes the UI feel faster but requires your frontend or backend to handle a stream of chunks.</p>
@@ -1139,17 +1556,17 @@ Apple Silicon: try MLX variants when available
 <h3><span class="section-number">7.8.4. </span>Windows PowerShell API examples<a class="headerlink" href="#windows-powershell-api-examples" title="Link to this heading">#</a></h3>
 <p>The REST API is the same on every operating system, but Windows users often prefer PowerShell objects instead of raw JSON strings.</p>
 <div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nv">$body</span> <span class="p">=</span> <span class="p">@{</span>
-  <span class="n">model</span> <span class="p">=</span> <span class="s2">&quot;qwen3.6&quot;</span>
+  <span class="n">model</span> <span class="p">=</span> <span class="s2">"qwen3.6"</span>
   <span class="n">messages</span> <span class="p">=</span> <span class="p">@(</span>
-    <span class="p">@{</span> <span class="n">role</span> <span class="p">=</span> <span class="s2">&quot;user&quot;</span><span class="p">;</span> <span class="n">content</span> <span class="p">=</span> <span class="s2">&quot;Explain what Ollama does in two sentences.&quot;</span> <span class="p">}</span>
+    <span class="p">@{</span> <span class="n">role</span> <span class="p">=</span> <span class="s2">"user"</span><span class="p">;</span> <span class="n">content</span> <span class="p">=</span> <span class="s2">"Explain what Ollama does in two sentences."</span> <span class="p">}</span>
   <span class="p">)</span>
   <span class="n">stream</span> <span class="p">=</span> <span class="nv">$false</span>
 <span class="p">}</span> <span class="p">|</span> <span class="nb">ConvertTo-Json</span> <span class="n">-Depth</span> <span class="n">5</span>
 
 <span class="nv">$response</span> <span class="p">=</span> <span class="nb">Invoke-RestMethod</span> <span class="p">`</span>
-  <span class="n">-Uri</span> <span class="s2">&quot;http://localhost:11434/api/chat&quot;</span> <span class="p">`</span>
+  <span class="n">-Uri</span> <span class="s2">"http://localhost:11434/api/chat"</span> <span class="p">`</span>
   <span class="n">-Method</span> <span class="n">Post</span> <span class="p">`</span>
-  <span class="n">-ContentType</span> <span class="s2">&quot;application/json&quot;</span> <span class="p">`</span>
+  <span class="n">-ContentType</span> <span class="s2">"application/json"</span> <span class="p">`</span>
   <span class="n">-Body</span> <span class="nv">$body</span>
 
 <span class="nv">$response</span><span class="p">.</span><span class="n">message</span><span class="p">.</span><span class="n">content</span>
@@ -1158,17 +1575,17 @@ Apple Silicon: try MLX variants when available
 <p><strong>Example description:</strong> this is the PowerShell equivalent of the <code class="docutils literal notranslate"><span class="pre">/api/chat</span></code> cURL example. <code class="docutils literal notranslate"><span class="pre">ConvertTo-Json</span> <span class="pre">-Depth</span> <span class="pre">5</span></code> is important because chat messages are nested objects; without enough depth, PowerShell can truncate nested JSON.</p>
 <p>If you prefer the OpenAI-compatible endpoint:</p>
 <div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nv">$body</span> <span class="p">=</span> <span class="p">@{</span>
-  <span class="n">model</span> <span class="p">=</span> <span class="s2">&quot;qwen3.6&quot;</span>
+  <span class="n">model</span> <span class="p">=</span> <span class="s2">"qwen3.6"</span>
   <span class="n">messages</span> <span class="p">=</span> <span class="p">@(</span>
-    <span class="p">@{</span> <span class="n">role</span> <span class="p">=</span> <span class="s2">&quot;system&quot;</span><span class="p">;</span> <span class="n">content</span> <span class="p">=</span> <span class="s2">&quot;You are a concise assistant.&quot;</span> <span class="p">},</span>
-    <span class="p">@{</span> <span class="n">role</span> <span class="p">=</span> <span class="s2">&quot;user&quot;</span><span class="p">;</span> <span class="n">content</span> <span class="p">=</span> <span class="s2">&quot;Give me a one-line definition of RAG.&quot;</span> <span class="p">}</span>
+    <span class="p">@{</span> <span class="n">role</span> <span class="p">=</span> <span class="s2">"system"</span><span class="p">;</span> <span class="n">content</span> <span class="p">=</span> <span class="s2">"You are a concise assistant."</span> <span class="p">},</span>
+    <span class="p">@{</span> <span class="n">role</span> <span class="p">=</span> <span class="s2">"user"</span><span class="p">;</span> <span class="n">content</span> <span class="p">=</span> <span class="s2">"Give me a one-line definition of RAG."</span> <span class="p">}</span>
   <span class="p">)</span>
 <span class="p">}</span> <span class="p">|</span> <span class="nb">ConvertTo-Json</span> <span class="n">-Depth</span> <span class="n">5</span>
 
 <span class="nv">$response</span> <span class="p">=</span> <span class="nb">Invoke-RestMethod</span> <span class="p">`</span>
-  <span class="n">-Uri</span> <span class="s2">&quot;http://localhost:11434/v1/chat/completions&quot;</span> <span class="p">`</span>
+  <span class="n">-Uri</span> <span class="s2">"http://localhost:11434/v1/chat/completions"</span> <span class="p">`</span>
   <span class="n">-Method</span> <span class="n">Post</span> <span class="p">`</span>
-  <span class="n">-ContentType</span> <span class="s2">&quot;application/json&quot;</span> <span class="p">`</span>
+  <span class="n">-ContentType</span> <span class="s2">"application/json"</span> <span class="p">`</span>
   <span class="n">-Body</span> <span class="nv">$body</span>
 
 <span class="nv">$response</span><span class="p">.</span><span class="n">choices</span><span class="p">[</span><span class="n">0</span><span class="p">].</span><span class="n">message</span><span class="p">.</span><span class="n">content</span>
@@ -1187,13 +1604,13 @@ Apple Silicon: try MLX variants when available
 <p><strong>Example description:</strong> this installs the official Python client, which wraps Ollama’s local HTTP API so you do not need to write raw <code class="docutils literal notranslate"><span class="pre">requests</span></code> calls.</p>
 <section id="basic-chat">
 <h3><span class="section-number">7.9.1. </span>Basic chat<a class="headerlink" href="#basic-chat" title="Link to this heading">#</a></h3>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ollama</span> <span class="kn">import</span> <span class="n">chat</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">ollama</span><span class="w"> </span><span class="kn">import</span> <span class="n">chat</span>
 
 <span class="n">response</span> <span class="o">=</span> <span class="n">chat</span><span class="p">(</span>
-    <span class="n">model</span><span class="o">=</span><span class="s2">&quot;qwen3.6&quot;</span><span class="p">,</span>
+    <span class="n">model</span><span class="o">=</span><span class="s2">"qwen3.6"</span><span class="p">,</span>
     <span class="n">messages</span><span class="o">=</span><span class="p">[</span>
-        <span class="p">{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;system&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;You are a helpful local AI assistant.&quot;</span><span class="p">},</span>
-        <span class="p">{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;Explain what GGUF is.&quot;</span><span class="p">},</span>
+        <span class="p">{</span><span class="s2">"role"</span><span class="p">:</span> <span class="s2">"system"</span><span class="p">,</span> <span class="s2">"content"</span><span class="p">:</span> <span class="s2">"You are a helpful local AI assistant."</span><span class="p">},</span>
+        <span class="p">{</span><span class="s2">"role"</span><span class="p">:</span> <span class="s2">"user"</span><span class="p">,</span> <span class="s2">"content"</span><span class="p">:</span> <span class="s2">"Explain what GGUF is."</span><span class="p">},</span>
     <span class="p">],</span>
 <span class="p">)</span>
 
@@ -1204,16 +1621,16 @@ Apple Silicon: try MLX variants when available
 </section>
 <section id="streaming">
 <h3><span class="section-number">7.9.2. </span>Streaming<a class="headerlink" href="#streaming" title="Link to this heading">#</a></h3>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ollama</span> <span class="kn">import</span> <span class="n">chat</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">ollama</span><span class="w"> </span><span class="kn">import</span> <span class="n">chat</span>
 
 <span class="n">stream</span> <span class="o">=</span> <span class="n">chat</span><span class="p">(</span>
-    <span class="n">model</span><span class="o">=</span><span class="s2">&quot;qwen3.6&quot;</span><span class="p">,</span>
-    <span class="n">messages</span><span class="o">=</span><span class="p">[{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;Write a short intro to Ollama.&quot;</span><span class="p">}],</span>
+    <span class="n">model</span><span class="o">=</span><span class="s2">"qwen3.6"</span><span class="p">,</span>
+    <span class="n">messages</span><span class="o">=</span><span class="p">[{</span><span class="s2">"role"</span><span class="p">:</span> <span class="s2">"user"</span><span class="p">,</span> <span class="s2">"content"</span><span class="p">:</span> <span class="s2">"Write a short intro to Ollama."</span><span class="p">}],</span>
     <span class="n">stream</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">stream</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">chunk</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">content</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">chunk</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">content</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">""</span><span class="p">,</span> <span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 <p><strong>Example description:</strong> <code class="docutils literal notranslate"><span class="pre">stream=True</span></code> returns tokens gradually. The loop prints each partial chunk immediately, which is how many chat interfaces create the real-time typing effect.</p>
@@ -1230,18 +1647,18 @@ Apple Silicon: try MLX variants when available
 <p><strong>Example description:</strong> the OpenAI SDK can talk to Ollama because Ollama exposes an OpenAI-compatible <code class="docutils literal notranslate"><span class="pre">/v1</span></code> API. This makes provider switching much easier.</p>
 <section id="minimal-example">
 <h3><span class="section-number">7.10.1. </span>Minimal example<a class="headerlink" href="#minimal-example" title="Link to this heading">#</a></h3>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">openai</span> <span class="kn">import</span> <span class="n">OpenAI</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">openai</span><span class="w"> </span><span class="kn">import</span> <span class="n">OpenAI</span>
 
 <span class="n">client</span> <span class="o">=</span> <span class="n">OpenAI</span><span class="p">(</span>
-    <span class="n">base_url</span><span class="o">=</span><span class="s2">&quot;http://localhost:11434/v1&quot;</span><span class="p">,</span>
-    <span class="n">api_key</span><span class="o">=</span><span class="s2">&quot;ollama&quot;</span><span class="p">,</span>  <span class="c1"># any non-empty string works for local Ollama</span>
+    <span class="n">base_url</span><span class="o">=</span><span class="s2">"http://localhost:11434/v1"</span><span class="p">,</span>
+    <span class="n">api_key</span><span class="o">=</span><span class="s2">"ollama"</span><span class="p">,</span>  <span class="c1"># any non-empty string works for local Ollama</span>
 <span class="p">)</span>
 
 <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">completions</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
-    <span class="n">model</span><span class="o">=</span><span class="s2">&quot;qwen3.6&quot;</span><span class="p">,</span>
+    <span class="n">model</span><span class="o">=</span><span class="s2">"qwen3.6"</span><span class="p">,</span>
     <span class="n">messages</span><span class="o">=</span><span class="p">[</span>
-        <span class="p">{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;system&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;You are a professional coding assistant.&quot;</span><span class="p">},</span>
-        <span class="p">{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;Write a Python function that validates an email address.&quot;</span><span class="p">},</span>
+        <span class="p">{</span><span class="s2">"role"</span><span class="p">:</span> <span class="s2">"system"</span><span class="p">,</span> <span class="s2">"content"</span><span class="p">:</span> <span class="s2">"You are a professional coding assistant."</span><span class="p">},</span>
+        <span class="p">{</span><span class="s2">"role"</span><span class="p">:</span> <span class="s2">"user"</span><span class="p">,</span> <span class="s2">"content"</span><span class="p">:</span> <span class="s2">"Write a Python function that validates an email address."</span><span class="p">},</span>
     <span class="p">],</span>
 <span class="p">)</span>
 
@@ -1253,9 +1670,9 @@ Apple Silicon: try MLX variants when available
 <section id="why-this-matters">
 <h3><span class="section-number">7.10.2. </span>Why this matters<a class="headerlink" href="#why-this-matters" title="Link to this heading">#</a></h3>
 <p>You can switch providers by changing only these values:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">base_url</span> <span class="o">=</span> <span class="s2">&quot;http://localhost:11434/v1&quot;</span>
-<span class="n">api_key</span> <span class="o">=</span> <span class="s2">&quot;ollama&quot;</span>
-<span class="n">model</span> <span class="o">=</span> <span class="s2">&quot;qwen3.6&quot;</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">base_url</span> <span class="o">=</span> <span class="s2">"http://localhost:11434/v1"</span>
+<span class="n">api_key</span> <span class="o">=</span> <span class="s2">"ollama"</span>
+<span class="n">model</span> <span class="o">=</span> <span class="s2">"qwen3.6"</span>
 </pre></div>
 </div>
 <p><strong>Example description:</strong> this pattern prevents vendor lock-in. The same application can use local Ollama during development and a cloud or server-hosted model later by changing environment variables.</p>
@@ -1270,18 +1687,18 @@ Apple Silicon: try MLX variants when available
 </div>
 <p><strong>Example description:</strong> this installs the official OpenAI JavaScript SDK. Like the Python SDK, it can call Ollama through the OpenAI-compatible endpoint.</p>
 <p>Example:</p>
-<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="k">import</span><span class="w"> </span><span class="nx">OpenAI</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s2">&quot;openai&quot;</span><span class="p">;</span>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="k">import</span><span class="w"> </span><span class="nx">OpenAI</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s2">"openai"</span><span class="p">;</span>
 
 <span class="kd">const</span><span class="w"> </span><span class="nx">client</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">OpenAI</span><span class="p">({</span>
-<span class="w">  </span><span class="nx">baseURL</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;http://localhost:11434/v1&quot;</span><span class="p">,</span>
-<span class="w">  </span><span class="nx">apiKey</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;ollama&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">baseURL</span><span class="o">:</span><span class="w"> </span><span class="s2">"http://localhost:11434/v1"</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">apiKey</span><span class="o">:</span><span class="w"> </span><span class="s2">"ollama"</span><span class="p">,</span>
 <span class="p">});</span>
 
 <span class="kd">const</span><span class="w"> </span><span class="nx">completion</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">client</span><span class="p">.</span><span class="nx">chat</span><span class="p">.</span><span class="nx">completions</span><span class="p">.</span><span class="nx">create</span><span class="p">({</span>
-<span class="w">  </span><span class="nx">model</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;qwen3.6&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">model</span><span class="o">:</span><span class="w"> </span><span class="s2">"qwen3.6"</span><span class="p">,</span>
 <span class="w">  </span><span class="nx">messages</span><span class="o">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="nx">role</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;system&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">content</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;You are a careful software architect.&quot;</span><span class="w"> </span><span class="p">},</span>
-<span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="nx">role</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;user&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">content</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Design a REST API for a document approval workflow.&quot;</span><span class="w"> </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="nx">role</span><span class="o">:</span><span class="w"> </span><span class="s2">"system"</span><span class="p">,</span><span class="w"> </span><span class="nx">content</span><span class="o">:</span><span class="w"> </span><span class="s2">"You are a careful software architect."</span><span class="w"> </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="nx">role</span><span class="o">:</span><span class="w"> </span><span class="s2">"user"</span><span class="p">,</span><span class="w"> </span><span class="nx">content</span><span class="o">:</span><span class="w"> </span><span class="s2">"Design a REST API for a document approval workflow."</span><span class="w"> </span><span class="p">},</span>
 <span class="w">  </span><span class="p">],</span>
 <span class="p">});</span>
 
@@ -1299,12 +1716,12 @@ Apple Silicon: try MLX variants when available
 <p>Create a file named <code class="docutils literal notranslate"><span class="pre">Modelfile</span></code>:</p>
 <div class="highlight-dockerfile notranslate"><div class="highlight"><pre><span></span><span class="k">FROM</span><span class="w"> </span><span class="s">qwen3.6</span>
 
-SYSTEM<span class="w"> </span><span class="s2">&quot;&quot;&quot;</span>
+SYSTEM<span class="w"> </span><span class="s2">"""</span>
 You<span class="w"> </span>are<span class="w"> </span>a<span class="w"> </span><span class="nb">local</span><span class="w"> </span>AI<span class="w"> </span>assistant<span class="w"> </span><span class="k">for</span><span class="w"> </span>technical<span class="w"> </span>work.
 Give<span class="w"> </span>concise,<span class="w"> </span>accurate,<span class="w"> </span>practical<span class="w"> </span>answers.
 When<span class="w"> </span>information<span class="w"> </span>is<span class="w"> </span>missing,<span class="w"> </span>ask<span class="w"> </span><span class="k">for</span><span class="w"> </span>the<span class="w"> </span>missing<span class="w"> </span>input<span class="w"> </span>or<span class="w"> </span>state<span class="w"> </span>the<span class="w"> </span>uncertainty<span class="w"> </span>clearly.
 Do<span class="w"> </span>not<span class="w"> </span>invent<span class="w"> </span>facts,<span class="w"> </span>file<span class="w"> </span>contents,<span class="w"> </span>IDs,<span class="w"> </span>dates,<span class="w"> </span>or<span class="w"> </span>external<span class="w"> </span><span class="nb">source</span><span class="w"> </span>details.
-<span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">"""</span>
 
 PARAMETER<span class="w"> </span>temperature<span class="w"> </span><span class="m">0</span>.3
 PARAMETER<span class="w"> </span>num_ctx<span class="w"> </span><span class="m">32768</span>
@@ -1475,7 +1892,7 @@ ollama<span class="w"> </span>run<span class="w"> </span>qwen-large-context
 <p>Goal: see how a system prompt changes behavior.</p>
 <section id="plain-model">
 <h3><span class="section-number">7.15.1. </span>Plain model<a class="headerlink" href="#plain-model" title="Link to this heading">#</a></h3>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ollama<span class="w"> </span>run<span class="w"> </span>qwen3.6<span class="w"> </span><span class="s2">&quot;Design a database schema for a document review system.&quot;</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ollama<span class="w"> </span>run<span class="w"> </span>qwen3.6<span class="w"> </span><span class="s2">"Design a database schema for a document review system."</span>
 </pre></div>
 </div>
 <p><strong>Example description:</strong> this uses the base model without a custom system prompt. The result will depend mostly on the model’s default behavior.</p>
@@ -1484,17 +1901,17 @@ ollama<span class="w"> </span>run<span class="w"> </span>qwen-large-context
 <h3><span class="section-number">7.15.2. </span>Custom model<a class="headerlink" href="#custom-model" title="Link to this heading">#</a></h3>
 <p>Create <code class="docutils literal notranslate"><span class="pre">Modelfile</span></code>:</p>
 <div class="highlight-dockerfile notranslate"><div class="highlight"><pre><span></span><span class="k">FROM</span><span class="w"> </span><span class="s">qwen3.6</span>
-SYSTEM<span class="w"> </span><span class="s2">&quot;&quot;&quot;</span>
+SYSTEM<span class="w"> </span><span class="s2">"""</span>
 You<span class="w"> </span>are<span class="w"> </span>a<span class="w"> </span>senior<span class="w"> </span>backend<span class="w"> </span>architect.
 Always<span class="w"> </span>produce<span class="w"> </span>practical<span class="w"> </span>tables,<span class="w"> </span>fields,<span class="w"> </span>relationships,<span class="w"> </span>indexes,<span class="w"> </span>and<span class="w"> </span>implementation<span class="w"> </span>notes.
-<span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">"""</span>
 PARAMETER<span class="w"> </span>temperature<span class="w"> </span><span class="m">0</span>.2
 </pre></div>
 </div>
 <p><strong>Example description:</strong> this custom prompt tells the model what role to take and what output structure to prefer. <code class="docutils literal notranslate"><span class="pre">temperature</span> <span class="pre">0.2</span></code> makes the schema more stable and less creative.</p>
 <p>Build and run:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ollama<span class="w"> </span>create<span class="w"> </span>backend-architect<span class="w"> </span>-f<span class="w"> </span>Modelfile
-ollama<span class="w"> </span>run<span class="w"> </span>backend-architect<span class="w"> </span><span class="s2">&quot;Design a database schema for a document review system.&quot;</span>
+ollama<span class="w"> </span>run<span class="w"> </span>backend-architect<span class="w"> </span><span class="s2">"Design a database schema for a document review system."</span>
 </pre></div>
 </div>
 <p><strong>Example description:</strong> now the same task goes through a customized model wrapper. Compare the outputs and note whether the custom model gives more structured database design.</p>
@@ -1518,48 +1935,48 @@ ollama<span class="w"> </span>pull<span class="w"> </span>qwen3-embedding
 </div>
 <p><strong>Example description:</strong> embedding models convert text into vectors. You need them for semantic search because normal chat models do not automatically index documents.</p>
 <p>Create <code class="docutils literal notranslate"><span class="pre">tiny_rag.py</span></code>:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">ollama</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">ollama</span>
 
 <span class="n">DOCS</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s2">&quot;A knowledge base stores short text chunks from uploaded documents.&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;Embeddings convert text into vectors that can be compared by similarity.&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;RAG retrieves relevant chunks before asking the language model to answer.&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;A strict RAG assistant should say when the provided context is insufficient.&quot;</span><span class="p">,</span>
+    <span class="s2">"A knowledge base stores short text chunks from uploaded documents."</span><span class="p">,</span>
+    <span class="s2">"Embeddings convert text into vectors that can be compared by similarity."</span><span class="p">,</span>
+    <span class="s2">"RAG retrieves relevant chunks before asking the language model to answer."</span><span class="p">,</span>
+    <span class="s2">"A strict RAG assistant should say when the provided context is insufficient."</span><span class="p">,</span>
 <span class="p">]</span>
 
-<span class="k">def</span> <span class="nf">embed</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-    <span class="n">result</span> <span class="o">=</span> <span class="n">ollama</span><span class="o">.</span><span class="n">embed</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s2">&quot;embeddinggemma&quot;</span><span class="p">,</span> <span class="nb">input</span><span class="o">=</span><span class="n">text</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s2">&quot;embeddings&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">embed</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">ollama</span><span class="o">.</span><span class="n">embed</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s2">"embeddinggemma"</span><span class="p">,</span> <span class="nb">input</span><span class="o">=</span><span class="n">text</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s2">"embeddings"</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
 
 <span class="n">doc_vecs</span> <span class="o">=</span> <span class="p">[</span><span class="n">embed</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">DOCS</span><span class="p">]</span>
 
-<span class="k">def</span> <span class="nf">cosine</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">cosine</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
     <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">b</span><span class="p">)))</span>
 
-<span class="n">question</span> <span class="o">=</span> <span class="s2">&quot;Why does RAG need embeddings?&quot;</span>
+<span class="n">question</span> <span class="o">=</span> <span class="s2">"Why does RAG need embeddings?"</span>
 <span class="n">q_vec</span> <span class="o">=</span> <span class="n">embed</span><span class="p">(</span><span class="n">question</span><span class="p">)</span>
 
 <span class="n">scores</span> <span class="o">=</span> <span class="p">[(</span><span class="n">cosine</span><span class="p">(</span><span class="n">q_vec</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="n">doc</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span><span class="p">,</span> <span class="n">doc</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">doc_vecs</span><span class="p">,</span> <span class="n">DOCS</span><span class="p">)]</span>
 <span class="n">scores</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 
-<span class="n">context</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">doc</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">scores</span><span class="p">[:</span><span class="mi">2</span><span class="p">])</span>
+<span class="n">context</span> <span class="o">=</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">doc</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">scores</span><span class="p">[:</span><span class="mi">2</span><span class="p">])</span>
 
 <span class="n">response</span> <span class="o">=</span> <span class="n">ollama</span><span class="o">.</span><span class="n">chat</span><span class="p">(</span>
-    <span class="n">model</span><span class="o">=</span><span class="s2">&quot;qwen3.6&quot;</span><span class="p">,</span>
+    <span class="n">model</span><span class="o">=</span><span class="s2">"qwen3.6"</span><span class="p">,</span>
     <span class="n">messages</span><span class="o">=</span><span class="p">[</span>
         <span class="p">{</span>
-            <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;system&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;Answer strictly based on the provided context. If the context is insufficient, say so.&quot;</span><span class="p">,</span>
+            <span class="s2">"role"</span><span class="p">:</span> <span class="s2">"system"</span><span class="p">,</span>
+            <span class="s2">"content"</span><span class="p">:</span> <span class="s2">"Answer strictly based on the provided context. If the context is insufficient, say so."</span><span class="p">,</span>
         <span class="p">},</span>
         <span class="p">{</span>
-            <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;Context:</span><span class="se">\n</span><span class="si">{</span><span class="n">context</span><span class="si">}</span><span class="se">\n\n</span><span class="s2">Question:</span><span class="se">\n</span><span class="si">{</span><span class="n">question</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="s2">"role"</span><span class="p">:</span> <span class="s2">"user"</span><span class="p">,</span>
+            <span class="s2">"content"</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"Context:</span><span class="se">\n</span><span class="si">{</span><span class="n">context</span><span class="si">}</span><span class="se">\n\n</span><span class="s2">Question:</span><span class="se">\n</span><span class="si">{</span><span class="n">question</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
         <span class="p">},</span>
     <span class="p">],</span>
 <span class="p">)</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="p">[</span><span class="s2">&quot;message&quot;</span><span class="p">][</span><span class="s2">&quot;content&quot;</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="p">[</span><span class="s2">"message"</span><span class="p">][</span><span class="s2">"content"</span><span class="p">])</span>
 </pre></div>
 </div>
 <p><strong>Example description:</strong> this toy script demonstrates the entire RAG loop in miniature. <code class="docutils literal notranslate"><span class="pre">DOCS</span></code> are your fake knowledge base, <code class="docutils literal notranslate"><span class="pre">embed()</span></code> vectorizes text, cosine similarity retrieves relevant chunks, and the retrieved context is inserted into the model prompt.</p>
@@ -1653,41 +2070,41 @@ ChatMessage
 </div>
 <p><strong>Example description:</strong> this installs the Ollama Python SDK, which supports chat requests with tool definitions.</p>
 <p>Create <code class="docutils literal notranslate"><span class="pre">tool_calling_demo.py</span></code>:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">json</span>
-<span class="kn">import</span> <span class="nn">ollama</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">ollama</span>
 
 
-<span class="k">def</span> <span class="nf">estimate_ticket_priority</span><span class="p">(</span><span class="n">severity</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">affected_users</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">business_impact</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">estimate_ticket_priority</span><span class="p">(</span><span class="n">severity</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">affected_users</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">business_impact</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Estimate support ticket priority.</span>
 <span class="sd">    severity: 1-5</span>
 <span class="sd">    affected_users: 1-5</span>
 <span class="sd">    business_impact: 1-5</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">score</span> <span class="o">=</span> <span class="n">severity</span> <span class="o">*</span> <span class="mf">0.45</span> <span class="o">+</span> <span class="n">affected_users</span> <span class="o">*</span> <span class="mf">0.25</span> <span class="o">+</span> <span class="n">business_impact</span> <span class="o">*</span> <span class="mf">0.30</span>
     <span class="k">if</span> <span class="n">score</span> <span class="o">&gt;=</span> <span class="mi">4</span><span class="p">:</span>
-        <span class="n">level</span> <span class="o">=</span> <span class="s2">&quot;High&quot;</span>
+        <span class="n">level</span> <span class="o">=</span> <span class="s2">"High"</span>
     <span class="k">elif</span> <span class="n">score</span> <span class="o">&gt;=</span> <span class="mf">2.5</span><span class="p">:</span>
-        <span class="n">level</span> <span class="o">=</span> <span class="s2">&quot;Medium&quot;</span>
+        <span class="n">level</span> <span class="o">=</span> <span class="s2">"Medium"</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">level</span> <span class="o">=</span> <span class="s2">&quot;Low&quot;</span>
-    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;score&quot;</span><span class="p">:</span> <span class="nb">round</span><span class="p">(</span><span class="n">score</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="s2">&quot;priority&quot;</span><span class="p">:</span> <span class="n">level</span><span class="p">}</span>
+        <span class="n">level</span> <span class="o">=</span> <span class="s2">"Low"</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s2">"score"</span><span class="p">:</span> <span class="nb">round</span><span class="p">(</span><span class="n">score</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="s2">"priority"</span><span class="p">:</span> <span class="n">level</span><span class="p">}</span>
 
 
 <span class="n">tools</span> <span class="o">=</span> <span class="p">[</span>
     <span class="p">{</span>
-        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;function&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;function&quot;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;estimate_ticket_priority&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Estimate priority for a support ticket.&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;parameters&quot;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;object&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;properties&quot;</span><span class="p">:</span> <span class="p">{</span>
-                    <span class="s2">&quot;severity&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;integer&quot;</span><span class="p">,</span> <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Issue severity from 1 to 5&quot;</span><span class="p">},</span>
-                    <span class="s2">&quot;affected_users&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;integer&quot;</span><span class="p">,</span> <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Number/importance of affected users from 1 to 5&quot;</span><span class="p">},</span>
-                    <span class="s2">&quot;business_impact&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;integer&quot;</span><span class="p">,</span> <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Business impact from 1 to 5&quot;</span><span class="p">},</span>
+        <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"function"</span><span class="p">,</span>
+        <span class="s2">"function"</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">"name"</span><span class="p">:</span> <span class="s2">"estimate_ticket_priority"</span><span class="p">,</span>
+            <span class="s2">"description"</span><span class="p">:</span> <span class="s2">"Estimate priority for a support ticket."</span><span class="p">,</span>
+            <span class="s2">"parameters"</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"object"</span><span class="p">,</span>
+                <span class="s2">"properties"</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">"severity"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"integer"</span><span class="p">,</span> <span class="s2">"description"</span><span class="p">:</span> <span class="s2">"Issue severity from 1 to 5"</span><span class="p">},</span>
+                    <span class="s2">"affected_users"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"integer"</span><span class="p">,</span> <span class="s2">"description"</span><span class="p">:</span> <span class="s2">"Number/importance of affected users from 1 to 5"</span><span class="p">},</span>
+                    <span class="s2">"business_impact"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"integer"</span><span class="p">,</span> <span class="s2">"description"</span><span class="p">:</span> <span class="s2">"Business impact from 1 to 5"</span><span class="p">},</span>
                 <span class="p">},</span>
-                <span class="s2">&quot;required&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;severity&quot;</span><span class="p">,</span> <span class="s2">&quot;affected_users&quot;</span><span class="p">,</span> <span class="s2">&quot;business_impact&quot;</span><span class="p">],</span>
+                <span class="s2">"required"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"severity"</span><span class="p">,</span> <span class="s2">"affected_users"</span><span class="p">,</span> <span class="s2">"business_impact"</span><span class="p">],</span>
             <span class="p">},</span>
         <span class="p">},</span>
     <span class="p">}</span>
@@ -1695,37 +2112,37 @@ ChatMessage
 
 <span class="n">messages</span> <span class="o">=</span> <span class="p">[</span>
     <span class="p">{</span>
-        <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;A login outage has severity 5, affected users 4, and business impact 5. Estimate its priority.&quot;</span><span class="p">,</span>
+        <span class="s2">"role"</span><span class="p">:</span> <span class="s2">"user"</span><span class="p">,</span>
+        <span class="s2">"content"</span><span class="p">:</span> <span class="s2">"A login outage has severity 5, affected users 4, and business impact 5. Estimate its priority."</span><span class="p">,</span>
     <span class="p">}</span>
 <span class="p">]</span>
 
 <span class="n">first</span> <span class="o">=</span> <span class="n">ollama</span><span class="o">.</span><span class="n">chat</span><span class="p">(</span>
-    <span class="n">model</span><span class="o">=</span><span class="s2">&quot;qwen3.6&quot;</span><span class="p">,</span>
+    <span class="n">model</span><span class="o">=</span><span class="s2">"qwen3.6"</span><span class="p">,</span>
     <span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">,</span>
     <span class="n">tools</span><span class="o">=</span><span class="n">tools</span><span class="p">,</span>
 <span class="p">)</span>
 
-<span class="n">messages</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">first</span><span class="p">[</span><span class="s2">&quot;message&quot;</span><span class="p">])</span>
+<span class="n">messages</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">first</span><span class="p">[</span><span class="s2">"message"</span><span class="p">])</span>
 
-<span class="k">if</span> <span class="n">first</span><span class="p">[</span><span class="s2">&quot;message&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;tool_calls&quot;</span><span class="p">):</span>
-    <span class="k">for</span> <span class="n">call</span> <span class="ow">in</span> <span class="n">first</span><span class="p">[</span><span class="s2">&quot;message&quot;</span><span class="p">][</span><span class="s2">&quot;tool_calls&quot;</span><span class="p">]:</span>
-        <span class="n">name</span> <span class="o">=</span> <span class="n">call</span><span class="p">[</span><span class="s2">&quot;function&quot;</span><span class="p">][</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
-        <span class="n">args</span> <span class="o">=</span> <span class="n">call</span><span class="p">[</span><span class="s2">&quot;function&quot;</span><span class="p">][</span><span class="s2">&quot;arguments&quot;</span><span class="p">]</span>
+<span class="k">if</span> <span class="n">first</span><span class="p">[</span><span class="s2">"message"</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"tool_calls"</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">call</span> <span class="ow">in</span> <span class="n">first</span><span class="p">[</span><span class="s2">"message"</span><span class="p">][</span><span class="s2">"tool_calls"</span><span class="p">]:</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">call</span><span class="p">[</span><span class="s2">"function"</span><span class="p">][</span><span class="s2">"name"</span><span class="p">]</span>
+        <span class="n">args</span> <span class="o">=</span> <span class="n">call</span><span class="p">[</span><span class="s2">"function"</span><span class="p">][</span><span class="s2">"arguments"</span><span class="p">]</span>
 
-        <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;estimate_ticket_priority&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">"estimate_ticket_priority"</span><span class="p">:</span>
             <span class="n">result</span> <span class="o">=</span> <span class="n">estimate_ticket_priority</span><span class="p">(</span><span class="o">**</span><span class="n">args</span><span class="p">)</span>
             <span class="n">messages</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
-                <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;tool&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">result</span><span class="p">),</span>
+                <span class="s2">"role"</span><span class="p">:</span> <span class="s2">"tool"</span><span class="p">,</span>
+                <span class="s2">"content"</span><span class="p">:</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">result</span><span class="p">),</span>
             <span class="p">})</span>
 
 <span class="n">second</span> <span class="o">=</span> <span class="n">ollama</span><span class="o">.</span><span class="n">chat</span><span class="p">(</span>
-    <span class="n">model</span><span class="o">=</span><span class="s2">&quot;qwen3.6&quot;</span><span class="p">,</span>
+    <span class="n">model</span><span class="o">=</span><span class="s2">"qwen3.6"</span><span class="p">,</span>
     <span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">,</span>
 <span class="p">)</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="n">second</span><span class="p">[</span><span class="s2">&quot;message&quot;</span><span class="p">][</span><span class="s2">&quot;content&quot;</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">second</span><span class="p">[</span><span class="s2">"message"</span><span class="p">][</span><span class="s2">"content"</span><span class="p">])</span>
 </pre></div>
 </div>
 <p><strong>Example description:</strong> the model does not execute Python directly. It sees the tool schema, decides whether to call the tool, and returns a tool call request. Your code validates the function name and arguments, runs the Python function, appends the tool result, and asks the model to produce the final answer.</p>
@@ -1808,25 +2225,25 @@ similarity search
 <section id="generate-embeddings-with-curl">
 <h3><span class="section-number">7.20.1. </span>Generate embeddings with cURL<a class="headerlink" href="#generate-embeddings-with-curl" title="Link to this heading">#</a></h3>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://localhost:11434/api/embed<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{</span>
-<span class="s1">    &quot;model&quot;: &quot;embeddinggemma&quot;,</span>
-<span class="s1">    &quot;input&quot;: &quot;A user reports that login fails after entering a correct password.&quot;</span>
-<span class="s1">  }&#39;</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-d<span class="w"> </span><span class="s1">'{</span>
+<span class="s1">    "model": "embeddinggemma",</span>
+<span class="s1">    "input": "A user reports that login fails after entering a correct password."</span>
+<span class="s1">  }'</span>
 </pre></div>
 </div>
 <p><strong>Example description:</strong> <code class="docutils literal notranslate"><span class="pre">/api/embed</span></code> returns a vector instead of a natural-language answer. You store this vector in a vector database and compare it to other vectors for semantic search.</p>
 </section>
 <section id="generate-embeddings-in-python">
 <h3><span class="section-number">7.20.2. </span>Generate embeddings in Python<a class="headerlink" href="#generate-embeddings-in-python" title="Link to this heading">#</a></h3>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">ollama</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">ollama</span>
 
 <span class="n">result</span> <span class="o">=</span> <span class="n">ollama</span><span class="o">.</span><span class="n">embed</span><span class="p">(</span>
-    <span class="n">model</span><span class="o">=</span><span class="s2">&quot;embeddinggemma&quot;</span><span class="p">,</span>
-    <span class="nb">input</span><span class="o">=</span><span class="s2">&quot;A user reports that login fails after entering a correct password.&quot;</span>
+    <span class="n">model</span><span class="o">=</span><span class="s2">"embeddinggemma"</span><span class="p">,</span>
+    <span class="nb">input</span><span class="o">=</span><span class="s2">"A user reports that login fails after entering a correct password."</span>
 <span class="p">)</span>
 
-<span class="n">vector</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;embeddings&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">vector</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s2">"embeddings"</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
 <span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">vector</span><span class="p">))</span>
 </pre></div>
 </div>
@@ -1849,18 +2266,18 @@ Index documents with qwen3-embedding → query with qwen3-embedding
 <section id="json-output-with-api-chat">
 <h3><span class="section-number">7.21.1. </span>JSON output with <code class="docutils literal notranslate"><span class="pre">/api/chat</span></code><a class="headerlink" href="#json-output-with-api-chat" title="Link to this heading">#</a></h3>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>http://localhost:11434/api/chat<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{</span>
-<span class="s1">    &quot;model&quot;: &quot;qwen3.6&quot;,</span>
-<span class="s1">    &quot;messages&quot;: [</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-d<span class="w"> </span><span class="s1">'{</span>
+<span class="s1">    "model": "qwen3.6",</span>
+<span class="s1">    "messages": [</span>
 <span class="s1">      {</span>
-<span class="s1">        &quot;role&quot;: &quot;user&quot;,</span>
-<span class="s1">        &quot;content&quot;: &quot;Return JSON for a support ticket with fields: title, severity, priority, reason.&quot;</span>
+<span class="s1">        "role": "user",</span>
+<span class="s1">        "content": "Return JSON for a support ticket with fields: title, severity, priority, reason."</span>
 <span class="s1">      }</span>
 <span class="s1">    ],</span>
-<span class="s1">    &quot;format&quot;: &quot;json&quot;,</span>
-<span class="s1">    &quot;stream&quot;: false</span>
-<span class="s1">  }&#39;</span>
+<span class="s1">    "format": "json",</span>
+<span class="s1">    "stream": false</span>
+<span class="s1">  }'</span>
 </pre></div>
 </div>
 <p><strong>Example description:</strong> <code class="docutils literal notranslate"><span class="pre">format:&quot;json&quot;</span></code> asks Ollama to constrain the output to JSON. This is useful for classification, extraction, database previews, and backend workflows.</p>
@@ -1878,11 +2295,11 @@ workflow routing
 </div>
 <p>Example target shape:</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">  </span><span class="nt">&quot;ticket_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;TICKET-00123&quot;</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">&quot;issue_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;login_failure&quot;</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">&quot;severity&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">&quot;priority&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;high&quot;</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">&quot;recommended_action&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;investigate authentication service&quot;</span>
+<span class="w">  </span><span class="nt">"ticket_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"TICKET-00123"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"issue_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"login_failure"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"severity"</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"priority"</span><span class="p">:</span><span class="w"> </span><span class="s2">"high"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"recommended_action"</span><span class="p">:</span><span class="w"> </span><span class="s2">"investigate authentication service"</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -1894,18 +2311,18 @@ workflow routing
 <h2><span class="section-number">7.22. </span>Vision Models<a class="headerlink" href="#vision-models" title="Link to this heading">#</a></h2>
 <p>Some Ollama models can accept images.</p>
 <p>Example CLI:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ollama<span class="w"> </span>run<span class="w"> </span>gemma4<span class="w"> </span><span class="s2">&quot;What is visible in this image? ./sample-image.jpg&quot;</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ollama<span class="w"> </span>run<span class="w"> </span>gemma4<span class="w"> </span><span class="s2">"What is visible in this image? ./sample-image.jpg"</span>
 </pre></div>
 </div>
 <p><strong>Example description:</strong> this uses a vision-capable model to inspect an image. The text model and vision model may be different; always confirm the model supports images before relying on image input.</p>
 <p>Example API pattern:</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">  </span><span class="nt">&quot;model&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;vision-model-name&quot;</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">&quot;messages&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">  </span><span class="nt">"model"</span><span class="p">:</span><span class="w"> </span><span class="s2">"vision-model-name"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"messages"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
 <span class="w">    </span><span class="p">{</span>
-<span class="w">      </span><span class="nt">&quot;role&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;user&quot;</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;content&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Describe the important objects in this image.&quot;</span><span class="p">,</span>
-<span class="w">      </span><span class="nt">&quot;images&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;BASE64_IMAGE_STRING&quot;</span><span class="p">]</span>
+<span class="w">      </span><span class="nt">"role"</span><span class="p">:</span><span class="w"> </span><span class="s2">"user"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"content"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Describe the important objects in this image."</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"images"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"BASE64_IMAGE_STRING"</span><span class="p">]</span>
 <span class="w">    </span><span class="p">}</span>
 <span class="w">  </span><span class="p">]</span>
 <span class="p">}</span>
@@ -2158,15 +2575,15 @@ Step 4: Custom backend integration for your own application
 <section id="generic-service-wrapper">
 <h3><span class="section-number">7.27.2. </span>Generic service wrapper<a class="headerlink" href="#generic-service-wrapper" title="Link to this heading">#</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># services/llm.py</span>
-<span class="kn">from</span> <span class="nn">openai</span> <span class="kn">import</span> <span class="n">OpenAI</span>
-<span class="kn">from</span> <span class="nn">django.conf</span> <span class="kn">import</span> <span class="n">settings</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">openai</span><span class="w"> </span><span class="kn">import</span> <span class="n">OpenAI</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">django.conf</span><span class="w"> </span><span class="kn">import</span> <span class="n">settings</span>
 
 <span class="n">client</span> <span class="o">=</span> <span class="n">OpenAI</span><span class="p">(</span>
-    <span class="n">base_url</span><span class="o">=</span><span class="nb">getattr</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="s2">&quot;OLLAMA_BASE_URL&quot;</span><span class="p">,</span> <span class="s2">&quot;http://localhost:11434/v1&quot;</span><span class="p">),</span>
-    <span class="n">api_key</span><span class="o">=</span><span class="nb">getattr</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="s2">&quot;OLLAMA_API_KEY&quot;</span><span class="p">,</span> <span class="s2">&quot;ollama&quot;</span><span class="p">),</span>
+    <span class="n">base_url</span><span class="o">=</span><span class="nb">getattr</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="s2">"OLLAMA_BASE_URL"</span><span class="p">,</span> <span class="s2">"http://localhost:11434/v1"</span><span class="p">),</span>
+    <span class="n">api_key</span><span class="o">=</span><span class="nb">getattr</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="s2">"OLLAMA_API_KEY"</span><span class="p">,</span> <span class="s2">"ollama"</span><span class="p">),</span>
 <span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">ask_local_model</span><span class="p">(</span><span class="n">messages</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="s2">&quot;qwen3.6&quot;</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="mf">0.2</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">ask_local_model</span><span class="p">(</span><span class="n">messages</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="s2">"qwen3.6"</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="mf">0.2</span><span class="p">):</span>
     <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">completions</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
         <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span>
         <span class="n">messages</span><span class="o">=</span><span class="n">messages</span><span class="p">,</span>
@@ -2178,8 +2595,8 @@ Step 4: Custom backend integration for your own application
 <p><strong>Example description:</strong> this wrapper hides provider details from the rest of your application. Views, tasks, or services call <code class="docutils literal notranslate"><span class="pre">ask_local_model()</span></code> instead of directly constructing API requests everywhere.</p>
 <p>Usage:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">answer</span> <span class="o">=</span> <span class="n">ask_local_model</span><span class="p">([</span>
-    <span class="p">{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;system&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;You are a careful internal documentation assistant.&quot;</span><span class="p">},</span>
-    <span class="p">{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;Summarize this technical note in 5 bullets.&quot;</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">"role"</span><span class="p">:</span> <span class="s2">"system"</span><span class="p">,</span> <span class="s2">"content"</span><span class="p">:</span> <span class="s2">"You are a careful internal documentation assistant."</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">"role"</span><span class="p">:</span> <span class="s2">"user"</span><span class="p">,</span> <span class="s2">"content"</span><span class="p">:</span> <span class="s2">"Summarize this technical note in 5 bullets."</span><span class="p">},</span>
 <span class="p">])</span>
 </pre></div>
 </div>
@@ -2409,7 +2826,8 @@ cloud model comparison
 <hr class="docutils" />
 <section id="end-to-end-workflow-for-a-local-ai-stack">
 <h2><span class="section-number">7.32. </span>End-to-End Workflow for a Local AI Stack<a class="headerlink" href="#end-to-end-workflow-for-a-local-ai-stack" title="Link to this heading">#</a></h2>
-<div class="highlight-mermaid notranslate"><div class="highlight"><pre><span></span>graph TD
+<pre  class="mermaid">
+        graph TD
     A[&quot;Install Ollama&quot;] --&gt; B[&quot;Pull a local chat model&quot;]
     B --&gt; C[&quot;Test in terminal&quot;]
     C --&gt; D[&quot;Call from Python with OpenAI-compatible SDK&quot;]
@@ -2421,9 +2839,7 @@ cloud model comparison
     I --&gt; J[&quot;Connect backend app&quot;]
     J --&gt; K[&quot;Add Open WebUI or custom UI&quot;]
     K --&gt; L[&quot;Optional: compare with cloud models&quot;]
-</pre></div>
-</div>
-<p><strong>Example description:</strong> this workflow shows how to grow from one local command into a full application stack. Each step adds a capability: model access, customization, private knowledge, tools, backend integration, and UI.</p>
+    </pre><p><strong>Example description:</strong> this workflow shows how to grow from one local command into a full application stack. Each step adds a capability: model access, customization, private knowledge, tools, backend integration, and UI.</p>
 </section>
 <hr class="docutils" />
 <section id="mini-project-generic-local-documentation-assistant">
@@ -2503,13 +2919,13 @@ For actions that change data, create a draft and ask for human confirmation.
 <summary>Answer</summary>
 <p>Set:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">client</span> <span class="o">=</span> <span class="n">OpenAI</span><span class="p">(</span>
-    <span class="n">base_url</span><span class="o">=</span><span class="s2">&quot;http://localhost:11434/v1&quot;</span><span class="p">,</span>
-    <span class="n">api_key</span><span class="o">=</span><span class="s2">&quot;ollama&quot;</span><span class="p">,</span>
+    <span class="n">base_url</span><span class="o">=</span><span class="s2">"http://localhost:11434/v1"</span><span class="p">,</span>
+    <span class="n">api_key</span><span class="o">=</span><span class="s2">"ollama"</span><span class="p">,</span>
 <span class="p">)</span>
 </pre></div>
 </div>
 <p>Then use your local model name, such as:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="o">=</span><span class="s2">&quot;qwen3.6&quot;</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="o">=</span><span class="s2">"qwen3.6"</span>
 </pre></div>
 </div>
 </details>
@@ -2546,8 +2962,8 @@ For actions that change data, create a draft and ask for human confirmation.
 <h3><span class="section-number">7.35.1. </span>A.1 Health check and model list<a class="headerlink" href="#a-1-health-check-and-model-list" title="Link to this heading">#</a></h3>
 <div class="sd-tab-set docutils">
 <input checked="checked" id="sd-tab-item-11" name="sd-tab-set-4" type="radio">
-<label class="sd-tab-label" for="sd-tab-item-11">
-macOS / Linux</label><div class="sd-tab-content docutils">
+<label aria-controls="sd-tab-item-11-content" class="sd-tab-label" for="sd-tab-item-11">
+macOS / Linux</label><div class="sd-tab-content docutils" id="sd-tab-item-11-content">
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ollama<span class="w"> </span>list
 curl<span class="w"> </span>http://localhost:11434/api/tags
 </pre></div>
@@ -2555,8 +2971,8 @@ curl<span class="w"> </span>http://localhost:11434/api/tags
 <p><strong>Example description:</strong> <code class="docutils literal notranslate"><span class="pre">ollama</span> <span class="pre">list</span></code> checks the local model registry from the CLI. <code class="docutils literal notranslate"><span class="pre">curl</span> <span class="pre">/api/tags</span></code> checks the same idea through the HTTP API, which is what applications use.</p>
 </div>
 <input id="sd-tab-item-12" name="sd-tab-set-4" type="radio">
-<label class="sd-tab-label" for="sd-tab-item-12">
-Windows PowerShell</label><div class="sd-tab-content docutils">
+<label aria-controls="sd-tab-item-12-content" class="sd-tab-label" for="sd-tab-item-12">
+Windows PowerShell</label><div class="sd-tab-content docutils" id="sd-tab-item-12-content">
 <div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="n">ollama</span> <span class="n">list</span>
 <span class="nb">Invoke-RestMethod</span> <span class="n">http</span><span class="p">://</span><span class="n">localhost</span><span class="p">:</span><span class="n">11434</span><span class="p">/</span><span class="n">api</span><span class="p">/</span><span class="n">tags</span>
 </pre></div>
@@ -2564,8 +2980,8 @@ Windows PowerShell</label><div class="sd-tab-content docutils">
 <p><strong>Example description:</strong> the first command confirms the CLI works. The second confirms the local API works and returns the installed models as PowerShell objects.</p>
 </div>
 <input id="sd-tab-item-13" name="sd-tab-set-4" type="radio">
-<label class="sd-tab-label" for="sd-tab-item-13">
-Windows CMD</label><div class="sd-tab-content docutils">
+<label aria-controls="sd-tab-item-13-content" class="sd-tab-label" for="sd-tab-item-13">
+Windows CMD</label><div class="sd-tab-content docutils" id="sd-tab-item-13-content">
 <div class="highlight-cmd notranslate"><div class="highlight"><pre><span></span>ollama list
 curl.exe http://localhost:11434/api/tags
 </pre></div>
@@ -2578,16 +2994,16 @@ curl.exe http://localhost:11434/api/tags
 <h3><span class="section-number">7.35.2. </span>A.2 Run the same model on each OS<a class="headerlink" href="#a-2-run-the-same-model-on-each-os" title="Link to this heading">#</a></h3>
 <div class="sd-tab-set docutils">
 <input checked="checked" id="sd-tab-item-14" name="sd-tab-set-5" type="radio">
-<label class="sd-tab-label" for="sd-tab-item-14">
-macOS / Linux</label><div class="sd-tab-content docutils">
+<label aria-controls="sd-tab-item-14-content" class="sd-tab-label" for="sd-tab-item-14">
+macOS / Linux</label><div class="sd-tab-content docutils" id="sd-tab-item-14-content">
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ollama<span class="w"> </span>run<span class="w"> </span>qwen3.6
 </pre></div>
 </div>
 <p><strong>Example description:</strong> this loads the model and starts an interactive terminal chat. If the model is missing, Ollama downloads it first.</p>
 </div>
 <input id="sd-tab-item-15" name="sd-tab-set-5" type="radio">
-<label class="sd-tab-label" for="sd-tab-item-15">
-Windows PowerShell / CMD</label><div class="sd-tab-content docutils">
+<label aria-controls="sd-tab-item-15-content" class="sd-tab-label" for="sd-tab-item-15">
+Windows PowerShell / CMD</label><div class="sd-tab-content docutils" id="sd-tab-item-15-content">
 <div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="n">ollama</span> <span class="n">run</span> <span class="n">qwen3</span><span class="p">.</span><span class="n">6</span>
 </pre></div>
 </div>
@@ -2599,8 +3015,8 @@ Windows PowerShell / CMD</label><div class="sd-tab-content docutils">
 <h3><span class="section-number">7.35.3. </span>A.3 Python virtual environment setup<a class="headerlink" href="#a-3-python-virtual-environment-setup" title="Link to this heading">#</a></h3>
 <div class="sd-tab-set docutils">
 <input checked="checked" id="sd-tab-item-16" name="sd-tab-set-6" type="radio">
-<label class="sd-tab-label" for="sd-tab-item-16">
-macOS / Linux</label><div class="sd-tab-content docutils">
+<label aria-controls="sd-tab-item-16-content" class="sd-tab-label" for="sd-tab-item-16">
+macOS / Linux</label><div class="sd-tab-content docutils" id="sd-tab-item-16-content">
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>.venv
 <span class="nb">source</span><span class="w"> </span>.venv/bin/activate
 python3<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-U<span class="w"> </span>ollama<span class="w"> </span>openai<span class="w"> </span>numpy
@@ -2609,8 +3025,8 @@ python3<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </s
 <p><strong>Example description:</strong> this creates an isolated Python environment, activates it, and installs the Ollama SDK, OpenAI SDK, and NumPy for simple RAG experiments.</p>
 </div>
 <input id="sd-tab-item-17" name="sd-tab-set-6" type="radio">
-<label class="sd-tab-label" for="sd-tab-item-17">
-Windows PowerShell</label><div class="sd-tab-content docutils">
+<label aria-controls="sd-tab-item-17-content" class="sd-tab-label" for="sd-tab-item-17">
+Windows PowerShell</label><div class="sd-tab-content docutils" id="sd-tab-item-17-content">
 <div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="n">py</span> <span class="n">-m</span> <span class="n">venv</span> <span class="p">.</span><span class="n">venv</span>
 <span class="p">.\.</span><span class="n">venv</span><span class="p">\</span><span class="n">Scripts</span><span class="p">\</span><span class="n">Activate</span><span class="p">.</span><span class="n">ps1</span>
 <span class="n">py</span> <span class="n">-m</span> <span class="n">pip</span> <span class="n">install</span> <span class="n">-U</span> <span class="n">ollama</span> <span class="n">openai</span> <span class="n">numpy</span>
@@ -2619,8 +3035,8 @@ Windows PowerShell</label><div class="sd-tab-content docutils">
 <p><strong>Example description:</strong> Windows virtual environments use a different activation script. If activation is blocked, run PowerShell as the current user and set a less restrictive execution policy for the session.</p>
 </div>
 <input id="sd-tab-item-18" name="sd-tab-set-6" type="radio">
-<label class="sd-tab-label" for="sd-tab-item-18">
-Windows CMD</label><div class="sd-tab-content docutils">
+<label aria-controls="sd-tab-item-18-content" class="sd-tab-label" for="sd-tab-item-18">
+Windows CMD</label><div class="sd-tab-content docutils" id="sd-tab-item-18-content">
 <div class="highlight-cmd notranslate"><div class="highlight"><pre><span></span>py -m venv .venv
 .venv\Scripts\activate.bat
 py -m pip install -U ollama openai numpy
@@ -2634,8 +3050,8 @@ py -m pip install -U ollama openai numpy
 <h3><span class="section-number">7.35.4. </span>A.4 Run toy scripts<a class="headerlink" href="#a-4-run-toy-scripts" title="Link to this heading">#</a></h3>
 <div class="sd-tab-set docutils">
 <input checked="checked" id="sd-tab-item-19" name="sd-tab-set-7" type="radio">
-<label class="sd-tab-label" for="sd-tab-item-19">
-macOS / Linux</label><div class="sd-tab-content docutils">
+<label aria-controls="sd-tab-item-19-content" class="sd-tab-label" for="sd-tab-item-19">
+macOS / Linux</label><div class="sd-tab-content docutils" id="sd-tab-item-19-content">
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>tiny_rag.py
 python3<span class="w"> </span>tool_calling_demo.py
 </pre></div>
@@ -2643,8 +3059,8 @@ python3<span class="w"> </span>tool_calling_demo.py
 <p><strong>Example description:</strong> these commands run the tutorial’s toy RAG and tool-calling scripts with the active Python environment.</p>
 </div>
 <input id="sd-tab-item-20" name="sd-tab-set-7" type="radio">
-<label class="sd-tab-label" for="sd-tab-item-20">
-Windows PowerShell / CMD</label><div class="sd-tab-content docutils">
+<label aria-controls="sd-tab-item-20-content" class="sd-tab-label" for="sd-tab-item-20">
+Windows PowerShell / CMD</label><div class="sd-tab-content docutils" id="sd-tab-item-20-content">
 <div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="n">py</span> <span class="n">tiny_rag</span><span class="p">.</span><span class="n">py</span>
 <span class="n">py</span> <span class="n">tool_calling_demo</span><span class="p">.</span><span class="n">py</span>
 </pre></div>
@@ -2657,8 +3073,8 @@ Windows PowerShell / CMD</label><div class="sd-tab-content docutils">
 <h3><span class="section-number">7.35.5. </span>A.5 Environment variables<a class="headerlink" href="#a-5-environment-variables" title="Link to this heading">#</a></h3>
 <div class="sd-tab-set docutils">
 <input checked="checked" id="sd-tab-item-21" name="sd-tab-set-8" type="radio">
-<label class="sd-tab-label" for="sd-tab-item-21">
-macOS / Linux temporary session</label><div class="sd-tab-content docutils">
+<label aria-controls="sd-tab-item-21-content" class="sd-tab-label" for="sd-tab-item-21">
+macOS / Linux temporary session</label><div class="sd-tab-content docutils" id="sd-tab-item-21-content">
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">OLLAMA_HOST</span><span class="o">=</span><span class="m">127</span>.0.0.1:11434
 <span class="nb">export</span><span class="w"> </span><span class="nv">OLLAMA_KEEP_ALIVE</span><span class="o">=</span>5m
 <span class="nb">export</span><span class="w"> </span><span class="nv">OLLAMA_CONTEXT_LENGTH</span><span class="o">=</span><span class="m">8192</span>
@@ -2668,26 +3084,26 @@ ollama<span class="w"> </span>serve
 <p><strong>Example description:</strong> these variables affect the Ollama server launched from the same shell. They are temporary and disappear when the terminal closes.</p>
 </div>
 <input id="sd-tab-item-22" name="sd-tab-set-8" type="radio">
-<label class="sd-tab-label" for="sd-tab-item-22">
-Windows PowerShell temporary session</label><div class="sd-tab-content docutils">
-<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nv">$env:OLLAMA_HOST</span><span class="p">=</span><span class="s2">&quot;127.0.0.1:11434&quot;</span>
-<span class="nv">$env:OLLAMA_KEEP_ALIVE</span><span class="p">=</span><span class="s2">&quot;5m&quot;</span>
-<span class="nv">$env:OLLAMA_CONTEXT_LENGTH</span><span class="p">=</span><span class="s2">&quot;8192&quot;</span>
+<label aria-controls="sd-tab-item-22-content" class="sd-tab-label" for="sd-tab-item-22">
+Windows PowerShell temporary session</label><div class="sd-tab-content docutils" id="sd-tab-item-22-content">
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nv">$env:OLLAMA_HOST</span><span class="p">=</span><span class="s2">"127.0.0.1:11434"</span>
+<span class="nv">$env:OLLAMA_KEEP_ALIVE</span><span class="p">=</span><span class="s2">"5m"</span>
+<span class="nv">$env:OLLAMA_CONTEXT_LENGTH</span><span class="p">=</span><span class="s2">"8192"</span>
 <span class="n">ollama</span> <span class="n">serve</span>
 </pre></div>
 </div>
 <p><strong>Example description:</strong> <code class="docutils literal notranslate"><span class="pre">$env:</span></code> sets variables for the current PowerShell session. Start <code class="docutils literal notranslate"><span class="pre">ollama</span> <span class="pre">serve</span></code> from that same window so the server receives the settings.</p>
 </div>
 <input id="sd-tab-item-23" name="sd-tab-set-8" type="radio">
-<label class="sd-tab-label" for="sd-tab-item-23">
-Linux systemd service</label><div class="sd-tab-content docutils">
+<label aria-controls="sd-tab-item-23-content" class="sd-tab-label" for="sd-tab-item-23">
+Linux systemd service</label><div class="sd-tab-content docutils" id="sd-tab-item-23-content">
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>systemctl<span class="w"> </span>edit<span class="w"> </span>ollama
 </pre></div>
 </div>
 <p>Then add:</p>
 <div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[Service]</span>
-<span class="na">Environment</span><span class="o">=</span><span class="s">&quot;OLLAMA_KEEP_ALIVE=5m&quot;</span>
-<span class="na">Environment</span><span class="o">=</span><span class="s">&quot;OLLAMA_CONTEXT_LENGTH=8192&quot;</span>
+<span class="na">Environment</span><span class="o">=</span><span class="s">"OLLAMA_KEEP_ALIVE=5m"</span>
+<span class="na">Environment</span><span class="o">=</span><span class="s">"OLLAMA_CONTEXT_LENGTH=8192"</span>
 </pre></div>
 </div>
 <p>Reload and restart:</p>
@@ -2703,36 +3119,36 @@ sudo<span class="w"> </span>systemctl<span class="w"> </span>restart<span class=
 <h3><span class="section-number">7.35.6. </span>A.6 API calls: cURL vs PowerShell<a class="headerlink" href="#a-6-api-calls-curl-vs-powershell" title="Link to this heading">#</a></h3>
 <div class="sd-tab-set docutils">
 <input checked="checked" id="sd-tab-item-24" name="sd-tab-set-9" type="radio">
-<label class="sd-tab-label" for="sd-tab-item-24">
-macOS / Linux cURL</label><div class="sd-tab-content docutils">
+<label aria-controls="sd-tab-item-24-content" class="sd-tab-label" for="sd-tab-item-24">
+macOS / Linux cURL</label><div class="sd-tab-content docutils" id="sd-tab-item-24-content">
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>http://localhost:11434/api/chat<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{</span>
-<span class="s1">    &quot;model&quot;: &quot;qwen3.6&quot;,</span>
-<span class="s1">    &quot;messages&quot;: [</span>
-<span class="s1">      {&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;Explain local LLMs in one paragraph.&quot;}</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-d<span class="w"> </span><span class="s1">'{</span>
+<span class="s1">    "model": "qwen3.6",</span>
+<span class="s1">    "messages": [</span>
+<span class="s1">      {"role": "user", "content": "Explain local LLMs in one paragraph."}</span>
 <span class="s1">    ],</span>
-<span class="s1">    &quot;stream&quot;: false</span>
-<span class="s1">  }&#39;</span>
+<span class="s1">    "stream": false</span>
+<span class="s1">  }'</span>
 </pre></div>
 </div>
 <p><strong>Example description:</strong> this sends a complete chat request to the local Ollama API. <code class="docutils literal notranslate"><span class="pre">stream:false</span></code> makes the response easier to read in scripts because Ollama returns one final JSON object.</p>
 </div>
 <input id="sd-tab-item-25" name="sd-tab-set-9" type="radio">
-<label class="sd-tab-label" for="sd-tab-item-25">
-Windows PowerShell</label><div class="sd-tab-content docutils">
+<label aria-controls="sd-tab-item-25-content" class="sd-tab-label" for="sd-tab-item-25">
+Windows PowerShell</label><div class="sd-tab-content docutils" id="sd-tab-item-25-content">
 <div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nv">$body</span> <span class="p">=</span> <span class="p">@{</span>
-  <span class="n">model</span> <span class="p">=</span> <span class="s2">&quot;qwen3.6&quot;</span>
+  <span class="n">model</span> <span class="p">=</span> <span class="s2">"qwen3.6"</span>
   <span class="n">messages</span> <span class="p">=</span> <span class="p">@(</span>
-    <span class="p">@{</span> <span class="n">role</span> <span class="p">=</span> <span class="s2">&quot;user&quot;</span><span class="p">;</span> <span class="n">content</span> <span class="p">=</span> <span class="s2">&quot;Explain local LLMs in one paragraph.&quot;</span> <span class="p">}</span>
+    <span class="p">@{</span> <span class="n">role</span> <span class="p">=</span> <span class="s2">"user"</span><span class="p">;</span> <span class="n">content</span> <span class="p">=</span> <span class="s2">"Explain local LLMs in one paragraph."</span> <span class="p">}</span>
   <span class="p">)</span>
   <span class="n">stream</span> <span class="p">=</span> <span class="nv">$false</span>
 <span class="p">}</span> <span class="p">|</span> <span class="nb">ConvertTo-Json</span> <span class="n">-Depth</span> <span class="n">5</span>
 
 <span class="nb">Invoke-RestMethod</span> <span class="p">`</span>
-  <span class="n">-Uri</span> <span class="s2">&quot;http://localhost:11434/api/chat&quot;</span> <span class="p">`</span>
+  <span class="n">-Uri</span> <span class="s2">"http://localhost:11434/api/chat"</span> <span class="p">`</span>
   <span class="n">-Method</span> <span class="n">Post</span> <span class="p">`</span>
-  <span class="n">-ContentType</span> <span class="s2">&quot;application/json&quot;</span> <span class="p">`</span>
+  <span class="n">-ContentType</span> <span class="s2">"application/json"</span> <span class="p">`</span>
   <span class="n">-Body</span> <span class="nv">$body</span>
 </pre></div>
 </div>
@@ -2744,24 +3160,24 @@ Windows PowerShell</label><div class="sd-tab-content docutils">
 <h3><span class="section-number">7.35.7. </span>A.7 Check which process owns port 11434<a class="headerlink" href="#a-7-check-which-process-owns-port-11434" title="Link to this heading">#</a></h3>
 <div class="sd-tab-set docutils">
 <input checked="checked" id="sd-tab-item-26" name="sd-tab-set-10" type="radio">
-<label class="sd-tab-label" for="sd-tab-item-26">
-macOS</label><div class="sd-tab-content docutils">
+<label aria-controls="sd-tab-item-26-content" class="sd-tab-label" for="sd-tab-item-26">
+macOS</label><div class="sd-tab-content docutils" id="sd-tab-item-26-content">
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>lsof<span class="w"> </span>-i<span class="w"> </span>:11434
 </pre></div>
 </div>
 <p><strong>Example description:</strong> this checks whether Ollama or another process is listening on the default API port.</p>
 </div>
 <input id="sd-tab-item-27" name="sd-tab-set-10" type="radio">
-<label class="sd-tab-label" for="sd-tab-item-27">
-Linux</label><div class="sd-tab-content docutils">
+<label aria-controls="sd-tab-item-27-content" class="sd-tab-label" for="sd-tab-item-27">
+Linux</label><div class="sd-tab-content docutils" id="sd-tab-item-27-content">
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ss<span class="w"> </span>-ltnp<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="m">11434</span>
 </pre></div>
 </div>
 <p><strong>Example description:</strong> <code class="docutils literal notranslate"><span class="pre">ss</span></code> is the modern Linux tool for checking listening TCP ports. It helps diagnose connection refused errors.</p>
 </div>
 <input id="sd-tab-item-28" name="sd-tab-set-10" type="radio">
-<label class="sd-tab-label" for="sd-tab-item-28">
-Windows PowerShell</label><div class="sd-tab-content docutils">
+<label aria-controls="sd-tab-item-28-content" class="sd-tab-label" for="sd-tab-item-28">
+Windows PowerShell</label><div class="sd-tab-content docutils" id="sd-tab-item-28-content">
 <div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Get-NetTCPConnection</span> <span class="n">-LocalPort</span> <span class="n">11434</span>
 </pre></div>
 </div>
@@ -2773,12 +3189,12 @@ Windows PowerShell</label><div class="sd-tab-content docutils">
 <h3><span class="section-number">7.35.8. </span>A.8 Import a local GGUF file<a class="headerlink" href="#a-8-import-a-local-gguf-file" title="Link to this heading">#</a></h3>
 <div class="sd-tab-set docutils">
 <input checked="checked" id="sd-tab-item-29" name="sd-tab-set-11" type="radio">
-<label class="sd-tab-label" for="sd-tab-item-29">
-macOS / Linux</label><div class="sd-tab-content docutils">
+<label aria-controls="sd-tab-item-29-content" class="sd-tab-label" for="sd-tab-item-29">
+macOS / Linux</label><div class="sd-tab-content docutils" id="sd-tab-item-29-content">
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mkdir<span class="w"> </span>-p<span class="w"> </span>~/Models/demo-gguf
 <span class="nb">cd</span><span class="w"> </span>~/Models/demo-gguf
 <span class="c1"># Put model.Q4_K_M.gguf in this folder first.</span>
-cat<span class="w"> </span>&gt;<span class="w"> </span>Modelfile<span class="w"> </span><span class="s">&lt;&lt;&#39;EOF&#39;</span>
+cat<span class="w"> </span>&gt;<span class="w"> </span>Modelfile<span class="w"> </span><span class="s">&lt;&lt;'EOF'</span>
 <span class="s">FROM ./model.Q4_K_M.gguf</span>
 <span class="s">PARAMETER temperature 0.3</span>
 <span class="s">EOF</span>
@@ -2789,15 +3205,15 @@ ollama<span class="w"> </span>run<span class="w"> </span>demo-local
 <p><strong>Example description:</strong> the <code class="docutils literal notranslate"><span class="pre">Modelfile</span></code> tells Ollama which local GGUF file to wrap as a runnable model. <code class="docutils literal notranslate"><span class="pre">ollama</span> <span class="pre">create</span></code> registers it under the name <code class="docutils literal notranslate"><span class="pre">demo-local</span></code>.</p>
 </div>
 <input id="sd-tab-item-30" name="sd-tab-set-11" type="radio">
-<label class="sd-tab-label" for="sd-tab-item-30">
-Windows PowerShell</label><div class="sd-tab-content docutils">
-<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">New-Item</span> <span class="n">-ItemType</span> <span class="n">Directory</span> <span class="n">-Force</span> <span class="n">-Path</span> <span class="s2">&quot;$HOME\Models\demo-gguf&quot;</span>
-<span class="nb">Set-Location</span> <span class="s2">&quot;$HOME\Models\demo-gguf&quot;</span>
+<label aria-controls="sd-tab-item-30-content" class="sd-tab-label" for="sd-tab-item-30">
+Windows PowerShell</label><div class="sd-tab-content docutils" id="sd-tab-item-30-content">
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">New-Item</span> <span class="n">-ItemType</span> <span class="n">Directory</span> <span class="n">-Force</span> <span class="n">-Path</span> <span class="s2">"$HOME\Models\demo-gguf"</span>
+<span class="nb">Set-Location</span> <span class="s2">"$HOME\Models\demo-gguf"</span>
 <span class="c"># Put model.Q4_K_M.gguf in this folder first.</span>
-<span class="sh">@&quot;</span>
+<span class="sh">@"</span>
 <span class="sh">FROM ./model.Q4_K_M.gguf</span>
 <span class="sh">PARAMETER temperature 0.3</span>
-<span class="sh">&quot;@</span> <span class="p">|</span> <span class="nb">Set-Content</span> <span class="n">Modelfile</span>
+<span class="sh">"@</span> <span class="p">|</span> <span class="nb">Set-Content</span> <span class="n">Modelfile</span>
 <span class="n">ollama</span> <span class="n">create</span> <span class="n">demo-local</span> <span class="o">-f</span> <span class="n">Modelfile</span>
 <span class="n">ollama</span> <span class="n">run</span> <span class="n">demo-local</span>
 </pre></div>
@@ -2810,8 +3226,8 @@ Windows PowerShell</label><div class="sd-tab-content docutils">
 <h3><span class="section-number">7.35.9. </span>A.9 Open WebUI with Docker<a class="headerlink" href="#a-9-open-webui-with-docker" title="Link to this heading">#</a></h3>
 <div class="sd-tab-set docutils">
 <input checked="checked" id="sd-tab-item-31" name="sd-tab-set-12" type="radio">
-<label class="sd-tab-label" for="sd-tab-item-31">
-macOS / Linux</label><div class="sd-tab-content docutils">
+<label aria-controls="sd-tab-item-31-content" class="sd-tab-label" for="sd-tab-item-31">
+macOS / Linux</label><div class="sd-tab-content docutils" id="sd-tab-item-31-content">
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>run<span class="w"> </span>-d<span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>-p<span class="w"> </span><span class="m">3000</span>:8080<span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>--add-host<span class="o">=</span>host.docker.internal:host-gateway<span class="w"> </span><span class="se">\</span>
@@ -2824,8 +3240,8 @@ macOS / Linux</label><div class="sd-tab-content docutils">
 <p><strong>Example description:</strong> this runs Open WebUI and points containers to the host machine so the web UI can reach Ollama at <code class="docutils literal notranslate"><span class="pre">host.docker.internal:11434</span></code>.</p>
 </div>
 <input id="sd-tab-item-32" name="sd-tab-set-12" type="radio">
-<label class="sd-tab-label" for="sd-tab-item-32">
-Windows PowerShell</label><div class="sd-tab-content docutils">
+<label aria-controls="sd-tab-item-32-content" class="sd-tab-label" for="sd-tab-item-32">
+Windows PowerShell</label><div class="sd-tab-content docutils" id="sd-tab-item-32-content">
 <div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">run</span> <span class="n">-d</span> <span class="p">`</span>
   <span class="n">-p</span> <span class="n">3000</span><span class="p">:</span><span class="n">8080</span> <span class="p">`</span>
   <span class="p">-</span><span class="n">-add-host</span><span class="p">=</span><span class="n">host</span><span class="p">.</span><span class="n">docker</span><span class="p">.</span><span class="n">internal</span><span class="p">:</span><span class="n">host-gateway</span> <span class="p">`</span>
@@ -2888,7 +3304,7 @@ Windows PowerShell</label><div class="sd-tab-content docutils">
 7. Add tool calling for safe backend actions.
 8. Use Open WebUI for daily local ChatGPT-like use.
 9. Use cloud models only for difficult tasks or comparison.
-10. Use Hugging Face GGUF when Ollama&#39;s official library lacks a model.
+10. Use Hugging Face GGUF when Ollama's official library lacks a model.
 </pre></div>
 </div>
 <p>The big idea:</p>
@@ -3003,15 +3419,17 @@ Your UI gives it a useful product experience.
             
             
               
-                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
-  <div class="sidebar-secondary-item">
-  <div class="page-toc tocsection onthispage">
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
     <i class="fa-solid fa-list"></i> Contents
   </div>
-  <nav class="bd-toc-nav page-toc">
-    <ul class="visible nav section-nav flex-column">
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-you-should-be-able-to-do-after-this-tutorial">7.1. What You Should Be Able to Do After This Tutorial</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mental-model-what-ollama-actually-is">7.2. Mental Model: What Ollama Actually Is</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ollama-vs-llama-vs-llama-cpp-vs-gguf">7.2.1. Ollama vs Llama vs llama.cpp vs GGUF</a></li>
@@ -3228,8 +3646,8 @@ By Yalin Yang
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
-<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <script defer src="../../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
 
   <footer class="bd-footer">
   </footer>
