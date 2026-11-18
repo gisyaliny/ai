@@ -1,4 +1,46 @@
-# — Mastering Ollama: Local Models, APIs, RAG, Tools, and Production Patterns
+# 07 - From Local Chat to a Grounded API Response Workshop
+
+**Time:** 60 minutes · **Audience:** beginners · **Updated:** November 18, 2026.
+
+## Workshop preparation
+
+The previous local-model workshop; Python 3.10+; workshop-kit extracted into one folder.
+
+Download the {download}`shared workshop kit <../workshops/assets/workshop-kit.zip>` and extract it into a disposable folder. [Browse all workshops](../workshops/index.md). Code blocks run in your local terminal, not on this web page. Record your tool versions and use synthetic inputs.
+
+## Hands-on route
+
+1. Run `ollama list` and choose an installed chat model. Record its exact ID rather than copying a model name from an older screenshot.
+2. Run the offline fixture checks: `python retrieval.py` and `python graph.py`.
+3. In Windows PowerShell set `$env:OLLAMA_MODEL="YOUR_INSTALLED_MODEL"`. On macOS/Linux use `export OLLAMA_MODEL="YOUR_INSTALLED_MODEL"`. Replace the placeholder before running anything.
+4. Run `python local_rag.py` from the extracted kit. The first result should answer the library-opening question using S1. The second should say insufficient evidence without calling the model.
+5. Record response latency, the model ID, and whether S1 supports the answer. Change the opening time in retrieval.py and rerun to demonstrate that the document, rather than a remembered answer, supplies the fact.
+
+The starter is deliberately a lexical baseline with native Ollama chat. The longer reference below explores embeddings, tools and serving; these are extensions, not prerequisites for this acceptance test.
+
+## Acceptance evidence
+
+An actual cited response, an unsupported-question refusal, and a rerun after modifying the fixture.
+
+Create `evidence.md` with your environment, commands, observed outputs, failures and fixes. Label anything you did not run. Do not include secrets, screenshots of account pages, or private paths.
+
+## Troubleshooting and cleanup
+
+Model not found: use the exact ID from ollama list. Wrong facts: inspect retrieved text before adjusting prompts. Timeout: reduce output/model size or allow the first load to complete. Stop any demo server when finished; retain only the small fixture and evidence needed to reproduce your result.
+
+```{mermaid}
+flowchart LR
+    A["Prepare synthetic fixture"] --> B["Run guided task"]
+    B --> C["Check observed result"]
+    C --> D["Record evidence and limitations"]
+```
+
+> **Image Suggestion (Nanobanana Prompt)**: A clean technical workshop illustration titled “From Local Chat to a Grounded API Response”, with a neutral editor window, a small synthetic fixture, and an evidence checklist. Use legible navy and teal typography on a light background, even lighting, and a visible “Concept illustration” label. Show no account identity, private paths, or simulated success presented as a screenshot.
+
+## Reference and optional extensions
+
+The material below provides background. Complete the guided acceptance test above first; vendor interfaces and example model IDs can change. Consult the linked official documentation for the version you use.
+
 
 > Goal: Tutorial 01 introduced the basic local LLM stack. Tutorial 02 focuses on mastering Ollama itself: model management, APIs, Modelfiles, Hugging Face GGUF models, embeddings, RAG, tool calling, cloud models, troubleshooting, and safe integration into local or web applications.
 
@@ -138,7 +180,7 @@ Invoke-RestMethod http://localhost:11434/api/tags
 :::
 
 :::{tab-item} Windows CMD
-```cmd
+```bat
 curl.exe http://localhost:11434/api/tags
 ```
 
@@ -1957,7 +1999,7 @@ Invoke-RestMethod http://localhost:11434/api/tags
 :::
 
 :::{tab-item} Windows CMD
-```cmd
+```bat
 ollama list
 curl.exe http://localhost:11434/api/tags
 ```
@@ -2010,7 +2052,7 @@ py -m pip install -U ollama openai numpy
 :::
 
 :::{tab-item} Windows CMD
-```cmd
+```bat
 py -m venv .venv
 .venv\Scripts\activate.bat
 py -m pip install -U ollama openai numpy

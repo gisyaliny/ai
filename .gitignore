@@ -11,3 +11,10 @@ private/
 .agents/
 transcripts/
 .claude/
+
+# Personal assets retained locally, not part of workshop publication
+/logo.png
+/cover.png
+/fav.ico
+/gisyaliny/
+**/__pycache__/

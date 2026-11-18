@@ -1,0 +1,5 @@
+SYNTHETIC TRAINING DATA — NOT A REAL STUDY
+S1: A pilot enrolled 12 volunteers at one site. There was no control group.
+S2: Median completion time changed from 18 minutes before training to 15 minutes afterward.
+S3: The pilot did not measure long-term retention or report a significance test.
+Draft claim: Training proves a universal and statistically significant productivity improvement.

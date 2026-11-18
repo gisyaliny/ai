@@ -1,91 +1,57 @@
-# Multimodal & Context Management
+# 03 - Reproduce a Design and Preserve Context Workshop
 
-This chapter introduces how Claude Code interacts with the outside world through visual inputs and the Model Context Protocol (MCP), and how to manage the AI's memory (context) for long-running projects.
+**Time:** 45 minutes · **Audience:** beginners · **Updated:** November 18, 2026.
 
-## What is MCP (Model Context Protocol)?
+## Workshop preparation
 
-Think of Claude Code as a brilliant brain. By default, it can read and write files on your computer. But what if it needs to query your live PostgreSQL database, fetch issues from your GitHub board, read documentation from a live website, or extract Figma design tokens? 
+The to-do app, a self-created screenshot with no personal content, and a model/client supporting image input.
 
-**MCP Servers** act as the "hands and eyes" for Claude. They are standardized connectors that let Claude securely interact with external tools and data sources.
+Download the {download}`shared workshop kit <../workshops/assets/workshop-kit.zip>` and extract it into a disposable folder. [Browse all workshops](../workshops/index.md). Code blocks run in your local terminal, not on this web page. Record your tool versions and use synthetic inputs.
 
-### Authentic Example Workflow: Adding a PostgreSQL MCP
+## Hands-on route
 
-Imagine you want Claude to analyze your local database structure and write a SQL migration script. 
+1. Create a simple reference sketch: title, input, add button and list. Save it as `reference.png`; ensure it contains no account details or personal browser tabs.
+2. Attach it using the image mechanism supported by your installed client. Ask the assistant to describe the layout before making changes; verify it actually received the image.
+3. Request only the layout changes, preserving behavior. Compare at 400px and 1200px browser widths and rerun the add/delete tests.
+4. Write `handoff.md` containing goals, changed files, failed tests, and next steps. Start a new conversation and explicitly attach/read that handoff. Verify the assistant can state the next action correctly.
+5. Optional MCP exercise: select a read-only server from its maintainer's documentation. Record the host, granted permissions, and one observed tool result. Do not connect a production database for this exercise.
 
-1. **Install the MCP via CLI Wizard:**
-   In your terminal, run:
-   ```bash
-   claude mcp add db -- npm -y @modelcontextprotocol/server-postgres postgresql://localhost/mydb
-   ```
-2. **Interact:**
-   Once installed, you can ask Claude Code: 
-   *"Use the db tool to list all tables, then write a query to find users who signed up in the last 30 days."*
-3. **How it works:** Claude Code automatically calls the `db` MCP server, assesses the schema, and generates the exact query. You never have to manually paste database schemas into the chat!
+```text
+Describe the attached layout first. Then propose only CSS changes to match its
+spacing and arrangement. Preserve task behavior. Report uncertain measurements;
+do not claim pixel-perfect reproduction without comparison.
+```
 
-## Using Visuals: Multimodal Input
+## Acceptance evidence
 
-Sometimes, describing a UI purely with text is impossible. You can provide Claude Code directly with your design mockups or screenshots.
+Two viewport screenshots, a handoff file, and a capability record distinguishing image input from MCP access.
 
-- **Drag and Drop**: Drag the image directly into your active terminal running Claude Code.
-- **Clipboard Paste**: Copy the image and use `Ctrl + V` to paste it. *(Note: Even on macOS, you must use `Ctrl + V`, not `Command + V`, inside the terminal)*.
+Create `evidence.md` with your environment, commands, observed outputs, failures and fixes. Label anything you did not run. Do not include secrets, screenshots of account pages, or private paths.
 
+## Troubleshooting and cleanup
 
-## High-Fidelity UI Generation (The Figma MCP)
+No image received: use the supported attachment UI rather than assuming a pasted path uploads bytes. New session forgets decisions: read handoff.md explicitly. Stop any demo server when finished; retain only the small fixture and evidence needed to reproduce your result.
 
-While pasting a screenshot is great for rough prototyping, an image lacks exact font sizes, hex colors, and margin data. For pixel-perfect React or HTML components, use the Figma MCP instead:
+```{mermaid}
+flowchart LR
+    A["Prepare synthetic fixture"] --> B["Run guided task"]
+    B --> C["Check observed result"]
+    C --> D["Record evidence and limitations"]
+```
 
-1. **Setup:** Install the official Figma MCP server (`claude mcp add figma ...`).
-2. **Authenticate:** Type `/mcp`, select the Figma tool, and follow the browser authentication link.
-3. **Prompt it:** *"Modify `index.html` to match the Figma mockup exactly. Here is the link: [Figma Object Link]"*
-4. **Result:** Claude uses the MCP to fetch the exact design tokens (padding: 16px, background: #1A1A1A, etc.) and writes a 1:1 matching code component.
+> **Image Suggestion (Nanobanana Prompt)**: A clean technical workshop illustration titled “Reproduce a Design and Preserve Context”, with a neutral editor window, a small synthetic fixture, and an evidence checklist. Use legible navy and teal typography on a light background, even lighting, and a visible “Concept illustration” label. Show no account identity, private paths, or simulated success presented as a screenshot.
 
-## Managing AI Memory (Context)
-
-As you chat, paste images, and call MCP tools, Claude's "context window" (its short-term memory) gets crowded. A bloated context makes the AI slower, more expensive, and prone to forgetting early instructions.
-
-### The `/compact` Command Workflow
-When you notice Claude getting sluggish after a long coding session:
-1. Type `/compact` and press Enter.
-2. The system intelligently summarizes the development focus, decisions, and outcomes of the current cycle.
-3. It permanently discards massive intermediate data (like long error logs or the Base64 strings of previous images).
-4. Response speed returns to normal, and Token costs drop dramatically! *(Use `Ctrl + O` to view the compacted summary).*
-
-### The `/clear` Command
-If you are moving on to a completely different task (e.g., from Frontend styling to Backend database design), use `/clear`. This completely eradicates the memory of the current chat, giving you a fresh, fast slate.
-
-## Version Rewind & Resuming
-
-- **Oops, go back! (`/rewind`)**: If Claude writes bad code, type `/rewind` (or tap `ESC` twice). You can select a previous moment in the conversation and choose "Restore code and session" to undo the AI's file edits. *(Note: It cannot undo `npm install` or other shell commands).*
-- **I closed the terminal! (`/resume`)**: If you accidentally close your terminal, just reopen it, type `claude`, and then type `/resume` to pick up exactly where you left off. Alternatively, start Claude with `claude -c` (Continue) to auto-load the last session.
-
-## Project Memory: CLAUDE.md
-
-How do you give Claude permanent instructions that persist across *every* session? (e.g., "Always use TypeScript, never use classes, prefer functional components").
-
-- **Create the file**: Run `/init` to generate a `CLAUDE.md` file in your project root.
-- **Edit it**: Add your strict project guidelines. Every time Claude Code starts in this folder, it reads `CLAUDE.md` as its fundamental system prompt.
-
----
 ## Read More
 
-- [Model Context Protocol (MCP) Overview](https://modelcontextprotocol.io/) — Official MCP specification and ecosystem.
-- [Claude Code MCP Configuration](https://docs.anthropic.com/en/docs/claude-code/mcp) — How to add and manage MCP servers in Claude Code.
-- [Figma MCP Server](https://github.com/anthropics/anthropic-figma-mcp) — Connect Claude Code to Figma for pixel-perfect UI generation.
-- [Claude Code Memory Management](https://docs.anthropic.com/en/docs/claude-code/memory) — Using CLAUDE.md and context commands effectively.
-- [MCP Server Registry](https://github.com/modelcontextprotocol/servers) — Directory of available MCP servers (GitHub, Slack, PostgreSQL, etc.).
-
----
+- [Claude Code quickstart](https://code.claude.com/docs/en/quickstart) — Installation and account setup.
+- [Skills](https://code.claude.com/docs/en/skills) — Supported skill paths and invocation.
+- [Permissions](https://code.claude.com/docs/en/permissions) — Review the installed client's permission behavior.
+- [MCP](https://code.claude.com/docs/en/mcp) — Configure a specific trusted server and inspect access.
 
 ## Knowledge Quiz
 
-**Q1: Why is using the Figma MCP superior to simply pasting a PNG screenshot of a design?**
-<details>
-<summary>Answer</summary>
-A PNG image loses exact metadata like font-weight, precise padding, and exact hex colors. The MCP Server reads the raw design tokens directly from Figma's API, ensuring pixel-perfect 1:1 code reproduction.
-</details>
+**What evidence makes this lab complete?**
+<details><summary>Answer</summary>The acceptance artifacts listed above and actual observed results. A model's claim of success is insufficient.</details>
 
-**Q2: What happens when you run the `/compact` command after a long coding session?**
-<details>
-<summary>Answer</summary>
-It summarizes your progress and decisions while throwing away bulky intermediate data (like long crash logs or image strings). This speeds up the AI and reduces token costs without losing the high-level project context.
-</details>
+**Does accepting file edits approve every terminal command or remote action?**
+<details><summary>Answer</summary>No. Editing, shell execution and remote tool permissions are separate controls; inspect the actual scope before approving.</details>

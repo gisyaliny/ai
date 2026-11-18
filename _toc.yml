@@ -7,7 +7,7 @@ root: index
 parts:
   # Add your AI tools content here
   # Example structure:
-  - caption: Vibe Coding
+  - caption: Vibe Coding Workshops
     numbered: true
     maxdepth: 2
     chapters:
@@ -15,18 +15,18 @@ parts:
       - file: docs/vibe-coding/02-complex-tasks-and-terminal
       - file: docs/vibe-coding/03-multimodal-and-context
       - file: docs/vibe-coding/04-advanced-features
-  - caption: Research
+  - caption: Research Workshop
     numbered: true
     maxdepth: 2
     chapters:
       - file: docs/research/01-ai-prompts-for-research
-  - caption: Local LLM
+  - caption: Local LLM Workshops
     numbered: true
     maxdepth: 2
     chapters:
       - file: docs/local-llm/01-deploy-local-llm
       - file: docs/local-llm/02-mastering-ollama
-  - caption: RAG
+  - caption: RAG Workshops
     numbered: true
     maxdepth: 2
     chapters:
@@ -48,6 +48,8 @@ parts:
     numbered: false
     maxdepth: 2
     chapters:
+      - file: docs/workshops/index
+      - file: docs/workshops/invitation
       - file: docs/workshops/macstudio-agent/index
         sections:
           - file: docs/workshops/macstudio-agent/01-architecture-and-connection
