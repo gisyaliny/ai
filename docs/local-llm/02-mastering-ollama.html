@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>7. — Mastering Ollama: Local Models, APIs, RAG, Tools, and Production Patterns &#8212; AI Tools Learning Handbook</title>
+    <title>7. 07 - From Local Chat to a Grounded API Response Workshop &#8212; AI Tools Learning Handbook</title>
   
   
   
@@ -34,7 +34,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
     <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=6a604523" />
   
@@ -427,12 +427,11 @@ window.addEventListener("load", load);
 </script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'docs/local-llm/02-mastering-ollama';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
-    <link rel="canonical" href="https://gisyaliny.github.io/AI/docs/local-llm/02-mastering-ollama.html" />
-    <link rel="icon" href="../../_static/fav.ico"/>
+    <link rel="canonical" href="https://gisyaliny.github.io/ai/docs/local-llm/02-mastering-ollama.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="8. What is RAG? (Retrieval-Augmented Generation)" href="../rag/01-what-is-rag.html" />
-    <link rel="prev" title="6. Deploy Open-Source LLMs Locally with Ollama &amp; AnythingLLM" href="01-deploy-local-llm.html" />
+    <link rel="next" title="8. 08 - Observe Retrieval Before Generation Workshop" href="../rag/01-what-is-rag.html" />
+    <link rel="prev" title="6. 06 - Run a Local Model and Verify the Endpoint Workshop" href="01-deploy-local-llm.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
@@ -559,14 +558,8 @@ window.addEventListener("load", load);
   
   
   
-    
-    
-      
-    
-    
-    <img src="../../_static/logo.png" class="logo__image only-light" alt="AI Tools Learning Handbook - Home"/>
-    <img src="../../_static/logo.png" class="logo__image only-dark pst-js-only" alt="AI Tools Learning Handbook - Home"/>
   
+    <p class="title logo__title">AI Tools Learning Handbook</p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -578,30 +571,32 @@ window.addEventListener("load", load);
 </button></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
-        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Vibe Coding</span></p>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Vibe Coding Workshops</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../vibe-coding/01-environment-and-basics.html">1. Environment Setup &amp; Basic Interaction (Environment Setup &amp; Basic Interaction)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../vibe-coding/02-complex-tasks-and-terminal.html">2. Complex Tasks &amp; Terminal Control</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../vibe-coding/03-multimodal-and-context.html">3. Multimodal &amp; Context Management</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../vibe-coding/04-advanced-features.html">4. Advanced Features &amp; Customization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vibe-coding/01-environment-and-basics.html">1. 01 - Build and Test a Small App Workshop</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vibe-coding/02-complex-tasks-and-terminal.html">2. 02 - Refactor Without Losing Behavior Workshop</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vibe-coding/03-multimodal-and-context.html">3. 03 - Reproduce a Design and Preserve Context Workshop</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vibe-coding/04-advanced-features.html">4. 04 - Create a Reusable Review Skill Workshop</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Research</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Research Workshop</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../research/01-ai-prompts-for-research.html">5. AI Prompts &amp; Skills for Academic Research</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../research/01-ai-prompts-for-research.html">5. 05 - Audit Claims Before Adding Citations Workshop</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Local LLM</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Local LLM Workshops</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="01-deploy-local-llm.html">6. Deploy Open-Source LLMs Locally with Ollama &amp; AnythingLLM</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">7. — Mastering Ollama: Local Models, APIs, RAG, Tools, and Production Patterns</a></li>
+<li class="toctree-l1"><a class="reference internal" href="01-deploy-local-llm.html">6. 06 - Run a Local Model and Verify the Endpoint Workshop</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">7. 07 - From Local Chat to a Grounded API Response Workshop</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">RAG</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">RAG Workshops</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../rag/01-what-is-rag.html">8. What is RAG? (Retrieval-Augmented Generation)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../rag/02-implementing-rag.html">9. Implementing RAG with Python</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../rag/03-graph-rag.html">10. Graph RAG: Knowledge Graphs Meet Retrieval</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rag/01-what-is-rag.html">8. 08 - Observe Retrieval Before Generation Workshop</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rag/02-implementing-rag.html">9. 09 - Build a Small Grounded Question-Answering Pipeline Workshop</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rag/03-graph-rag.html">10. 10 - Retrieve a Two-Hop Evidence Path Workshop</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Workshops</span></p>
 <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../workshops/index.html">AI Hands-on Workshops</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../workshops/invitation.html">Build Your Own Coding Agent — Workshop Invitation</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../workshops/macstudio-agent/index.html">00 - Build a Mac Studio Coding Agent for VS Code</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../workshops/macstudio-agent/01-architecture-and-connection.html">01 - Architecture and Connection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../workshops/macstudio-agent/02-first-extension.html">02 - Your First VS Code Extension</a></li>
@@ -673,7 +668,7 @@ window.addEventListener("load", load);
       
       
       
-      <li><a href="https://github.com/gisyaliny/AI" target="_blank"
+      <li><a href="https://github.com/gisyaliny/ai" target="_blank"
    class="btn btn-sm btn-source-repository-button dropdown-item"
    title="Source repository"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -690,7 +685,7 @@ window.addEventListener("load", load);
       
       
       
-      <li><a href="https://github.com/gisyaliny/AI/edit/main/docs/local-llm/02-mastering-ollama.md" target="_blank"
+      <li><a href="https://github.com/gisyaliny/ai/edit/main/docs/local-llm/02-mastering-ollama.md" target="_blank"
    class="btn btn-sm btn-source-edit-button dropdown-item"
    title="Suggest edit"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -707,7 +702,7 @@ window.addEventListener("load", load);
       
       
       
-      <li><a href="https://github.com/gisyaliny/AI/issues/new?title=Issue%20on%20page%20%2Fdocs/local-llm/02-mastering-ollama.html&body=Your%20issue%20content%20here." target="_blank"
+      <li><a href="https://github.com/gisyaliny/ai/issues/new?title=Issue%20on%20page%20%2Fdocs/local-llm/02-mastering-ollama.html&body=Your%20issue%20content%20here." target="_blank"
    class="btn btn-sm btn-source-issues-button dropdown-item"
    title="Open an issue"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -813,7 +808,7 @@ window.addEventListener("load", load);
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>— Mastering Ollama: Local Models, APIs, RAG, Tools, and Production Patterns</h1>
+    <h1>07 - From Local Chat to a Grounded API Response Workshop</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -823,172 +818,177 @@ window.addEventListener("load", load);
             </div>
             <nav aria-label="Page">
                 <ul class="pst-show_toc_level nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-you-should-be-able-to-do-after-this-tutorial">7.1. What You Should Be Able to Do After This Tutorial</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mental-model-what-ollama-actually-is">7.2. Mental Model: What Ollama Actually Is</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ollama-vs-llama-vs-llama-cpp-vs-gguf">7.2.1. Ollama vs Llama vs llama.cpp vs GGUF</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#workshop-preparation">7.1. Workshop preparation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hands-on-route">7.2. Hands-on route</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#acceptance-evidence">7.3. Acceptance evidence</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#troubleshooting-and-cleanup">7.4. Troubleshooting and cleanup</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reference-and-optional-extensions">7.5. Reference and optional extensions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-you-should-be-able-to-do-after-this-tutorial">7.6. What You Should Be Able to Do After This Tutorial</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mental-model-what-ollama-actually-is">7.7. Mental Model: What Ollama Actually Is</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ollama-vs-llama-vs-llama-cpp-vs-gguf">7.7.1. Ollama vs Llama vs llama.cpp vs GGUF</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installation-and-first-checks">7.3. Installation and First Checks</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#install-ollama">7.3.1. Install Ollama</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#verify-the-api-server">7.3.2. Verify the API server</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cross-platform-command-convention">7.3.3. Cross-platform command convention</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#where-ollama-stores-models">7.3.4. Where Ollama stores models</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installation-and-first-checks">7.8. Installation and First Checks</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#install-ollama">7.8.1. Install Ollama</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#verify-the-api-server">7.8.2. Verify the API server</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cross-platform-command-convention">7.8.3. Cross-platform command convention</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#where-ollama-stores-models">7.8.4. Where Ollama stores models</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#core-cli-commands-you-must-know">7.4. Core CLI Commands You Must Know</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#download-a-model">7.4.1. Download a model</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#run-a-model-interactively">7.4.2. Run a model interactively</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#list-downloaded-models">7.4.3. List downloaded models</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#show-model-information">7.4.4. Show model information</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#list-running-models">7.4.5. List running models</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#stop-a-running-model">7.4.6. Stop a running model</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#remove-a-model">7.4.7. Remove a model</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#copy-or-rename-a-model">7.4.8. Copy or rename a model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#core-cli-commands-you-must-know">7.9. Core CLI Commands You Must Know</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#download-a-model">7.9.1. Download a model</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#run-a-model-interactively">7.9.2. Run a model interactively</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#list-downloaded-models">7.9.3. List downloaded models</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#show-model-information">7.9.4. Show model information</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#list-running-models">7.9.5. List running models</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#stop-a-running-model">7.9.6. Stop a running model</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#remove-a-model">7.9.7. Remove a model</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#copy-or-rename-a-model">7.9.8. Copy or rename a model</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-names-tags-and-versions">7.5. Model Names, Tags, and Versions</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#local-vs-cloud">7.5.1. Local vs cloud</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hugging-face-models">7.5.2. Hugging Face models</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-names-tags-and-versions">7.10. Model Names, Tags, and Versions</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#local-vs-cloud">7.10.1. Local vs cloud</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hugging-face-models">7.10.2. Hugging Face models</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quantization-q4-q5-q8-iq2-mlx">7.6. Quantization: Q4, Q5, Q8, IQ2, MLX</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interactive-chat-useful-terminal-techniques">7.7. Interactive Chat: Useful Terminal Techniques</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#one-shot-prompt">7.7.1. One-shot prompt</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multiline-prompt">7.7.2. Multiline prompt</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#image-input-with-a-vision-model">7.7.3. Image input with a vision model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quantization-q4-q5-q8-iq2-mlx">7.11. Quantization: Q4, Q5, Q8, IQ2, MLX</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interactive-chat-useful-terminal-techniques">7.12. Interactive Chat: Useful Terminal Techniques</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#one-shot-prompt">7.12.1. One-shot prompt</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multiline-prompt">7.12.2. Multiline prompt</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#image-input-with-a-vision-model">7.12.3. Image input with a vision model</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rest-api-the-most-important-interface">7.8. REST API: The Most Important Interface</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#api-generate">7.8.1. <code class="docutils literal notranslate"><span class="pre">/api/generate</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#api-chat">7.8.2. <code class="docutils literal notranslate"><span class="pre">/api/chat</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#streaming-vs-non-streaming">7.8.3. Streaming vs non-streaming</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#windows-powershell-api-examples">7.8.4. Windows PowerShell API examples</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rest-api-the-most-important-interface">7.13. REST API: The Most Important Interface</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#api-generate">7.13.1. <code class="docutils literal notranslate"><span class="pre">/api/generate</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#api-chat">7.13.2. <code class="docutils literal notranslate"><span class="pre">/api/chat</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#streaming-vs-non-streaming">7.13.3. Streaming vs non-streaming</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#windows-powershell-api-examples">7.13.4. Windows PowerShell API examples</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#python-native-ollama-sdk">7.9. Python: Native Ollama SDK</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-chat">7.9.1. Basic chat</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#streaming">7.9.2. Streaming</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#python-native-ollama-sdk">7.14. Python: Native Ollama SDK</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-chat">7.14.1. Basic chat</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#streaming">7.14.2. Streaming</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#python-openai-compatible-sdk">7.10. Python: OpenAI-Compatible SDK</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#minimal-example">7.10.1. Minimal example</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#why-this-matters">7.10.2. Why this matters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#python-openai-compatible-sdk">7.15. Python: OpenAI-Compatible SDK</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#minimal-example">7.15.1. Minimal example</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#why-this-matters">7.15.2. Why this matters</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#javascript-node-js">7.11. JavaScript / Node.js</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#modelfile-create-your-own-local-assistant">7.12. Modelfile: Create Your Own Local Assistant</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-generic-assistant">7.12.1. Basic generic assistant</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#useful-modelfile-instructions">7.12.2. Useful Modelfile instructions</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#view-an-existing-model-s-modelfile">7.12.3. View an existing model’s Modelfile</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#javascript-node-js">7.16. JavaScript / Node.js</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#modelfile-create-your-own-local-assistant">7.17. Modelfile: Create Your Own Local Assistant</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-generic-assistant">7.17.1. Basic generic assistant</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#useful-modelfile-instructions">7.17.2. Useful Modelfile instructions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#view-an-existing-model-s-modelfile">7.17.3. View an existing model’s Modelfile</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#runtime-parameters-you-should-understand">7.13. Runtime Parameters You Should Understand</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#practical-presets">7.13.1. Practical presets</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#runtime-parameters-you-should-understand">7.18. Runtime Parameters You Should Understand</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#practical-presets">7.18.1. Practical presets</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#context-length-and-memory">7.14. Context Length and Memory</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#check-actual-context-allocation">7.14.1. Check actual context allocation</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#increase-context-globally-when-serving">7.14.2. Increase context globally when serving</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#increase-context-through-modelfile">7.14.3. Increase context through Modelfile</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#context-length-and-memory">7.19. Context Length and Memory</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#check-actual-context-allocation">7.19.1. Check actual context allocation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#increase-context-globally-when-serving">7.19.2. Increase context globally when serving</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#increase-context-through-modelfile">7.19.3. Increase context through Modelfile</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#toy-experiment-1-compare-system-prompts">7.15. Toy Experiment 1 — Compare System Prompts</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#plain-model">7.15.1. Plain model</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#custom-model">7.15.2. Custom model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#toy-experiment-1-compare-system-prompts">7.20. Toy Experiment 1 — Compare System Prompts</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#plain-model">7.20.1. Plain model</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#custom-model">7.20.2. Custom model</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#toy-experiment-2-build-a-tiny-local-rag-system">7.16. Toy Experiment 2 — Build a Tiny Local RAG System</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rag-architecture-for-real-projects">7.17. RAG Architecture for Real Projects</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rag-database-design-example">7.17.1. RAG database design example</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#toy-experiment-2-build-a-tiny-local-rag-system">7.21. Toy Experiment 2 — Build a Tiny Local RAG System</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rag-architecture-for-real-projects">7.22. RAG Architecture for Real Projects</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rag-database-design-example">7.22.1. RAG database design example</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#toy-experiment-3-tool-calling">7.18. Toy Experiment 3 — Tool Calling</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tool-calling-pattern-for-web-applications">7.19. Tool Calling Pattern for Web Applications</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#embeddings-what-they-are-and-how-ollama-uses-them">7.20. Embeddings: What They Are and How Ollama Uses Them</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#generate-embeddings-with-curl">7.20.1. Generate embeddings with cURL</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#generate-embeddings-in-python">7.20.2. Generate embeddings in Python</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#important-embedding-rule">7.20.3. Important embedding rule</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#toy-experiment-3-tool-calling">7.23. Toy Experiment 3 — Tool Calling</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tool-calling-pattern-for-web-applications">7.24. Tool Calling Pattern for Web Applications</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#embeddings-what-they-are-and-how-ollama-uses-them">7.25. Embeddings: What They Are and How Ollama Uses Them</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#generate-embeddings-with-curl">7.25.1. Generate embeddings with cURL</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#generate-embeddings-in-python">7.25.2. Generate embeddings in Python</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#important-embedding-rule">7.25.3. Important embedding rule</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#structured-outputs-json-mode">7.21. Structured Outputs / JSON Mode</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#json-output-with-api-chat">7.21.1. JSON output with <code class="docutils literal notranslate"><span class="pre">/api/chat</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#practical-use">7.21.2. Practical use</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#structured-outputs-json-mode">7.26. Structured Outputs / JSON Mode</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#json-output-with-api-chat">7.26.1. JSON output with <code class="docutils literal notranslate"><span class="pre">/api/chat</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#practical-use">7.26.2. Practical use</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vision-models">7.22. Vision Models</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hugging-face-gguf-workflow">7.23. Hugging Face GGUF Workflow</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#direct-run-from-hugging-face">7.23.1. Direct run from Hugging Face</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#full-filename-as-tag">7.23.2. Full filename as tag</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#manual-gguf-import">7.23.3. Manual GGUF import</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sharded-gguf-warning">7.23.4. Sharded GGUF warning</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vision-models">7.27. Vision Models</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hugging-face-gguf-workflow">7.28. Hugging Face GGUF Workflow</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#direct-run-from-hugging-face">7.28.1. Direct run from Hugging Face</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#full-filename-as-tag">7.28.2. Full filename as tag</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#manual-gguf-import">7.28.3. Manual GGUF import</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sharded-gguf-warning">7.28.4. Sharded GGUF warning</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cloud-models">7.24. Cloud Models</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#web-search">7.25. Web Search</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#open-webui-and-anythingllm">7.26. Open WebUI and AnythingLLM</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#production-pattern-for-django-fastapi">7.27. Production Pattern for Django / FastAPI</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#minimal-backend-architecture">7.27.1. Minimal backend architecture</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#generic-service-wrapper">7.27.2. Generic service wrapper</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#recommended-environment-variables">7.27.3. Recommended environment variables</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cloud-models">7.29. Cloud Models</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#web-search">7.30. Web Search</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#open-webui-and-anythingllm">7.31. Open WebUI and AnythingLLM</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#production-pattern-for-django-fastapi">7.32. Production Pattern for Django / FastAPI</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#minimal-backend-architecture">7.32.1. Minimal backend architecture</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#generic-service-wrapper">7.32.2. Generic service wrapper</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#recommended-environment-variables">7.32.3. Recommended environment variables</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#performance-tuning-checklist">7.28. Performance Tuning Checklist</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#if-responses-are-slow">7.28.1. If responses are slow</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#if-you-run-out-of-memory">7.28.2. If you run out of memory</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#if-api-connection-fails">7.28.3. If API connection fails</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#performance-tuning-checklist">7.33. Performance Tuning Checklist</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#if-responses-are-slow">7.33.1. If responses are slow</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#if-you-run-out-of-memory">7.33.2. If you run out of memory</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#if-api-connection-fails">7.33.3. If API connection fails</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#security-and-privacy-rules">7.29. Security and Privacy Rules</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#good-rules">7.29.1. Good rules</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bad-patterns">7.29.2. Bad patterns</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#security-and-privacy-rules">7.34. Security and Privacy Rules</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#good-rules">7.34.1. Good rules</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bad-patterns">7.34.2. Bad patterns</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#troubleshooting-table">7.30. Troubleshooting Table</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#recommended-learning-path">7.31. Recommended Learning Path</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#phase-1-basic-control">7.31.1. Phase 1 — Basic control</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#phase-2-api-coding">7.31.2. Phase 2 — API coding</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#phase-3-customization">7.31.3. Phase 3 — Customization</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#phase-4-rag">7.31.4. Phase 4 — RAG</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#phase-5-agent-tools">7.31.5. Phase 5 — Agent/tools</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#phase-6-advanced-model-sourcing">7.31.6. Phase 6 — Advanced model sourcing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#troubleshooting-table">7.35. Troubleshooting Table</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#recommended-learning-path">7.36. Recommended Learning Path</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#phase-1-basic-control">7.36.1. Phase 1 — Basic control</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#phase-2-api-coding">7.36.2. Phase 2 — API coding</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#phase-3-customization">7.36.3. Phase 3 — Customization</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#phase-4-rag">7.36.4. Phase 4 — RAG</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#phase-5-agent-tools">7.36.5. Phase 5 — Agent/tools</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#phase-6-advanced-model-sourcing">7.36.6. Phase 6 — Advanced model sourcing</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#end-to-end-workflow-for-a-local-ai-stack">7.32. End-to-End Workflow for a Local AI Stack</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mini-project-generic-local-documentation-assistant">7.33. Mini Project — Generic Local Documentation Assistant</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#goal">7.33.1. Goal</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#suggested-stack">7.33.2. Suggested stack</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-system-prompt">7.33.3. Example system prompt</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#end-to-end-workflow-for-a-local-ai-stack">7.37. End-to-End Workflow for a Local AI Stack</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mini-project-generic-local-documentation-assistant">7.38. Mini Project — Generic Local Documentation Assistant</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#goal">7.38.1. Goal</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#suggested-stack">7.38.2. Suggested stack</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-system-prompt">7.38.3. Example system prompt</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#knowledge-quiz">7.34. Knowledge Quiz</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#q1-what-command-shows-downloaded-local-models">7.34.1. Q1. What command shows downloaded local models?</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#q2-what-command-shows-currently-running-models-and-context-length">7.34.2. Q2. What command shows currently running models and context length?</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#q3-what-does-glm-5-2-cloud-mean">7.34.3. Q3. What does <code class="docutils literal notranslate"><span class="pre">glm-5.2:cloud</span></code> mean?</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#q4-what-is-the-easiest-way-to-reuse-existing-openai-sdk-code-with-ollama">7.34.4. Q4. What is the easiest way to reuse existing OpenAI SDK code with Ollama?</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#q5-what-is-the-basic-rag-pipeline">7.34.5. Q5. What is the basic RAG pipeline?</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#q6-why-should-you-not-mix-embedding-models-in-one-vector-index">7.34.6. Q6. Why should you not mix embedding models in one vector index?</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#q7-what-is-a-modelfile">7.34.7. Q7. What is a Modelfile?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#knowledge-quiz">7.39. Knowledge Quiz</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#q1-what-command-shows-downloaded-local-models">7.39.1. Q1. What command shows downloaded local models?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#q2-what-command-shows-currently-running-models-and-context-length">7.39.2. Q2. What command shows currently running models and context length?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#q3-what-does-glm-5-2-cloud-mean">7.39.3. Q3. What does <code class="docutils literal notranslate"><span class="pre">glm-5.2:cloud</span></code> mean?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#q4-what-is-the-easiest-way-to-reuse-existing-openai-sdk-code-with-ollama">7.39.4. Q4. What is the easiest way to reuse existing OpenAI SDK code with Ollama?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#q5-what-is-the-basic-rag-pipeline">7.39.5. Q5. What is the basic RAG pipeline?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#q6-why-should-you-not-mix-embedding-models-in-one-vector-index">7.39.6. Q6. Why should you not mix embedding models in one vector index?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#q7-what-is-a-modelfile">7.39.7. Q7. What is a Modelfile?</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#appendix-a-cross-platform-examples-macos-windows-and-linux">7.35. Appendix A — Cross-Platform Examples: macOS, Windows, and Linux</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-1-health-check-and-model-list">7.35.1. A.1 Health check and model list</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-2-run-the-same-model-on-each-os">7.35.2. A.2 Run the same model on each OS</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-3-python-virtual-environment-setup">7.35.3. A.3 Python virtual environment setup</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-4-run-toy-scripts">7.35.4. A.4 Run toy scripts</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-5-environment-variables">7.35.5. A.5 Environment variables</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-6-api-calls-curl-vs-powershell">7.35.6. A.6 API calls: cURL vs PowerShell</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-7-check-which-process-owns-port-11434">7.35.7. A.7 Check which process owns port 11434</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-8-import-a-local-gguf-file">7.35.8. A.8 Import a local GGUF file</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-9-open-webui-with-docker">7.35.9. A.9 Open WebUI with Docker</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-10-common-path-translations">7.35.10. A.10 Common path translations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#appendix-a-cross-platform-examples-macos-windows-and-linux">7.40. Appendix A — Cross-Platform Examples: macOS, Windows, and Linux</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-1-health-check-and-model-list">7.40.1. A.1 Health check and model list</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-2-run-the-same-model-on-each-os">7.40.2. A.2 Run the same model on each OS</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-3-python-virtual-environment-setup">7.40.3. A.3 Python virtual environment setup</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-4-run-toy-scripts">7.40.4. A.4 Run toy scripts</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-5-environment-variables">7.40.5. A.5 Environment variables</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-6-api-calls-curl-vs-powershell">7.40.6. A.6 API calls: cURL vs PowerShell</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-7-check-which-process-owns-port-11434">7.40.7. A.7 Check which process owns port 11434</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-8-import-a-local-gguf-file">7.40.8. A.8 Import a local GGUF file</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-9-open-webui-with-docker">7.40.9. A.9 Open WebUI with Docker</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-10-common-path-translations">7.40.10. A.10 Common path translations</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#final-practical-advice">7.36. Final Practical Advice</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reference-links-for-further-reading">7.37. Reference Links for Further Reading</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ollama-official">7.37.1. Ollama official</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hugging-face-gguf">7.37.2. Hugging Face / GGUF</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ui-and-local-ai-apps">7.37.3. UI and local AI apps</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rag-agents">7.37.4. RAG / agents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#final-practical-advice">7.41. Final Practical Advice</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reference-links-for-further-reading">7.42. Reference Links for Further Reading</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ollama-official">7.42.1. Ollama official</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hugging-face-gguf">7.42.2. Hugging Face / GGUF</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ui-and-local-ai-apps">7.42.3. UI and local AI apps</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rag-agents">7.42.4. RAG / agents</a></li>
 </ul>
 </li>
 </ul>
@@ -1002,14 +1002,52 @@ window.addEventListener("load", load);
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="mastering-ollama-local-models-apis-rag-tools-and-production-patterns">
-<h1><span class="section-number">7. </span>— Mastering Ollama: Local Models, APIs, RAG, Tools, and Production Patterns<a class="headerlink" href="#mastering-ollama-local-models-apis-rag-tools-and-production-patterns" title="Link to this heading">#</a></h1>
+  <section class="tex2jax_ignore mathjax_ignore" id="from-local-chat-to-a-grounded-api-response-workshop">
+<h1><span class="section-number">7. </span>07 - From Local Chat to a Grounded API Response Workshop<a class="headerlink" href="#from-local-chat-to-a-grounded-api-response-workshop" title="Link to this heading">#</a></h1>
+<p><strong>Time:</strong> 60 minutes · <strong>Audience:</strong> beginners · <strong>Updated:</strong> November 18, 2026.</p>
+<section id="workshop-preparation">
+<h2><span class="section-number">7.1. </span>Workshop preparation<a class="headerlink" href="#workshop-preparation" title="Link to this heading">#</a></h2>
+<p>The previous local-model workshop; Python 3.10+; workshop-kit extracted into one folder.</p>
+<p>Download the <a class="reference download internal" download="" href="../../_downloads/0b5c1fa20b29575096ee36a77e8402ae/workshop-kit.zip"><code class="xref download docutils literal notranslate"><span class="pre">shared</span> <span class="pre">workshop</span> <span class="pre">kit</span></code></a> and extract it into a disposable folder. <a class="reference internal" href="../workshops/index.html"><span class="std std-doc">Browse all workshops</span></a>. Code blocks run in your local terminal, not on this web page. Record your tool versions and use synthetic inputs.</p>
+</section>
+<section id="hands-on-route">
+<h2><span class="section-number">7.2. </span>Hands-on route<a class="headerlink" href="#hands-on-route" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p>Run <code class="docutils literal notranslate"><span class="pre">ollama</span> <span class="pre">list</span></code> and choose an installed chat model. Record its exact ID rather than copying a model name from an older screenshot.</p></li>
+<li><p>Run the offline fixture checks: <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">retrieval.py</span></code> and <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">graph.py</span></code>.</p></li>
+<li><p>In Windows PowerShell set <code class="docutils literal notranslate"><span class="pre">$env:OLLAMA_MODEL=&quot;YOUR_INSTALLED_MODEL&quot;</span></code>. On macOS/Linux use <code class="docutils literal notranslate"><span class="pre">export</span> <span class="pre">OLLAMA_MODEL=&quot;YOUR_INSTALLED_MODEL&quot;</span></code>. Replace the placeholder before running anything.</p></li>
+<li><p>Run <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">local_rag.py</span></code> from the extracted kit. The first result should answer the library-opening question using S1. The second should say insufficient evidence without calling the model.</p></li>
+<li><p>Record response latency, the model ID, and whether S1 supports the answer. Change the opening time in <a class="reference external" href="http://retrieval.py">retrieval.py</a> and rerun to demonstrate that the document, rather than a remembered answer, supplies the fact.</p></li>
+</ol>
+<p>The starter is deliberately a lexical baseline with native Ollama chat. The longer reference below explores embeddings, tools and serving; these are extensions, not prerequisites for this acceptance test.</p>
+</section>
+<section id="acceptance-evidence">
+<h2><span class="section-number">7.3. </span>Acceptance evidence<a class="headerlink" href="#acceptance-evidence" title="Link to this heading">#</a></h2>
+<p>An actual cited response, an unsupported-question refusal, and a rerun after modifying the fixture.</p>
+<p>Create <code class="docutils literal notranslate"><span class="pre">evidence.md</span></code> with your environment, commands, observed outputs, failures and fixes. Label anything you did not run. Do not include secrets, screenshots of account pages, or private paths.</p>
+</section>
+<section id="troubleshooting-and-cleanup">
+<h2><span class="section-number">7.4. </span>Troubleshooting and cleanup<a class="headerlink" href="#troubleshooting-and-cleanup" title="Link to this heading">#</a></h2>
+<p>Model not found: use the exact ID from ollama list. Wrong facts: inspect retrieved text before adjusting prompts. Timeout: reduce output/model size or allow the first load to complete. Stop any demo server when finished; retain only the small fixture and evidence needed to reproduce your result.</p>
+<pre  class="mermaid">
+        flowchart LR
+    A[&quot;Prepare synthetic fixture&quot;] --&gt; B[&quot;Run guided task&quot;]
+    B --&gt; C[&quot;Check observed result&quot;]
+    C --&gt; D[&quot;Record evidence and limitations&quot;]
+    </pre><blockquote>
+<div><p><strong>Image Suggestion (Nanobanana Prompt)</strong>: A clean technical workshop illustration titled “From Local Chat to a Grounded API Response”, with a neutral editor window, a small synthetic fixture, and an evidence checklist. Use legible navy and teal typography on a light background, even lighting, and a visible “Concept illustration” label. Show no account identity, private paths, or simulated success presented as a screenshot.</p>
+</div></blockquote>
+</section>
+<section id="reference-and-optional-extensions">
+<h2><span class="section-number">7.5. </span>Reference and optional extensions<a class="headerlink" href="#reference-and-optional-extensions" title="Link to this heading">#</a></h2>
+<p>The material below provides background. Complete the guided acceptance test above first; vendor interfaces and example model IDs can change. Consult the linked official documentation for the version you use.</p>
 <blockquote>
 <div><p>Goal: Tutorial 01 introduced the basic local LLM stack. Tutorial 02 focuses on mastering Ollama itself: model management, APIs, Modelfiles, Hugging Face GGUF models, embeddings, RAG, tool calling, cloud models, troubleshooting, and safe integration into local or web applications.</p>
 </div></blockquote>
+</section>
 <hr class="docutils" />
 <section id="what-you-should-be-able-to-do-after-this-tutorial">
-<h2><span class="section-number">7.1. </span>What You Should Be Able to Do After This Tutorial<a class="headerlink" href="#what-you-should-be-able-to-do-after-this-tutorial" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">7.6. </span>What You Should Be Able to Do After This Tutorial<a class="headerlink" href="#what-you-should-be-able-to-do-after-this-tutorial" title="Link to this heading">#</a></h2>
 <p>By the end, you should be able to:</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
@@ -1054,7 +1092,7 @@ window.addEventListener("load", load);
 </section>
 <hr class="docutils" />
 <section id="mental-model-what-ollama-actually-is">
-<h2><span class="section-number">7.2. </span>Mental Model: What Ollama Actually Is<a class="headerlink" href="#mental-model-what-ollama-actually-is" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">7.7. </span>Mental Model: What Ollama Actually Is<a class="headerlink" href="#mental-model-what-ollama-actually-is" title="Link to this heading">#</a></h2>
 <p>Ollama is not “the model.” It is a <strong>local model runtime and management layer</strong>.</p>
 <p>Think of the stack like this:</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Your app / Terminal / Open WebUI / AnythingLLM / Django / FastAPI
@@ -1070,7 +1108,7 @@ Your hardware: Apple Silicon / NVIDIA GPU / AMD GPU / CPU
 </div>
 <p><strong>What this means:</strong> your model does not automatically browse the web, read files, call APIs, or run code. Ollama provides the local model engine. RAG, web search, function calling, and UI features are added around it by your application or by tools such as Open WebUI and AnythingLLM.</p>
 <section id="ollama-vs-llama-vs-llama-cpp-vs-gguf">
-<h3><span class="section-number">7.2.1. </span>Ollama vs Llama vs llama.cpp vs GGUF<a class="headerlink" href="#ollama-vs-llama-vs-llama-cpp-vs-gguf" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">7.7.1. </span>Ollama vs Llama vs llama.cpp vs GGUF<a class="headerlink" href="#ollama-vs-llama-vs-llama-cpp-vs-gguf" title="Link to this heading">#</a></h3>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
 <tr class="row-odd"><th class="head text-left"><p>Term</p></th>
@@ -1108,9 +1146,9 @@ Your application = custom product built around the model engine
 </section>
 <hr class="docutils" />
 <section id="installation-and-first-checks">
-<h2><span class="section-number">7.3. </span>Installation and First Checks<a class="headerlink" href="#installation-and-first-checks" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">7.8. </span>Installation and First Checks<a class="headerlink" href="#installation-and-first-checks" title="Link to this heading">#</a></h2>
 <section id="install-ollama">
-<h3><span class="section-number">7.3.1. </span>Install Ollama<a class="headerlink" href="#install-ollama" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">7.8.1. </span>Install Ollama<a class="headerlink" href="#install-ollama" title="Link to this heading">#</a></h3>
 <div class="sd-tab-set docutils">
 <input checked="checked" id="sd-tab-item-0" name="sd-tab-set-0" type="radio">
 <label aria-controls="sd-tab-item-0-content" class="sd-tab-label" for="sd-tab-item-0">
@@ -1147,7 +1185,7 @@ Windows</label><div class="sd-tab-content docutils" id="sd-tab-item-2-content">
 </div>
 </section>
 <section id="verify-the-api-server">
-<h3><span class="section-number">7.3.2. </span>Verify the API server<a class="headerlink" href="#verify-the-api-server" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">7.8.2. </span>Verify the API server<a class="headerlink" href="#verify-the-api-server" title="Link to this heading">#</a></h3>
 <p>Ollama normally starts its local server automatically. The default local API endpoint is:</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>http://localhost:11434
 </pre></div>
@@ -1173,7 +1211,7 @@ Windows PowerShell</label><div class="sd-tab-content docutils" id="sd-tab-item-4
 <input id="sd-tab-item-5" name="sd-tab-set-1" type="radio">
 <label aria-controls="sd-tab-item-5-content" class="sd-tab-label" for="sd-tab-item-5">
 Windows CMD</label><div class="sd-tab-content docutils" id="sd-tab-item-5-content">
-<div class="highlight-cmd notranslate"><div class="highlight"><pre><span></span>curl.exe http://localhost:11434/api/tags
+<div class="highlight-bat notranslate"><div class="highlight"><pre><span></span>curl.exe http://localhost:11434/api/tags
 </pre></div>
 </div>
 <p><strong>Example description:</strong> Windows also has <code class="docutils literal notranslate"><span class="pre">curl.exe</span></code>. In CMD, use <code class="docutils literal notranslate"><span class="pre">curl.exe</span></code> explicitly so Windows does not confuse it with PowerShell aliases.</p>
@@ -1211,7 +1249,7 @@ Windows PowerShell</label><div class="sd-tab-content docutils" id="sd-tab-item-8
 </div>
 </section>
 <section id="cross-platform-command-convention">
-<h3><span class="section-number">7.3.3. </span>Cross-platform command convention<a class="headerlink" href="#cross-platform-command-convention" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">7.8.3. </span>Cross-platform command convention<a class="headerlink" href="#cross-platform-command-convention" title="Link to this heading">#</a></h3>
 <p>Most Ollama commands are identical across macOS, Linux, and Windows:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ollama<span class="w"> </span>list
 ollama<span class="w"> </span>run<span class="w"> </span>qwen3.6
@@ -1254,7 +1292,7 @@ ollama<span class="w"> </span>stop<span class="w"> </span>qwen3.6
 <p><strong>Example description:</strong> the model commands are portable, but the surrounding operating-system commands are not always portable. When copying examples, match the shell you are using.</p>
 </section>
 <section id="where-ollama-stores-models">
-<h3><span class="section-number">7.3.4. </span>Where Ollama stores models<a class="headerlink" href="#where-ollama-stores-models" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">7.8.4. </span>Where Ollama stores models<a class="headerlink" href="#where-ollama-stores-models" title="Link to this heading">#</a></h3>
 <p>Model storage locations are useful when you need to estimate disk usage, back up models, or move a model cache to a larger drive.</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
@@ -1300,9 +1338,9 @@ Windows PowerShell</label><div class="sd-tab-content docutils" id="sd-tab-item-1
 </section>
 <hr class="docutils" />
 <section id="core-cli-commands-you-must-know">
-<h2><span class="section-number">7.4. </span>Core CLI Commands You Must Know<a class="headerlink" href="#core-cli-commands-you-must-know" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">7.9. </span>Core CLI Commands You Must Know<a class="headerlink" href="#core-cli-commands-you-must-know" title="Link to this heading">#</a></h2>
 <section id="download-a-model">
-<h3><span class="section-number">7.4.1. </span>Download a model<a class="headerlink" href="#download-a-model" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">7.9.1. </span>Download a model<a class="headerlink" href="#download-a-model" title="Link to this heading">#</a></h3>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ollama<span class="w"> </span>pull<span class="w"> </span>qwen3.6
 ollama<span class="w"> </span>pull<span class="w"> </span>llama3.2
 ollama<span class="w"> </span>pull<span class="w"> </span>embeddinggemma
@@ -1311,7 +1349,7 @@ ollama<span class="w"> </span>pull<span class="w"> </span>embeddinggemma
 <p><strong>Example description:</strong> <code class="docutils literal notranslate"><span class="pre">pull</span></code> downloads model weights into Ollama’s local model store. <code class="docutils literal notranslate"><span class="pre">qwen3.6</span></code> and <code class="docutils literal notranslate"><span class="pre">llama3.2</span></code> are chat/generation models, while <code class="docutils literal notranslate"><span class="pre">embeddinggemma</span></code> is an embedding model used for semantic search and RAG.</p>
 </section>
 <section id="run-a-model-interactively">
-<h3><span class="section-number">7.4.2. </span>Run a model interactively<a class="headerlink" href="#run-a-model-interactively" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">7.9.2. </span>Run a model interactively<a class="headerlink" href="#run-a-model-interactively" title="Link to this heading">#</a></h3>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ollama<span class="w"> </span>run<span class="w"> </span>qwen3.6
 </pre></div>
 </div>
@@ -1323,7 +1361,7 @@ ollama<span class="w"> </span>pull<span class="w"> </span>embeddinggemma
 <p><strong>Example description:</strong> <code class="docutils literal notranslate"><span class="pre">/bye</span></code> exits the terminal chat without deleting the model. The model may stay loaded briefly for faster reuse.</p>
 </section>
 <section id="list-downloaded-models">
-<h3><span class="section-number">7.4.3. </span>List downloaded models<a class="headerlink" href="#list-downloaded-models" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">7.9.3. </span>List downloaded models<a class="headerlink" href="#list-downloaded-models" title="Link to this heading">#</a></h3>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ollama<span class="w"> </span>list
 <span class="c1"># or</span>
 ollama<span class="w"> </span>ls
@@ -1332,7 +1370,7 @@ ollama<span class="w"> </span>ls
 <p><strong>Example description:</strong> this shows local model names, IDs, sizes, and modified dates. Use the exact model name from this output when calling Ollama from code.</p>
 </section>
 <section id="show-model-information">
-<h3><span class="section-number">7.4.4. </span>Show model information<a class="headerlink" href="#show-model-information" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">7.9.4. </span>Show model information<a class="headerlink" href="#show-model-information" title="Link to this heading">#</a></h3>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ollama<span class="w"> </span>show<span class="w"> </span>qwen3.6
 ollama<span class="w"> </span>show<span class="w"> </span>--modelfile<span class="w"> </span>qwen3.6
 </pre></div>
@@ -1340,28 +1378,28 @@ ollama<span class="w"> </span>show<span class="w"> </span>--modelfile<span class
 <p><strong>Example description:</strong> <code class="docutils literal notranslate"><span class="pre">ollama</span> <span class="pre">show</span></code> displays metadata such as architecture, parameter size, quantization, context information, and template details. <code class="docutils literal notranslate"><span class="pre">--modelfile</span></code> shows how Ollama packages the model internally.</p>
 </section>
 <section id="list-running-models">
-<h3><span class="section-number">7.4.5. </span>List running models<a class="headerlink" href="#list-running-models" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">7.9.5. </span>List running models<a class="headerlink" href="#list-running-models" title="Link to this heading">#</a></h3>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ollama<span class="w"> </span>ps
 </pre></div>
 </div>
 <p><strong>Example description:</strong> this is one of the most useful diagnostic commands. It shows currently loaded models, memory size, processor placement, context allocation, and how long the model will remain loaded.</p>
 </section>
 <section id="stop-a-running-model">
-<h3><span class="section-number">7.4.6. </span>Stop a running model<a class="headerlink" href="#stop-a-running-model" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">7.9.6. </span>Stop a running model<a class="headerlink" href="#stop-a-running-model" title="Link to this heading">#</a></h3>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ollama<span class="w"> </span>stop<span class="w"> </span>qwen3.6
 </pre></div>
 </div>
 <p><strong>Example description:</strong> this unloads a model from memory. Use it when your machine feels slow, when a different model needs memory, or before changing large context settings.</p>
 </section>
 <section id="remove-a-model">
-<h3><span class="section-number">7.4.7. </span>Remove a model<a class="headerlink" href="#remove-a-model" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">7.9.7. </span>Remove a model<a class="headerlink" href="#remove-a-model" title="Link to this heading">#</a></h3>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ollama<span class="w"> </span>rm<span class="w"> </span>llama3.2
 </pre></div>
 </div>
 <p><strong>Example description:</strong> this deletes a local model from disk. It is useful because model files can easily consume tens or hundreds of gigabytes.</p>
 </section>
 <section id="copy-or-rename-a-model">
-<h3><span class="section-number">7.4.8. </span>Copy or rename a model<a class="headerlink" href="#copy-or-rename-a-model" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">7.9.8. </span>Copy or rename a model<a class="headerlink" href="#copy-or-rename-a-model" title="Link to this heading">#</a></h3>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ollama<span class="w"> </span>cp<span class="w"> </span>qwen3.6<span class="w"> </span>qwen-local
 ollama<span class="w"> </span>run<span class="w"> </span>qwen-local
 </pre></div>
@@ -1376,7 +1414,7 @@ ollama<span class="w"> </span>run<span class="w"> </span>qwen-local
 </section>
 <hr class="docutils" />
 <section id="model-names-tags-and-versions">
-<h2><span class="section-number">7.5. </span>Model Names, Tags, and Versions<a class="headerlink" href="#model-names-tags-and-versions" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">7.10. </span>Model Names, Tags, and Versions<a class="headerlink" href="#model-names-tags-and-versions" title="Link to this heading">#</a></h2>
 <p>Ollama model names often follow this pattern:</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>model:tag
 </pre></div>
@@ -1392,7 +1430,7 @@ hf.co/bartowski/Llama-3.2-3B-Instruct-GGUF:Q4_K_M
 </div>
 <p><strong>Example description:</strong> the part before <code class="docutils literal notranslate"><span class="pre">:</span></code> is the model family or repository. The part after <code class="docutils literal notranslate"><span class="pre">:</span></code> is the variant, such as size, quantization, MLX build, or cloud mode. If you omit the tag, Ollama often uses <code class="docutils literal notranslate"><span class="pre">latest</span></code>.</p>
 <section id="local-vs-cloud">
-<h3><span class="section-number">7.5.1. </span>Local vs cloud<a class="headerlink" href="#local-vs-cloud" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">7.10.1. </span>Local vs cloud<a class="headerlink" href="#local-vs-cloud" title="Link to this heading">#</a></h3>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ollama<span class="w"> </span>run<span class="w"> </span>qwen3.6
 </pre></div>
 </div>
@@ -1403,7 +1441,7 @@ hf.co/bartowski/Llama-3.2-3B-Instruct-GGUF:Q4_K_M
 <p><strong>Example description:</strong> the <code class="docutils literal notranslate"><span class="pre">:cloud</span></code> suffix means the model runs through Ollama Cloud. It may consume cloud usage, credits, or plan limits. Use it for tasks that are too large for local hardware, not for routine private or offline work.</p>
 </section>
 <section id="hugging-face-models">
-<h3><span class="section-number">7.5.2. </span>Hugging Face models<a class="headerlink" href="#hugging-face-models" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">7.10.2. </span>Hugging Face models<a class="headerlink" href="#hugging-face-models" title="Link to this heading">#</a></h3>
 <p>For GGUF models on Hugging Face:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ollama<span class="w"> </span>run<span class="w"> </span>hf.co/&lt;username&gt;/&lt;repo&gt;:&lt;quantization&gt;
 </pre></div>
@@ -1418,7 +1456,7 @@ hf.co/bartowski/Llama-3.2-3B-Instruct-GGUF:Q4_K_M
 </section>
 <hr class="docutils" />
 <section id="quantization-q4-q5-q8-iq2-mlx">
-<h2><span class="section-number">7.6. </span>Quantization: Q4, Q5, Q8, IQ2, MLX<a class="headerlink" href="#quantization-q4-q5-q8-iq2-mlx" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">7.11. </span>Quantization: Q4, Q5, Q8, IQ2, MLX<a class="headerlink" href="#quantization-q4-q5-q8-iq2-mlx" title="Link to this heading">#</a></h2>
 <p>Quantization compresses model weights to reduce memory and disk usage. Lower precision usually means lower memory cost, but sometimes lower output quality.</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
@@ -1474,16 +1512,16 @@ Apple Silicon: try MLX variants when available
 </section>
 <hr class="docutils" />
 <section id="interactive-chat-useful-terminal-techniques">
-<h2><span class="section-number">7.7. </span>Interactive Chat: Useful Terminal Techniques<a class="headerlink" href="#interactive-chat-useful-terminal-techniques" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">7.12. </span>Interactive Chat: Useful Terminal Techniques<a class="headerlink" href="#interactive-chat-useful-terminal-techniques" title="Link to this heading">#</a></h2>
 <section id="one-shot-prompt">
-<h3><span class="section-number">7.7.1. </span>One-shot prompt<a class="headerlink" href="#one-shot-prompt" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">7.12.1. </span>One-shot prompt<a class="headerlink" href="#one-shot-prompt" title="Link to this heading">#</a></h3>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ollama<span class="w"> </span>run<span class="w"> </span>qwen3.6<span class="w"> </span><span class="s2">"Explain SQL joins in simple terms."</span>
 </pre></div>
 </div>
 <p><strong>Example description:</strong> this sends one prompt and prints one answer without keeping you in a long interactive workflow. It is useful for quick tests, shell scripts, and comparing model outputs.</p>
 </section>
 <section id="multiline-prompt">
-<h3><span class="section-number">7.7.2. </span>Multiline prompt<a class="headerlink" href="#multiline-prompt" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">7.12.2. </span>Multiline prompt<a class="headerlink" href="#multiline-prompt" title="Link to this heading">#</a></h3>
 <p>Inside <code class="docutils literal notranslate"><span class="pre">ollama</span> <span class="pre">run</span></code>:</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; """You are helping design a generic document management system.
 ... Propose database tables for documents, users, permissions, and audit logs.
@@ -1493,7 +1531,7 @@ Apple Silicon: try MLX variants when available
 <p><strong>Example description:</strong> triple quotes make it easier to send longer instructions. The key operation is giving the model enough structured context without needing an external file.</p>
 </section>
 <section id="image-input-with-a-vision-model">
-<h3><span class="section-number">7.7.3. </span>Image input with a vision model<a class="headerlink" href="#image-input-with-a-vision-model" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">7.12.3. </span>Image input with a vision model<a class="headerlink" href="#image-input-with-a-vision-model" title="Link to this heading">#</a></h3>
 <p>Only works with vision-capable models.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ollama<span class="w"> </span>run<span class="w"> </span>gemma4<span class="w"> </span><span class="s2">"Describe this image: ./sample-image.jpg"</span>
 </pre></div>
@@ -1503,13 +1541,13 @@ Apple Silicon: try MLX variants when available
 </section>
 <hr class="docutils" />
 <section id="rest-api-the-most-important-interface">
-<h2><span class="section-number">7.8. </span>REST API: The Most Important Interface<a class="headerlink" href="#rest-api-the-most-important-interface" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">7.13. </span>REST API: The Most Important Interface<a class="headerlink" href="#rest-api-the-most-important-interface" title="Link to this heading">#</a></h2>
 <p>Ollama’s local API usually runs here:</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>http://localhost:11434
 </pre></div>
 </div>
 <section id="api-generate">
-<h3><span class="section-number">7.8.1. </span><code class="docutils literal notranslate"><span class="pre">/api/generate</span></code><a class="headerlink" href="#api-generate" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">7.13.1. </span><code class="docutils literal notranslate"><span class="pre">/api/generate</span></code><a class="headerlink" href="#api-generate" title="Link to this heading">#</a></h3>
 <p>Good for simple prompt completion.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>http://localhost:11434/api/generate<span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json"</span><span class="w"> </span><span class="se">\</span>
@@ -1523,7 +1561,7 @@ Apple Silicon: try MLX variants when available
 <p><strong>Example description:</strong> <code class="docutils literal notranslate"><span class="pre">/api/generate</span></code> is the simplest endpoint. <code class="docutils literal notranslate"><span class="pre">model</span></code> selects the local model, <code class="docutils literal notranslate"><span class="pre">prompt</span></code> contains the user instruction, and <code class="docutils literal notranslate"><span class="pre">stream:false</span></code> asks Ollama to return one complete JSON response instead of many small streaming chunks.</p>
 </section>
 <section id="api-chat">
-<h3><span class="section-number">7.8.2. </span><code class="docutils literal notranslate"><span class="pre">/api/chat</span></code><a class="headerlink" href="#api-chat" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">7.13.2. </span><code class="docutils literal notranslate"><span class="pre">/api/chat</span></code><a class="headerlink" href="#api-chat" title="Link to this heading">#</a></h3>
 <p>Better for multi-turn chat-style messages.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>http://localhost:11434/api/chat<span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json"</span><span class="w"> </span><span class="se">\</span>
@@ -1540,7 +1578,7 @@ Apple Silicon: try MLX variants when available
 <p><strong>Example description:</strong> <code class="docutils literal notranslate"><span class="pre">/api/chat</span></code> separates messages by role. The <code class="docutils literal notranslate"><span class="pre">system</span></code> message controls behavior, while the <code class="docutils literal notranslate"><span class="pre">user</span></code> message contains the task. This format is better for apps because it preserves conversation structure.</p>
 </section>
 <section id="streaming-vs-non-streaming">
-<h3><span class="section-number">7.8.3. </span>Streaming vs non-streaming<a class="headerlink" href="#streaming-vs-non-streaming" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">7.13.3. </span>Streaming vs non-streaming<a class="headerlink" href="#streaming-vs-non-streaming" title="Link to this heading">#</a></h3>
 <p>For easier development:</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="nt">"stream"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span>
 </pre></div>
@@ -1553,7 +1591,7 @@ Apple Silicon: try MLX variants when available
 <p><strong>Example description:</strong> streaming returns partial tokens as the model generates them. It makes the UI feel faster but requires your frontend or backend to handle a stream of chunks.</p>
 </section>
 <section id="windows-powershell-api-examples">
-<h3><span class="section-number">7.8.4. </span>Windows PowerShell API examples<a class="headerlink" href="#windows-powershell-api-examples" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">7.13.4. </span>Windows PowerShell API examples<a class="headerlink" href="#windows-powershell-api-examples" title="Link to this heading">#</a></h3>
 <p>The REST API is the same on every operating system, but Windows users often prefer PowerShell objects instead of raw JSON strings.</p>
 <div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nv">$body</span> <span class="p">=</span> <span class="p">@{</span>
   <span class="n">model</span> <span class="p">=</span> <span class="s2">"qwen3.6"</span>
@@ -1596,14 +1634,14 @@ Apple Silicon: try MLX variants when available
 </section>
 <hr class="docutils" />
 <section id="python-native-ollama-sdk">
-<h2><span class="section-number">7.9. </span>Python: Native Ollama SDK<a class="headerlink" href="#python-native-ollama-sdk" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">7.14. </span>Python: Native Ollama SDK<a class="headerlink" href="#python-native-ollama-sdk" title="Link to this heading">#</a></h2>
 <p>Install:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>ollama
 </pre></div>
 </div>
 <p><strong>Example description:</strong> this installs the official Python client, which wraps Ollama’s local HTTP API so you do not need to write raw <code class="docutils literal notranslate"><span class="pre">requests</span></code> calls.</p>
 <section id="basic-chat">
-<h3><span class="section-number">7.9.1. </span>Basic chat<a class="headerlink" href="#basic-chat" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">7.14.1. </span>Basic chat<a class="headerlink" href="#basic-chat" title="Link to this heading">#</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">ollama</span><span class="w"> </span><span class="kn">import</span> <span class="n">chat</span>
 
 <span class="n">response</span> <span class="o">=</span> <span class="n">chat</span><span class="p">(</span>
@@ -1620,7 +1658,7 @@ Apple Silicon: try MLX variants when available
 <p><strong>Example description:</strong> <code class="docutils literal notranslate"><span class="pre">chat()</span></code> sends structured role-based messages to the local model. The important part is <code class="docutils literal notranslate"><span class="pre">model=&quot;qwen3.6&quot;</span></code>: it must match a model shown by <code class="docutils literal notranslate"><span class="pre">ollama</span> <span class="pre">list</span></code>.</p>
 </section>
 <section id="streaming">
-<h3><span class="section-number">7.9.2. </span>Streaming<a class="headerlink" href="#streaming" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">7.14.2. </span>Streaming<a class="headerlink" href="#streaming" title="Link to this heading">#</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">ollama</span><span class="w"> </span><span class="kn">import</span> <span class="n">chat</span>
 
 <span class="n">stream</span> <span class="o">=</span> <span class="n">chat</span><span class="p">(</span>
@@ -1638,7 +1676,7 @@ Apple Silicon: try MLX variants when available
 </section>
 <hr class="docutils" />
 <section id="python-openai-compatible-sdk">
-<h2><span class="section-number">7.10. </span>Python: OpenAI-Compatible SDK<a class="headerlink" href="#python-openai-compatible-sdk" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">7.15. </span>Python: OpenAI-Compatible SDK<a class="headerlink" href="#python-openai-compatible-sdk" title="Link to this heading">#</a></h2>
 <p>This is the most useful method if your existing code already uses the OpenAI SDK.</p>
 <p>Install:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>openai
@@ -1646,7 +1684,7 @@ Apple Silicon: try MLX variants when available
 </div>
 <p><strong>Example description:</strong> the OpenAI SDK can talk to Ollama because Ollama exposes an OpenAI-compatible <code class="docutils literal notranslate"><span class="pre">/v1</span></code> API. This makes provider switching much easier.</p>
 <section id="minimal-example">
-<h3><span class="section-number">7.10.1. </span>Minimal example<a class="headerlink" href="#minimal-example" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">7.15.1. </span>Minimal example<a class="headerlink" href="#minimal-example" title="Link to this heading">#</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">openai</span><span class="w"> </span><span class="kn">import</span> <span class="n">OpenAI</span>
 
 <span class="n">client</span> <span class="o">=</span> <span class="n">OpenAI</span><span class="p">(</span>
@@ -1668,7 +1706,7 @@ Apple Silicon: try MLX variants when available
 <p><strong>Example description:</strong> <code class="docutils literal notranslate"><span class="pre">base_url</span></code> redirects the OpenAI SDK to your local Ollama server. <code class="docutils literal notranslate"><span class="pre">api_key</span></code> is required by the SDK, but Ollama does not require a real cloud API key for local use. <code class="docutils literal notranslate"><span class="pre">model</span></code> must be an installed Ollama model name.</p>
 </section>
 <section id="why-this-matters">
-<h3><span class="section-number">7.10.2. </span>Why this matters<a class="headerlink" href="#why-this-matters" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">7.15.2. </span>Why this matters<a class="headerlink" href="#why-this-matters" title="Link to this heading">#</a></h3>
 <p>You can switch providers by changing only these values:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">base_url</span> <span class="o">=</span> <span class="s2">"http://localhost:11434/v1"</span>
 <span class="n">api_key</span> <span class="o">=</span> <span class="s2">"ollama"</span>
@@ -1680,7 +1718,7 @@ Apple Silicon: try MLX variants when available
 </section>
 <hr class="docutils" />
 <section id="javascript-node-js">
-<h2><span class="section-number">7.11. </span>JavaScript / Node.js<a class="headerlink" href="#javascript-node-js" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">7.16. </span>JavaScript / Node.js<a class="headerlink" href="#javascript-node-js" title="Link to this heading">#</a></h2>
 <p>Install:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>npm<span class="w"> </span>install<span class="w"> </span>openai
 </pre></div>
@@ -1709,10 +1747,10 @@ Apple Silicon: try MLX variants when available
 </section>
 <hr class="docutils" />
 <section id="modelfile-create-your-own-local-assistant">
-<h2><span class="section-number">7.12. </span>Modelfile: Create Your Own Local Assistant<a class="headerlink" href="#modelfile-create-your-own-local-assistant" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">7.17. </span>Modelfile: Create Your Own Local Assistant<a class="headerlink" href="#modelfile-create-your-own-local-assistant" title="Link to this heading">#</a></h2>
 <p>A <code class="docutils literal notranslate"><span class="pre">Modelfile</span></code> is a recipe for creating a customized Ollama model. It can define a base model, system prompt, context length, sampling parameters, and other behavior.</p>
 <section id="basic-generic-assistant">
-<h3><span class="section-number">7.12.1. </span>Basic generic assistant<a class="headerlink" href="#basic-generic-assistant" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">7.17.1. </span>Basic generic assistant<a class="headerlink" href="#basic-generic-assistant" title="Link to this heading">#</a></h3>
 <p>Create a file named <code class="docutils literal notranslate"><span class="pre">Modelfile</span></code>:</p>
 <div class="highlight-dockerfile notranslate"><div class="highlight"><pre><span></span><span class="k">FROM</span><span class="w"> </span><span class="s">qwen3.6</span>
 
@@ -1736,7 +1774,7 @@ ollama<span class="w"> </span>run<span class="w"> </span>local-technical-assista
 <p><strong>Example description:</strong> <code class="docutils literal notranslate"><span class="pre">ollama</span> <span class="pre">create</span></code> builds a named model from your recipe. After that, <code class="docutils literal notranslate"><span class="pre">local-technical-assistant</span></code> behaves like any other Ollama model and can be called from CLI or API.</p>
 </section>
 <section id="useful-modelfile-instructions">
-<h3><span class="section-number">7.12.2. </span>Useful Modelfile instructions<a class="headerlink" href="#useful-modelfile-instructions" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">7.17.2. </span>Useful Modelfile instructions<a class="headerlink" href="#useful-modelfile-instructions" title="Link to this heading">#</a></h3>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
 <tr class="row-odd"><th class="head text-left"><p>Instruction</p></th>
@@ -1773,7 +1811,7 @@ ollama<span class="w"> </span>run<span class="w"> </span>local-technical-assista
 </div>
 </section>
 <section id="view-an-existing-model-s-modelfile">
-<h3><span class="section-number">7.12.3. </span>View an existing model’s Modelfile<a class="headerlink" href="#view-an-existing-model-s-modelfile" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">7.17.3. </span>View an existing model’s Modelfile<a class="headerlink" href="#view-an-existing-model-s-modelfile" title="Link to this heading">#</a></h3>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ollama<span class="w"> </span>show<span class="w"> </span>--modelfile<span class="w"> </span>qwen3.6
 </pre></div>
 </div>
@@ -1782,7 +1820,7 @@ ollama<span class="w"> </span>run<span class="w"> </span>local-technical-assista
 </section>
 <hr class="docutils" />
 <section id="runtime-parameters-you-should-understand">
-<h2><span class="section-number">7.13. </span>Runtime Parameters You Should Understand<a class="headerlink" href="#runtime-parameters-you-should-understand" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">7.18. </span>Runtime Parameters You Should Understand<a class="headerlink" href="#runtime-parameters-you-should-understand" title="Link to this heading">#</a></h2>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
 <tr class="row-odd"><th class="head text-left"><p>Parameter</p></th>
@@ -1819,7 +1857,7 @@ ollama<span class="w"> </span>run<span class="w"> </span>local-technical-assista
 </table>
 </div>
 <section id="practical-presets">
-<h3><span class="section-number">7.13.1. </span>Practical presets<a class="headerlink" href="#practical-presets" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">7.18.1. </span>Practical presets<a class="headerlink" href="#practical-presets" title="Link to this heading">#</a></h3>
 <p>Coding assistant:</p>
 <div class="highlight-dockerfile notranslate"><div class="highlight"><pre><span></span>PARAMETER<span class="w"> </span>temperature<span class="w"> </span><span class="m">0</span>.2
 PARAMETER<span class="w"> </span>top_p<span class="w"> </span><span class="m">0</span>.9
@@ -1845,7 +1883,7 @@ PARAMETER<span class="w"> </span>num_ctx<span class="w"> </span><span class="m">
 </section>
 <hr class="docutils" />
 <section id="context-length-and-memory">
-<h2><span class="section-number">7.14. </span>Context Length and Memory<a class="headerlink" href="#context-length-and-memory" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">7.19. </span>Context Length and Memory<a class="headerlink" href="#context-length-and-memory" title="Link to this heading">#</a></h2>
 <p>Context length is how much text the model can “see” at once.</p>
 <p>More context helps with:</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>long documents
@@ -1858,21 +1896,21 @@ multi-turn conversations
 </div>
 <p>But larger context uses more memory.</p>
 <section id="check-actual-context-allocation">
-<h3><span class="section-number">7.14.1. </span>Check actual context allocation<a class="headerlink" href="#check-actual-context-allocation" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">7.19.1. </span>Check actual context allocation<a class="headerlink" href="#check-actual-context-allocation" title="Link to this heading">#</a></h3>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ollama<span class="w"> </span>ps
 </pre></div>
 </div>
 <p><strong>Example description:</strong> look at the <code class="docutils literal notranslate"><span class="pre">CONTEXT</span></code> column. A model may support a large maximum context, but Ollama may allocate a smaller context unless configured.</p>
 </section>
 <section id="increase-context-globally-when-serving">
-<h3><span class="section-number">7.14.2. </span>Increase context globally when serving<a class="headerlink" href="#increase-context-globally-when-serving" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">7.19.2. </span>Increase context globally when serving<a class="headerlink" href="#increase-context-globally-when-serving" title="Link to this heading">#</a></h3>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">OLLAMA_CONTEXT_LENGTH</span><span class="o">=</span><span class="m">64000</span><span class="w"> </span>ollama<span class="w"> </span>serve
 </pre></div>
 </div>
 <p><strong>Example description:</strong> this starts the Ollama server with a larger default context length. It is useful for experiments but can increase memory pressure for every loaded model.</p>
 </section>
 <section id="increase-context-through-modelfile">
-<h3><span class="section-number">7.14.3. </span>Increase context through Modelfile<a class="headerlink" href="#increase-context-through-modelfile" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">7.19.3. </span>Increase context through Modelfile<a class="headerlink" href="#increase-context-through-modelfile" title="Link to this heading">#</a></h3>
 <div class="highlight-dockerfile notranslate"><div class="highlight"><pre><span></span><span class="k">FROM</span><span class="w"> </span><span class="s">qwen3.6</span>
 PARAMETER<span class="w"> </span>num_ctx<span class="w"> </span><span class="m">65536</span>
 </pre></div>
@@ -1888,17 +1926,17 @@ ollama<span class="w"> </span>run<span class="w"> </span>qwen-large-context
 </section>
 <hr class="docutils" />
 <section id="toy-experiment-1-compare-system-prompts">
-<h2><span class="section-number">7.15. </span>Toy Experiment 1 — Compare System Prompts<a class="headerlink" href="#toy-experiment-1-compare-system-prompts" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">7.20. </span>Toy Experiment 1 — Compare System Prompts<a class="headerlink" href="#toy-experiment-1-compare-system-prompts" title="Link to this heading">#</a></h2>
 <p>Goal: see how a system prompt changes behavior.</p>
 <section id="plain-model">
-<h3><span class="section-number">7.15.1. </span>Plain model<a class="headerlink" href="#plain-model" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">7.20.1. </span>Plain model<a class="headerlink" href="#plain-model" title="Link to this heading">#</a></h3>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ollama<span class="w"> </span>run<span class="w"> </span>qwen3.6<span class="w"> </span><span class="s2">"Design a database schema for a document review system."</span>
 </pre></div>
 </div>
 <p><strong>Example description:</strong> this uses the base model without a custom system prompt. The result will depend mostly on the model’s default behavior.</p>
 </section>
 <section id="custom-model">
-<h3><span class="section-number">7.15.2. </span>Custom model<a class="headerlink" href="#custom-model" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">7.20.2. </span>Custom model<a class="headerlink" href="#custom-model" title="Link to this heading">#</a></h3>
 <p>Create <code class="docutils literal notranslate"><span class="pre">Modelfile</span></code>:</p>
 <div class="highlight-dockerfile notranslate"><div class="highlight"><pre><span></span><span class="k">FROM</span><span class="w"> </span><span class="s">qwen3.6</span>
 SYSTEM<span class="w"> </span><span class="s2">"""</span>
@@ -1920,7 +1958,7 @@ ollama<span class="w"> </span>run<span class="w"> </span>backend-architect<span 
 </section>
 <hr class="docutils" />
 <section id="toy-experiment-2-build-a-tiny-local-rag-system">
-<h2><span class="section-number">7.16. </span>Toy Experiment 2 — Build a Tiny Local RAG System<a class="headerlink" href="#toy-experiment-2-build-a-tiny-local-rag-system" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">7.21. </span>Toy Experiment 2 — Build a Tiny Local RAG System<a class="headerlink" href="#toy-experiment-2-build-a-tiny-local-rag-system" title="Link to this heading">#</a></h2>
 <p>Goal: understand RAG without a framework.</p>
 <p>Install dependencies:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>ollama<span class="w"> </span>numpy
@@ -1989,7 +2027,7 @@ ollama<span class="w"> </span>pull<span class="w"> </span>qwen3-embedding
 </section>
 <hr class="docutils" />
 <section id="rag-architecture-for-real-projects">
-<h2><span class="section-number">7.17. </span>RAG Architecture for Real Projects<a class="headerlink" href="#rag-architecture-for-real-projects" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">7.22. </span>RAG Architecture for Real Projects<a class="headerlink" href="#rag-architecture-for-real-projects" title="Link to this heading">#</a></h2>
 <p>For a serious local RAG stack:</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
@@ -2023,7 +2061,7 @@ ollama<span class="w"> </span>pull<span class="w"> </span>qwen3-embedding
 </table>
 </div>
 <section id="rag-database-design-example">
-<h3><span class="section-number">7.17.1. </span>RAG database design example<a class="headerlink" href="#rag-database-design-example" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">7.22.1. </span>RAG database design example<a class="headerlink" href="#rag-database-design-example" title="Link to this heading">#</a></h3>
 <p>For PostgreSQL + pgvector:</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Document
 - id
@@ -2062,7 +2100,7 @@ ChatMessage
 </section>
 <hr class="docutils" />
 <section id="toy-experiment-3-tool-calling">
-<h2><span class="section-number">7.18. </span>Toy Experiment 3 — Tool Calling<a class="headerlink" href="#toy-experiment-3-tool-calling" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">7.23. </span>Toy Experiment 3 — Tool Calling<a class="headerlink" href="#toy-experiment-3-tool-calling" title="Link to this heading">#</a></h2>
 <p>Goal: let the model call a Python function.</p>
 <p>Install:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>ollama
@@ -2155,7 +2193,7 @@ ChatMessage
 </section>
 <hr class="docutils" />
 <section id="tool-calling-pattern-for-web-applications">
-<h2><span class="section-number">7.19. </span>Tool Calling Pattern for Web Applications<a class="headerlink" href="#tool-calling-pattern-for-web-applications" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">7.24. </span>Tool Calling Pattern for Web Applications<a class="headerlink" href="#tool-calling-pattern-for-web-applications" title="Link to this heading">#</a></h2>
 <p>A real agent loop looks like this:</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>User asks a question
         ↓
@@ -2211,7 +2249,7 @@ The model proposes; your backend validates.
 </section>
 <hr class="docutils" />
 <section id="embeddings-what-they-are-and-how-ollama-uses-them">
-<h2><span class="section-number">7.20. </span>Embeddings: What They Are and How Ollama Uses Them<a class="headerlink" href="#embeddings-what-they-are-and-how-ollama-uses-them" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">7.25. </span>Embeddings: What They Are and How Ollama Uses Them<a class="headerlink" href="#embeddings-what-they-are-and-how-ollama-uses-them" title="Link to this heading">#</a></h2>
 <p>Embeddings turn text into numeric vectors.</p>
 <p>They are used for:</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>semantic search
@@ -2223,7 +2261,7 @@ similarity search
 </pre></div>
 </div>
 <section id="generate-embeddings-with-curl">
-<h3><span class="section-number">7.20.1. </span>Generate embeddings with cURL<a class="headerlink" href="#generate-embeddings-with-curl" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">7.25.1. </span>Generate embeddings with cURL<a class="headerlink" href="#generate-embeddings-with-curl" title="Link to this heading">#</a></h3>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://localhost:11434/api/embed<span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json"</span><span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>-d<span class="w"> </span><span class="s1">'{</span>
@@ -2235,7 +2273,7 @@ similarity search
 <p><strong>Example description:</strong> <code class="docutils literal notranslate"><span class="pre">/api/embed</span></code> returns a vector instead of a natural-language answer. You store this vector in a vector database and compare it to other vectors for semantic search.</p>
 </section>
 <section id="generate-embeddings-in-python">
-<h3><span class="section-number">7.20.2. </span>Generate embeddings in Python<a class="headerlink" href="#generate-embeddings-in-python" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">7.25.2. </span>Generate embeddings in Python<a class="headerlink" href="#generate-embeddings-in-python" title="Link to this heading">#</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">ollama</span>
 
 <span class="n">result</span> <span class="o">=</span> <span class="n">ollama</span><span class="o">.</span><span class="n">embed</span><span class="p">(</span>
@@ -2250,7 +2288,7 @@ similarity search
 <p><strong>Example description:</strong> the printed length is the embedding dimension. Every vector in the same index must have the same dimension and come from the same embedding model.</p>
 </section>
 <section id="important-embedding-rule">
-<h3><span class="section-number">7.20.3. </span>Important embedding rule<a class="headerlink" href="#important-embedding-rule" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">7.25.3. </span>Important embedding rule<a class="headerlink" href="#important-embedding-rule" title="Link to this heading">#</a></h3>
 <p>Do not mix embedding models in the same vector index.</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Index documents with embeddinggemma → query with embeddinggemma
 Index documents with qwen3-embedding → query with qwen3-embedding
@@ -2261,10 +2299,10 @@ Index documents with qwen3-embedding → query with qwen3-embedding
 </section>
 <hr class="docutils" />
 <section id="structured-outputs-json-mode">
-<h2><span class="section-number">7.21. </span>Structured Outputs / JSON Mode<a class="headerlink" href="#structured-outputs-json-mode" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">7.26. </span>Structured Outputs / JSON Mode<a class="headerlink" href="#structured-outputs-json-mode" title="Link to this heading">#</a></h2>
 <p>For app development, you often do not want prose. You want JSON.</p>
 <section id="json-output-with-api-chat">
-<h3><span class="section-number">7.21.1. </span>JSON output with <code class="docutils literal notranslate"><span class="pre">/api/chat</span></code><a class="headerlink" href="#json-output-with-api-chat" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">7.26.1. </span>JSON output with <code class="docutils literal notranslate"><span class="pre">/api/chat</span></code><a class="headerlink" href="#json-output-with-api-chat" title="Link to this heading">#</a></h3>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>http://localhost:11434/api/chat<span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json"</span><span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>-d<span class="w"> </span><span class="s1">'{</span>
@@ -2283,7 +2321,7 @@ Index documents with qwen3-embedding → query with qwen3-embedding
 <p><strong>Example description:</strong> <code class="docutils literal notranslate"><span class="pre">format:&quot;json&quot;</span></code> asks Ollama to constrain the output to JSON. This is useful for classification, extraction, database previews, and backend workflows.</p>
 </section>
 <section id="practical-use">
-<h3><span class="section-number">7.21.2. </span>Practical use<a class="headerlink" href="#practical-use" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">7.26.2. </span>Practical use<a class="headerlink" href="#practical-use" title="Link to this heading">#</a></h3>
 <p>Structured output is useful for:</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>classification
 entity extraction
@@ -2308,7 +2346,7 @@ workflow routing
 </section>
 <hr class="docutils" />
 <section id="vision-models">
-<h2><span class="section-number">7.22. </span>Vision Models<a class="headerlink" href="#vision-models" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">7.27. </span>Vision Models<a class="headerlink" href="#vision-models" title="Link to this heading">#</a></h2>
 <p>Some Ollama models can accept images.</p>
 <p>Example CLI:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ollama<span class="w"> </span>run<span class="w"> </span>gemma4<span class="w"> </span><span class="s2">"What is visible in this image? ./sample-image.jpg"</span>
@@ -2338,10 +2376,10 @@ Vision LLM = explanation, report writing, visual QA, human-readable summary
 </section>
 <hr class="docutils" />
 <section id="hugging-face-gguf-workflow">
-<h2><span class="section-number">7.23. </span>Hugging Face GGUF Workflow<a class="headerlink" href="#hugging-face-gguf-workflow" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">7.28. </span>Hugging Face GGUF Workflow<a class="headerlink" href="#hugging-face-gguf-workflow" title="Link to this heading">#</a></h2>
 <p>Ollama’s official library will not always have the newest models. Hugging Face often has GGUF versions earlier.</p>
 <section id="direct-run-from-hugging-face">
-<h3><span class="section-number">7.23.1. </span>Direct run from Hugging Face<a class="headerlink" href="#direct-run-from-hugging-face" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">7.28.1. </span>Direct run from Hugging Face<a class="headerlink" href="#direct-run-from-hugging-face" title="Link to this heading">#</a></h3>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ollama<span class="w"> </span>run<span class="w"> </span>hf.co/&lt;username&gt;/&lt;repo&gt;
 </pre></div>
 </div>
@@ -2358,7 +2396,7 @@ Vision LLM = explanation, report writing, visual QA, human-readable summary
 <p><strong>Example description:</strong> this runs a Hugging Face GGUF model that may not be present in the official Ollama library. It is a useful pattern for trying newer community quantizations.</p>
 </section>
 <section id="full-filename-as-tag">
-<h3><span class="section-number">7.23.2. </span>Full filename as tag<a class="headerlink" href="#full-filename-as-tag" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">7.28.2. </span>Full filename as tag<a class="headerlink" href="#full-filename-as-tag" title="Link to this heading">#</a></h3>
 <p>Sometimes this works:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ollama<span class="w"> </span>run<span class="w"> </span>hf.co/&lt;username&gt;/&lt;repo&gt;:model-name-Q4_K_M.gguf
 </pre></div>
@@ -2366,7 +2404,7 @@ Vision LLM = explanation, report writing, visual QA, human-readable summary
 <p><strong>Example description:</strong> some repositories expose multiple <code class="docutils literal notranslate"><span class="pre">.gguf</span></code> filenames instead of simple tags. Using the full filename can disambiguate which file Ollama should download.</p>
 </section>
 <section id="manual-gguf-import">
-<h3><span class="section-number">7.23.3. </span>Manual GGUF import<a class="headerlink" href="#manual-gguf-import" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">7.28.3. </span>Manual GGUF import<a class="headerlink" href="#manual-gguf-import" title="Link to this heading">#</a></h3>
 <p>Download a <code class="docutils literal notranslate"><span class="pre">.gguf</span></code> file, then create a <code class="docutils literal notranslate"><span class="pre">Modelfile</span></code>:</p>
 <div class="highlight-dockerfile notranslate"><div class="highlight"><pre><span></span><span class="k">FROM</span><span class="w"> </span><span class="s">./model.Q4_K_M.gguf</span>
 </pre></div>
@@ -2380,7 +2418,7 @@ ollama<span class="w"> </span>run<span class="w"> </span>my-gguf-model
 <p><strong>Example description:</strong> after import, <code class="docutils literal notranslate"><span class="pre">my-gguf-model</span></code> becomes a normal Ollama model name. Your Python, JavaScript, and API calls can use it like any other model.</p>
 </section>
 <section id="sharded-gguf-warning">
-<h3><span class="section-number">7.23.4. </span>Sharded GGUF warning<a class="headerlink" href="#sharded-gguf-warning" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">7.28.4. </span>Sharded GGUF warning<a class="headerlink" href="#sharded-gguf-warning" title="Link to this heading">#</a></h3>
 <p>If files look like this:</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>model-00001-of-00008.gguf
 model-00002-of-00008.gguf
@@ -2401,7 +2439,7 @@ model-00002-of-00008.gguf
 </section>
 <hr class="docutils" />
 <section id="cloud-models">
-<h2><span class="section-number">7.24. </span>Cloud Models<a class="headerlink" href="#cloud-models" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">7.29. </span>Cloud Models<a class="headerlink" href="#cloud-models" title="Link to this heading">#</a></h2>
 <p>Some models are too large to run locally conveniently.</p>
 <p>Example:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ollama<span class="w"> </span>run<span class="w"> </span>glm-5.2:cloud
@@ -2463,7 +2501,7 @@ sensitive data
 </section>
 <hr class="docutils" />
 <section id="web-search">
-<h2><span class="section-number">7.25. </span>Web Search<a class="headerlink" href="#web-search" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">7.30. </span>Web Search<a class="headerlink" href="#web-search" title="Link to this heading">#</a></h2>
 <p>Local models cannot browse the web by themselves.</p>
 <p>You need one of these:</p>
 <div class="pst-scrollable-table-container"><table class="table">
@@ -2518,7 +2556,7 @@ hash or cache key
 </section>
 <hr class="docutils" />
 <section id="open-webui-and-anythingllm">
-<h2><span class="section-number">7.26. </span>Open WebUI and AnythingLLM<a class="headerlink" href="#open-webui-and-anythingllm" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">7.31. </span>Open WebUI and AnythingLLM<a class="headerlink" href="#open-webui-and-anythingllm" title="Link to this heading">#</a></h2>
 <p>Ollama is the engine. It is not a complete ChatGPT replacement by itself.</p>
 <p>For a ChatGPT-like local UI:</p>
 <div class="pst-scrollable-table-container"><table class="table">
@@ -2557,9 +2595,9 @@ Step 4: Custom backend integration for your own application
 </section>
 <hr class="docutils" />
 <section id="production-pattern-for-django-fastapi">
-<h2><span class="section-number">7.27. </span>Production Pattern for Django / FastAPI<a class="headerlink" href="#production-pattern-for-django-fastapi" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">7.32. </span>Production Pattern for Django / FastAPI<a class="headerlink" href="#production-pattern-for-django-fastapi" title="Link to this heading">#</a></h2>
 <section id="minimal-backend-architecture">
-<h3><span class="section-number">7.27.1. </span>Minimal backend architecture<a class="headerlink" href="#minimal-backend-architecture" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">7.32.1. </span>Minimal backend architecture<a class="headerlink" href="#minimal-backend-architecture" title="Link to this heading">#</a></h3>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Django/FastAPI
   ├── /api/chat
   ├── /api/rag/query
@@ -2573,7 +2611,7 @@ Step 4: Custom backend integration for your own application
 <p><strong>Example description:</strong> the application should not expose Ollama directly to every user. Your backend should validate requests, enforce permissions, manage RAG retrieval, and decide which tools are allowed.</p>
 </section>
 <section id="generic-service-wrapper">
-<h3><span class="section-number">7.27.2. </span>Generic service wrapper<a class="headerlink" href="#generic-service-wrapper" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">7.32.2. </span>Generic service wrapper<a class="headerlink" href="#generic-service-wrapper" title="Link to this heading">#</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># services/llm.py</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">openai</span><span class="w"> </span><span class="kn">import</span> <span class="n">OpenAI</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">django.conf</span><span class="w"> </span><span class="kn">import</span> <span class="n">settings</span>
@@ -2603,7 +2641,7 @@ Step 4: Custom backend integration for your own application
 <p><strong>Example description:</strong> application code passes a standard <code class="docutils literal notranslate"><span class="pre">messages</span></code> list. This makes it easy to add RAG context, conversation history, or tool results before calling the model.</p>
 </section>
 <section id="recommended-environment-variables">
-<h3><span class="section-number">7.27.3. </span>Recommended environment variables<a class="headerlink" href="#recommended-environment-variables" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">7.32.3. </span>Recommended environment variables<a class="headerlink" href="#recommended-environment-variables" title="Link to this heading">#</a></h3>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">OLLAMA_BASE_URL</span><span class="o">=</span>http://localhost:11434/v1
 <span class="nv">OLLAMA_MODEL</span><span class="o">=</span>qwen3.6
 <span class="nv">OLLAMA_EMBED_MODEL</span><span class="o">=</span>embeddinggemma
@@ -2614,9 +2652,9 @@ Step 4: Custom backend integration for your own application
 </section>
 <hr class="docutils" />
 <section id="performance-tuning-checklist">
-<h2><span class="section-number">7.28. </span>Performance Tuning Checklist<a class="headerlink" href="#performance-tuning-checklist" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">7.33. </span>Performance Tuning Checklist<a class="headerlink" href="#performance-tuning-checklist" title="Link to this heading">#</a></h2>
 <section id="if-responses-are-slow">
-<h3><span class="section-number">7.28.1. </span>If responses are slow<a class="headerlink" href="#if-responses-are-slow" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">7.33.1. </span>If responses are slow<a class="headerlink" href="#if-responses-are-slow" title="Link to this heading">#</a></h3>
 <p>Check:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ollama<span class="w"> </span>ps
 </pre></div>
@@ -2633,7 +2671,7 @@ use MLX version on Apple Silicon if available
 </div>
 </section>
 <section id="if-you-run-out-of-memory">
-<h3><span class="section-number">7.28.2. </span>If you run out of memory<a class="headerlink" href="#if-you-run-out-of-memory" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">7.33.2. </span>If you run out of memory<a class="headerlink" href="#if-you-run-out-of-memory" title="Link to this heading">#</a></h3>
 <p>Try:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ollama<span class="w"> </span>stop<span class="w"> </span>&lt;model&gt;
 </pre></div>
@@ -2651,7 +2689,7 @@ use MLX version on Apple Silicon if available
 <p><strong>Example description:</strong> context length is often a hidden memory cost. Reducing it can make a model usable even when the base model size stays the same.</p>
 </section>
 <section id="if-api-connection-fails">
-<h3><span class="section-number">7.28.3. </span>If API connection fails<a class="headerlink" href="#if-api-connection-fails" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">7.33.3. </span>If API connection fails<a class="headerlink" href="#if-api-connection-fails" title="Link to this heading">#</a></h3>
 <p>Test:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>http://localhost:11434/api/tags
 </pre></div>
@@ -2671,10 +2709,10 @@ use MLX version on Apple Silicon if available
 </section>
 <hr class="docutils" />
 <section id="security-and-privacy-rules">
-<h2><span class="section-number">7.29. </span>Security and Privacy Rules<a class="headerlink" href="#security-and-privacy-rules" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">7.34. </span>Security and Privacy Rules<a class="headerlink" href="#security-and-privacy-rules" title="Link to this heading">#</a></h2>
 <p>Local models are powerful, but your wrapper code decides safety.</p>
 <section id="good-rules">
-<h3><span class="section-number">7.29.1. </span>Good rules<a class="headerlink" href="#good-rules" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">7.34.1. </span>Good rules<a class="headerlink" href="#good-rules" title="Link to this heading">#</a></h3>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Use local models for private documents.
 Use read-only tools first.
 Validate all tool arguments.
@@ -2687,7 +2725,7 @@ Use human approval for writes.
 <p><strong>Example description:</strong> the model can generate convincing but wrong actions. Your application must enforce boundaries and require review for anything that changes data or sends information externally.</p>
 </section>
 <section id="bad-patterns">
-<h3><span class="section-number">7.29.2. </span>Bad patterns<a class="headerlink" href="#bad-patterns" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">7.34.2. </span>Bad patterns<a class="headerlink" href="#bad-patterns" title="Link to this heading">#</a></h3>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Letting the model run any SQL it writes.
 Letting the model execute shell commands.
 Letting the model send emails without confirmation.
@@ -2700,7 +2738,7 @@ Trusting model JSON without validation.
 </section>
 <hr class="docutils" />
 <section id="troubleshooting-table">
-<h2><span class="section-number">7.30. </span>Troubleshooting Table<a class="headerlink" href="#troubleshooting-table" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">7.35. </span>Troubleshooting Table<a class="headerlink" href="#troubleshooting-table" title="Link to this heading">#</a></h2>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
 <tr class="row-odd"><th class="head text-left"><p>Problem</p></th>
@@ -2755,9 +2793,9 @@ Trusting model JSON without validation.
 </section>
 <hr class="docutils" />
 <section id="recommended-learning-path">
-<h2><span class="section-number">7.31. </span>Recommended Learning Path<a class="headerlink" href="#recommended-learning-path" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">7.36. </span>Recommended Learning Path<a class="headerlink" href="#recommended-learning-path" title="Link to this heading">#</a></h2>
 <section id="phase-1-basic-control">
-<h3><span class="section-number">7.31.1. </span>Phase 1 — Basic control<a class="headerlink" href="#phase-1-basic-control" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">7.36.1. </span>Phase 1 — Basic control<a class="headerlink" href="#phase-1-basic-control" title="Link to this heading">#</a></h3>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ollama<span class="w"> </span>list
 ollama<span class="w"> </span>pull<span class="w"> </span>qwen3.6
 ollama<span class="w"> </span>run<span class="w"> </span>qwen3.6
@@ -2768,7 +2806,7 @@ ollama<span class="w"> </span>stop<span class="w"> </span>qwen3.6
 <p><strong>Example description:</strong> these commands teach the model lifecycle: list what exists, download, run, inspect memory state, and stop when finished.</p>
 </section>
 <section id="phase-2-api-coding">
-<h3><span class="section-number">7.31.2. </span>Phase 2 — API coding<a class="headerlink" href="#phase-2-api-coding" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">7.36.2. </span>Phase 2 — API coding<a class="headerlink" href="#phase-2-api-coding" title="Link to this heading">#</a></h3>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Python native Ollama SDK
 OpenAI-compatible Python SDK
 Django/FastAPI wrapper
@@ -2778,7 +2816,7 @@ streaming response
 <p><strong>Example description:</strong> after CLI basics, focus on programmatic access. This is what turns a local model into something your applications can use.</p>
 </section>
 <section id="phase-3-customization">
-<h3><span class="section-number">7.31.3. </span>Phase 3 — Customization<a class="headerlink" href="#phase-3-customization" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">7.36.3. </span>Phase 3 — Customization<a class="headerlink" href="#phase-3-customization" title="Link to this heading">#</a></h3>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Modelfile
 system prompt
 temperature
@@ -2789,7 +2827,7 @@ custom local assistant
 <p><strong>Example description:</strong> customization lets you encode default behavior once instead of repeating long system prompts in every request.</p>
 </section>
 <section id="phase-4-rag">
-<h3><span class="section-number">7.31.4. </span>Phase 4 — RAG<a class="headerlink" href="#phase-4-rag" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">7.36.4. </span>Phase 4 — RAG<a class="headerlink" href="#phase-4-rag" title="Link to this heading">#</a></h3>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>embedding model
 chunking
 vector DB
@@ -2801,7 +2839,7 @@ strict document-only answering
 <p><strong>Example description:</strong> RAG is the main way to give a local model private, up-to-date, or domain-specific knowledge without fine-tuning.</p>
 </section>
 <section id="phase-5-agent-tools">
-<h3><span class="section-number">7.31.5. </span>Phase 5 — Agent/tools<a class="headerlink" href="#phase-5-agent-tools" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">7.36.5. </span>Phase 5 — Agent/tools<a class="headerlink" href="#phase-5-agent-tools" title="Link to this heading">#</a></h3>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>tool schema
 tool validation
 safe execution
@@ -2812,7 +2850,7 @@ human approval for writes
 <p><strong>Example description:</strong> tools give the model controlled access to actions. Validation and approval are more important than the model’s reasoning.</p>
 </section>
 <section id="phase-6-advanced-model-sourcing">
-<h3><span class="section-number">7.31.6. </span>Phase 6 — Advanced model sourcing<a class="headerlink" href="#phase-6-advanced-model-sourcing" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">7.36.6. </span>Phase 6 — Advanced model sourcing<a class="headerlink" href="#phase-6-advanced-model-sourcing" title="Link to this heading">#</a></h3>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Hugging Face GGUF
 quantization
 manual import
@@ -2825,7 +2863,7 @@ cloud model comparison
 </section>
 <hr class="docutils" />
 <section id="end-to-end-workflow-for-a-local-ai-stack">
-<h2><span class="section-number">7.32. </span>End-to-End Workflow for a Local AI Stack<a class="headerlink" href="#end-to-end-workflow-for-a-local-ai-stack" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">7.37. </span>End-to-End Workflow for a Local AI Stack<a class="headerlink" href="#end-to-end-workflow-for-a-local-ai-stack" title="Link to this heading">#</a></h2>
 <pre  class="mermaid">
         graph TD
     A[&quot;Install Ollama&quot;] --&gt; B[&quot;Pull a local chat model&quot;]
@@ -2843,9 +2881,9 @@ cloud model comparison
 </section>
 <hr class="docutils" />
 <section id="mini-project-generic-local-documentation-assistant">
-<h2><span class="section-number">7.33. </span>Mini Project — Generic Local Documentation Assistant<a class="headerlink" href="#mini-project-generic-local-documentation-assistant" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">7.38. </span>Mini Project — Generic Local Documentation Assistant<a class="headerlink" href="#mini-project-generic-local-documentation-assistant" title="Link to this heading">#</a></h2>
 <section id="goal">
-<h3><span class="section-number">7.33.1. </span>Goal<a class="headerlink" href="#goal" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">7.38.1. </span>Goal<a class="headerlink" href="#goal" title="Link to this heading">#</a></h3>
 <p>Build a local assistant that can:</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>1. answer questions about uploaded documents
 2. summarize long technical notes
@@ -2857,7 +2895,7 @@ cloud model comparison
 <p><strong>Example description:</strong> this project is intentionally generic. It teaches the same building blocks needed for many private AI assistants without depending on any specific organization or domain.</p>
 </section>
 <section id="suggested-stack">
-<h3><span class="section-number">7.33.2. </span>Suggested stack<a class="headerlink" href="#suggested-stack" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">7.38.2. </span>Suggested stack<a class="headerlink" href="#suggested-stack" title="Link to this heading">#</a></h3>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>LLM: qwen3.6, Llama, Gemma, Mistral, or another local model
 Embedding: embeddinggemma, qwen3-embedding, nomic-embed-text, or bge-m3
 Backend: Django, FastAPI, Flask, or Express
@@ -2870,7 +2908,7 @@ UI: Open WebUI for testing, custom web UI later
 <p><strong>Example description:</strong> this stack separates the chat model, embedding model, database, backend, tools, and UI. That separation makes the system easier to debug and replace piece by piece.</p>
 </section>
 <section id="example-system-prompt">
-<h3><span class="section-number">7.33.3. </span>Example system prompt<a class="headerlink" href="#example-system-prompt" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">7.38.3. </span>Example system prompt<a class="headerlink" href="#example-system-prompt" title="Link to this heading">#</a></h3>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>You are a local documentation assistant.
 Answer using provided documents and retrieved context.
 If the evidence is missing, say what is missing instead of guessing.
@@ -2883,9 +2921,9 @@ For actions that change data, create a draft and ask for human confirmation.
 </section>
 <hr class="docutils" />
 <section id="knowledge-quiz">
-<h2><span class="section-number">7.34. </span>Knowledge Quiz<a class="headerlink" href="#knowledge-quiz" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">7.39. </span>Knowledge Quiz<a class="headerlink" href="#knowledge-quiz" title="Link to this heading">#</a></h2>
 <section id="q1-what-command-shows-downloaded-local-models">
-<h3><span class="section-number">7.34.1. </span>Q1. What command shows downloaded local models?<a class="headerlink" href="#q1-what-command-shows-downloaded-local-models" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">7.39.1. </span>Q1. What command shows downloaded local models?<a class="headerlink" href="#q1-what-command-shows-downloaded-local-models" title="Link to this heading">#</a></h3>
 <details>
 <summary>Answer</summary>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ollama<span class="w"> </span>list
@@ -2898,7 +2936,7 @@ For actions that change data, create a draft and ask for human confirmation.
 </details>
 </section>
 <section id="q2-what-command-shows-currently-running-models-and-context-length">
-<h3><span class="section-number">7.34.2. </span>Q2. What command shows currently running models and context length?<a class="headerlink" href="#q2-what-command-shows-currently-running-models-and-context-length" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">7.39.2. </span>Q2. What command shows currently running models and context length?<a class="headerlink" href="#q2-what-command-shows-currently-running-models-and-context-length" title="Link to this heading">#</a></h3>
 <details>
 <summary>Answer</summary>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ollama<span class="w"> </span>ps
@@ -2907,14 +2945,14 @@ For actions that change data, create a draft and ask for human confirmation.
 </details>
 </section>
 <section id="q3-what-does-glm-5-2-cloud-mean">
-<h3><span class="section-number">7.34.3. </span>Q3. What does <code class="docutils literal notranslate"><span class="pre">glm-5.2:cloud</span></code> mean?<a class="headerlink" href="#q3-what-does-glm-5-2-cloud-mean" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">7.39.3. </span>Q3. What does <code class="docutils literal notranslate"><span class="pre">glm-5.2:cloud</span></code> mean?<a class="headerlink" href="#q3-what-does-glm-5-2-cloud-mean" title="Link to this heading">#</a></h3>
 <details>
 <summary>Answer</summary>
 <p>It means the model runs through Ollama Cloud, not fully on your local machine. It may consume Ollama Cloud usage, credits, or plan limits.</p>
 </details>
 </section>
 <section id="q4-what-is-the-easiest-way-to-reuse-existing-openai-sdk-code-with-ollama">
-<h3><span class="section-number">7.34.4. </span>Q4. What is the easiest way to reuse existing OpenAI SDK code with Ollama?<a class="headerlink" href="#q4-what-is-the-easiest-way-to-reuse-existing-openai-sdk-code-with-ollama" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">7.39.4. </span>Q4. What is the easiest way to reuse existing OpenAI SDK code with Ollama?<a class="headerlink" href="#q4-what-is-the-easiest-way-to-reuse-existing-openai-sdk-code-with-ollama" title="Link to this heading">#</a></h3>
 <details>
 <summary>Answer</summary>
 <p>Set:</p>
@@ -2931,7 +2969,7 @@ For actions that change data, create a draft and ask for human confirmation.
 </details>
 </section>
 <section id="q5-what-is-the-basic-rag-pipeline">
-<h3><span class="section-number">7.34.5. </span>Q5. What is the basic RAG pipeline?<a class="headerlink" href="#q5-what-is-the-basic-rag-pipeline" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">7.39.5. </span>Q5. What is the basic RAG pipeline?<a class="headerlink" href="#q5-what-is-the-basic-rag-pipeline" title="Link to this heading">#</a></h3>
 <details>
 <summary>Answer</summary>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>documents → chunks → embeddings → vector database → retrieve relevant chunks → send context to LLM → answer with sources
@@ -2940,14 +2978,14 @@ For actions that change data, create a draft and ask for human confirmation.
 </details>
 </section>
 <section id="q6-why-should-you-not-mix-embedding-models-in-one-vector-index">
-<h3><span class="section-number">7.34.6. </span>Q6. Why should you not mix embedding models in one vector index?<a class="headerlink" href="#q6-why-should-you-not-mix-embedding-models-in-one-vector-index" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">7.39.6. </span>Q6. Why should you not mix embedding models in one vector index?<a class="headerlink" href="#q6-why-should-you-not-mix-embedding-models-in-one-vector-index" title="Link to this heading">#</a></h3>
 <details>
 <summary>Answer</summary>
 <p>Different embedding models produce vectors in different vector spaces. If documents are embedded with one model and questions with another, similarity search becomes unreliable.</p>
 </details>
 </section>
 <section id="q7-what-is-a-modelfile">
-<h3><span class="section-number">7.34.7. </span>Q7. What is a Modelfile?<a class="headerlink" href="#q7-what-is-a-modelfile" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">7.39.7. </span>Q7. What is a Modelfile?<a class="headerlink" href="#q7-what-is-a-modelfile" title="Link to this heading">#</a></h3>
 <details>
 <summary>Answer</summary>
 <p>A Modelfile is Ollama’s recipe for creating a customized model from a base model or local model file. It can define <code class="docutils literal notranslate"><span class="pre">FROM</span></code>, <code class="docutils literal notranslate"><span class="pre">SYSTEM</span></code>, <code class="docutils literal notranslate"><span class="pre">PARAMETER</span></code>, <code class="docutils literal notranslate"><span class="pre">TEMPLATE</span></code>, <code class="docutils literal notranslate"><span class="pre">ADAPTER</span></code>, and other instructions.</p>
@@ -2956,10 +2994,10 @@ For actions that change data, create a draft and ask for human confirmation.
 </section>
 <hr class="docutils" />
 <section id="appendix-a-cross-platform-examples-macos-windows-and-linux">
-<h2><span class="section-number">7.35. </span>Appendix A — Cross-Platform Examples: macOS, Windows, and Linux<a class="headerlink" href="#appendix-a-cross-platform-examples-macos-windows-and-linux" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">7.40. </span>Appendix A — Cross-Platform Examples: macOS, Windows, and Linux<a class="headerlink" href="#appendix-a-cross-platform-examples-macos-windows-and-linux" title="Link to this heading">#</a></h2>
 <p>This section collects equivalent commands for the most common operations. Use it as a quick translation table when an example appears to be written for a different operating system.</p>
 <section id="a-1-health-check-and-model-list">
-<h3><span class="section-number">7.35.1. </span>A.1 Health check and model list<a class="headerlink" href="#a-1-health-check-and-model-list" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">7.40.1. </span>A.1 Health check and model list<a class="headerlink" href="#a-1-health-check-and-model-list" title="Link to this heading">#</a></h3>
 <div class="sd-tab-set docutils">
 <input checked="checked" id="sd-tab-item-11" name="sd-tab-set-4" type="radio">
 <label aria-controls="sd-tab-item-11-content" class="sd-tab-label" for="sd-tab-item-11">
@@ -2982,7 +3020,7 @@ Windows PowerShell</label><div class="sd-tab-content docutils" id="sd-tab-item-1
 <input id="sd-tab-item-13" name="sd-tab-set-4" type="radio">
 <label aria-controls="sd-tab-item-13-content" class="sd-tab-label" for="sd-tab-item-13">
 Windows CMD</label><div class="sd-tab-content docutils" id="sd-tab-item-13-content">
-<div class="highlight-cmd notranslate"><div class="highlight"><pre><span></span>ollama list
+<div class="highlight-bat notranslate"><div class="highlight"><pre><span></span>ollama list
 curl.exe http://localhost:11434/api/tags
 </pre></div>
 </div>
@@ -2991,7 +3029,7 @@ curl.exe http://localhost:11434/api/tags
 </div>
 </section>
 <section id="a-2-run-the-same-model-on-each-os">
-<h3><span class="section-number">7.35.2. </span>A.2 Run the same model on each OS<a class="headerlink" href="#a-2-run-the-same-model-on-each-os" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">7.40.2. </span>A.2 Run the same model on each OS<a class="headerlink" href="#a-2-run-the-same-model-on-each-os" title="Link to this heading">#</a></h3>
 <div class="sd-tab-set docutils">
 <input checked="checked" id="sd-tab-item-14" name="sd-tab-set-5" type="radio">
 <label aria-controls="sd-tab-item-14-content" class="sd-tab-label" for="sd-tab-item-14">
@@ -3012,7 +3050,7 @@ Windows PowerShell / CMD</label><div class="sd-tab-content docutils" id="sd-tab-
 </div>
 </section>
 <section id="a-3-python-virtual-environment-setup">
-<h3><span class="section-number">7.35.3. </span>A.3 Python virtual environment setup<a class="headerlink" href="#a-3-python-virtual-environment-setup" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">7.40.3. </span>A.3 Python virtual environment setup<a class="headerlink" href="#a-3-python-virtual-environment-setup" title="Link to this heading">#</a></h3>
 <div class="sd-tab-set docutils">
 <input checked="checked" id="sd-tab-item-16" name="sd-tab-set-6" type="radio">
 <label aria-controls="sd-tab-item-16-content" class="sd-tab-label" for="sd-tab-item-16">
@@ -3037,7 +3075,7 @@ Windows PowerShell</label><div class="sd-tab-content docutils" id="sd-tab-item-1
 <input id="sd-tab-item-18" name="sd-tab-set-6" type="radio">
 <label aria-controls="sd-tab-item-18-content" class="sd-tab-label" for="sd-tab-item-18">
 Windows CMD</label><div class="sd-tab-content docutils" id="sd-tab-item-18-content">
-<div class="highlight-cmd notranslate"><div class="highlight"><pre><span></span>py -m venv .venv
+<div class="highlight-bat notranslate"><div class="highlight"><pre><span></span>py -m venv .venv
 .venv\Scripts\activate.bat
 py -m pip install -U ollama openai numpy
 </pre></div>
@@ -3047,7 +3085,7 @@ py -m pip install -U ollama openai numpy
 </div>
 </section>
 <section id="a-4-run-toy-scripts">
-<h3><span class="section-number">7.35.4. </span>A.4 Run toy scripts<a class="headerlink" href="#a-4-run-toy-scripts" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">7.40.4. </span>A.4 Run toy scripts<a class="headerlink" href="#a-4-run-toy-scripts" title="Link to this heading">#</a></h3>
 <div class="sd-tab-set docutils">
 <input checked="checked" id="sd-tab-item-19" name="sd-tab-set-7" type="radio">
 <label aria-controls="sd-tab-item-19-content" class="sd-tab-label" for="sd-tab-item-19">
@@ -3070,7 +3108,7 @@ Windows PowerShell / CMD</label><div class="sd-tab-content docutils" id="sd-tab-
 </div>
 </section>
 <section id="a-5-environment-variables">
-<h3><span class="section-number">7.35.5. </span>A.5 Environment variables<a class="headerlink" href="#a-5-environment-variables" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">7.40.5. </span>A.5 Environment variables<a class="headerlink" href="#a-5-environment-variables" title="Link to this heading">#</a></h3>
 <div class="sd-tab-set docutils">
 <input checked="checked" id="sd-tab-item-21" name="sd-tab-set-8" type="radio">
 <label aria-controls="sd-tab-item-21-content" class="sd-tab-label" for="sd-tab-item-21">
@@ -3116,7 +3154,7 @@ sudo<span class="w"> </span>systemctl<span class="w"> </span>restart<span class=
 </div>
 </section>
 <section id="a-6-api-calls-curl-vs-powershell">
-<h3><span class="section-number">7.35.6. </span>A.6 API calls: cURL vs PowerShell<a class="headerlink" href="#a-6-api-calls-curl-vs-powershell" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">7.40.6. </span>A.6 API calls: cURL vs PowerShell<a class="headerlink" href="#a-6-api-calls-curl-vs-powershell" title="Link to this heading">#</a></h3>
 <div class="sd-tab-set docutils">
 <input checked="checked" id="sd-tab-item-24" name="sd-tab-set-9" type="radio">
 <label aria-controls="sd-tab-item-24-content" class="sd-tab-label" for="sd-tab-item-24">
@@ -3157,7 +3195,7 @@ Windows PowerShell</label><div class="sd-tab-content docutils" id="sd-tab-item-2
 </div>
 </section>
 <section id="a-7-check-which-process-owns-port-11434">
-<h3><span class="section-number">7.35.7. </span>A.7 Check which process owns port 11434<a class="headerlink" href="#a-7-check-which-process-owns-port-11434" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">7.40.7. </span>A.7 Check which process owns port 11434<a class="headerlink" href="#a-7-check-which-process-owns-port-11434" title="Link to this heading">#</a></h3>
 <div class="sd-tab-set docutils">
 <input checked="checked" id="sd-tab-item-26" name="sd-tab-set-10" type="radio">
 <label aria-controls="sd-tab-item-26-content" class="sd-tab-label" for="sd-tab-item-26">
@@ -3186,7 +3224,7 @@ Windows PowerShell</label><div class="sd-tab-content docutils" id="sd-tab-item-2
 </div>
 </section>
 <section id="a-8-import-a-local-gguf-file">
-<h3><span class="section-number">7.35.8. </span>A.8 Import a local GGUF file<a class="headerlink" href="#a-8-import-a-local-gguf-file" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">7.40.8. </span>A.8 Import a local GGUF file<a class="headerlink" href="#a-8-import-a-local-gguf-file" title="Link to this heading">#</a></h3>
 <div class="sd-tab-set docutils">
 <input checked="checked" id="sd-tab-item-29" name="sd-tab-set-11" type="radio">
 <label aria-controls="sd-tab-item-29-content" class="sd-tab-label" for="sd-tab-item-29">
@@ -3223,7 +3261,7 @@ Windows PowerShell</label><div class="sd-tab-content docutils" id="sd-tab-item-3
 </div>
 </section>
 <section id="a-9-open-webui-with-docker">
-<h3><span class="section-number">7.35.9. </span>A.9 Open WebUI with Docker<a class="headerlink" href="#a-9-open-webui-with-docker" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">7.40.9. </span>A.9 Open WebUI with Docker<a class="headerlink" href="#a-9-open-webui-with-docker" title="Link to this heading">#</a></h3>
 <div class="sd-tab-set docutils">
 <input checked="checked" id="sd-tab-item-31" name="sd-tab-set-12" type="radio">
 <label aria-controls="sd-tab-item-31-content" class="sd-tab-label" for="sd-tab-item-31">
@@ -3256,7 +3294,7 @@ Windows PowerShell</label><div class="sd-tab-content docutils" id="sd-tab-item-3
 </div>
 </section>
 <section id="a-10-common-path-translations">
-<h3><span class="section-number">7.35.10. </span>A.10 Common path translations<a class="headerlink" href="#a-10-common-path-translations" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">7.40.10. </span>A.10 Common path translations<a class="headerlink" href="#a-10-common-path-translations" title="Link to this heading">#</a></h3>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
 <tr class="row-odd"><th class="head text-left"><p>Concept</p></th>
@@ -3293,7 +3331,7 @@ Windows PowerShell</label><div class="sd-tab-content docutils" id="sd-tab-item-3
 </section>
 <hr class="docutils" />
 <section id="final-practical-advice">
-<h2><span class="section-number">7.36. </span>Final Practical Advice<a class="headerlink" href="#final-practical-advice" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">7.41. </span>Final Practical Advice<a class="headerlink" href="#final-practical-advice" title="Link to this heading">#</a></h2>
 <p>A reliable learning order is:</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>1. Use a local chat model through Ollama.
 2. Learn the CLI: list, run, show, ps, stop, rm.
@@ -3318,9 +3356,9 @@ Your UI gives it a useful product experience.
 </section>
 <hr class="docutils" />
 <section id="reference-links-for-further-reading">
-<h2><span class="section-number">7.37. </span>Reference Links for Further Reading<a class="headerlink" href="#reference-links-for-further-reading" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">7.42. </span>Reference Links for Further Reading<a class="headerlink" href="#reference-links-for-further-reading" title="Link to this heading">#</a></h2>
 <section id="ollama-official">
-<h3><span class="section-number">7.37.1. </span>Ollama official<a class="headerlink" href="#ollama-official" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">7.42.1. </span>Ollama official<a class="headerlink" href="#ollama-official" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>Ollama homepage: <a class="reference external" href="https://ollama.com/">https://ollama.com/</a></p></li>
 <li><p>Ollama docs: <a class="reference external" href="https://docs.ollama.com/">https://docs.ollama.com/</a></p></li>
@@ -3337,7 +3375,7 @@ Your UI gives it a useful product experience.
 </ul>
 </section>
 <section id="hugging-face-gguf">
-<h3><span class="section-number">7.37.2. </span>Hugging Face / GGUF<a class="headerlink" href="#hugging-face-gguf" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">7.42.2. </span>Hugging Face / GGUF<a class="headerlink" href="#hugging-face-gguf" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>Use Ollama with GGUF models on Hugging Face: <a class="reference external" href="https://huggingface.co/docs/hub/en/ollama">https://huggingface.co/docs/hub/en/ollama</a></p></li>
 <li><p>GGUF format explanation: <a class="reference external" href="https://huggingface.co/docs/hub/en/gguf">https://huggingface.co/docs/hub/en/gguf</a></p></li>
@@ -3345,7 +3383,7 @@ Your UI gives it a useful product experience.
 </ul>
 </section>
 <section id="ui-and-local-ai-apps">
-<h3><span class="section-number">7.37.3. </span>UI and local AI apps<a class="headerlink" href="#ui-and-local-ai-apps" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">7.42.3. </span>UI and local AI apps<a class="headerlink" href="#ui-and-local-ai-apps" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>Open WebUI: <a class="github reference external" href="https://github.com/open-webui/open-webui">open-webui/open-webui</a></p></li>
 <li><p>AnythingLLM: <a class="reference external" href="https://anythingllm.com/">https://anythingllm.com/</a></p></li>
@@ -3353,7 +3391,7 @@ Your UI gives it a useful product experience.
 </ul>
 </section>
 <section id="rag-agents">
-<h3><span class="section-number">7.37.4. </span>RAG / agents<a class="headerlink" href="#rag-agents" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">7.42.4. </span>RAG / agents<a class="headerlink" href="#rag-agents" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>LlamaIndex: <a class="reference external" href="https://www.llamaindex.ai/">https://www.llamaindex.ai/</a></p></li>
 <li><p>LangChain: <a class="reference external" href="https://www.langchain.com/">https://www.langchain.com/</a></p></li>
@@ -3400,7 +3438,7 @@ Your UI gives it a useful product experience.
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title"><span class="section-number">6. </span>Deploy Open-Source LLMs Locally with Ollama &amp; AnythingLLM</p>
+        <p class="prev-next-title"><span class="section-number">6. </span>06 - Run a Local Model and Verify the Endpoint Workshop</p>
       </div>
     </a>
     <a class="right-next"
@@ -3408,7 +3446,7 @@ Your UI gives it a useful product experience.
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">8. </span>What is RAG? (Retrieval-Augmented Generation)</p>
+        <p class="prev-next-title"><span class="section-number">8. </span>08 - Observe Retrieval Before Generation Workshop</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -3430,172 +3468,177 @@ Your UI gives it a useful product experience.
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-you-should-be-able-to-do-after-this-tutorial">7.1. What You Should Be Able to Do After This Tutorial</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mental-model-what-ollama-actually-is">7.2. Mental Model: What Ollama Actually Is</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ollama-vs-llama-vs-llama-cpp-vs-gguf">7.2.1. Ollama vs Llama vs llama.cpp vs GGUF</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#workshop-preparation">7.1. Workshop preparation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hands-on-route">7.2. Hands-on route</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#acceptance-evidence">7.3. Acceptance evidence</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#troubleshooting-and-cleanup">7.4. Troubleshooting and cleanup</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reference-and-optional-extensions">7.5. Reference and optional extensions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-you-should-be-able-to-do-after-this-tutorial">7.6. What You Should Be Able to Do After This Tutorial</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mental-model-what-ollama-actually-is">7.7. Mental Model: What Ollama Actually Is</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ollama-vs-llama-vs-llama-cpp-vs-gguf">7.7.1. Ollama vs Llama vs llama.cpp vs GGUF</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installation-and-first-checks">7.3. Installation and First Checks</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#install-ollama">7.3.1. Install Ollama</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#verify-the-api-server">7.3.2. Verify the API server</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cross-platform-command-convention">7.3.3. Cross-platform command convention</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#where-ollama-stores-models">7.3.4. Where Ollama stores models</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installation-and-first-checks">7.8. Installation and First Checks</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#install-ollama">7.8.1. Install Ollama</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#verify-the-api-server">7.8.2. Verify the API server</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cross-platform-command-convention">7.8.3. Cross-platform command convention</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#where-ollama-stores-models">7.8.4. Where Ollama stores models</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#core-cli-commands-you-must-know">7.4. Core CLI Commands You Must Know</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#download-a-model">7.4.1. Download a model</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#run-a-model-interactively">7.4.2. Run a model interactively</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#list-downloaded-models">7.4.3. List downloaded models</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#show-model-information">7.4.4. Show model information</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#list-running-models">7.4.5. List running models</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#stop-a-running-model">7.4.6. Stop a running model</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#remove-a-model">7.4.7. Remove a model</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#copy-or-rename-a-model">7.4.8. Copy or rename a model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#core-cli-commands-you-must-know">7.9. Core CLI Commands You Must Know</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#download-a-model">7.9.1. Download a model</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#run-a-model-interactively">7.9.2. Run a model interactively</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#list-downloaded-models">7.9.3. List downloaded models</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#show-model-information">7.9.4. Show model information</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#list-running-models">7.9.5. List running models</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#stop-a-running-model">7.9.6. Stop a running model</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#remove-a-model">7.9.7. Remove a model</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#copy-or-rename-a-model">7.9.8. Copy or rename a model</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-names-tags-and-versions">7.5. Model Names, Tags, and Versions</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#local-vs-cloud">7.5.1. Local vs cloud</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hugging-face-models">7.5.2. Hugging Face models</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-names-tags-and-versions">7.10. Model Names, Tags, and Versions</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#local-vs-cloud">7.10.1. Local vs cloud</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hugging-face-models">7.10.2. Hugging Face models</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quantization-q4-q5-q8-iq2-mlx">7.6. Quantization: Q4, Q5, Q8, IQ2, MLX</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interactive-chat-useful-terminal-techniques">7.7. Interactive Chat: Useful Terminal Techniques</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#one-shot-prompt">7.7.1. One-shot prompt</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multiline-prompt">7.7.2. Multiline prompt</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#image-input-with-a-vision-model">7.7.3. Image input with a vision model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quantization-q4-q5-q8-iq2-mlx">7.11. Quantization: Q4, Q5, Q8, IQ2, MLX</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interactive-chat-useful-terminal-techniques">7.12. Interactive Chat: Useful Terminal Techniques</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#one-shot-prompt">7.12.1. One-shot prompt</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multiline-prompt">7.12.2. Multiline prompt</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#image-input-with-a-vision-model">7.12.3. Image input with a vision model</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rest-api-the-most-important-interface">7.8. REST API: The Most Important Interface</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#api-generate">7.8.1. <code class="docutils literal notranslate"><span class="pre">/api/generate</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#api-chat">7.8.2. <code class="docutils literal notranslate"><span class="pre">/api/chat</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#streaming-vs-non-streaming">7.8.3. Streaming vs non-streaming</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#windows-powershell-api-examples">7.8.4. Windows PowerShell API examples</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rest-api-the-most-important-interface">7.13. REST API: The Most Important Interface</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#api-generate">7.13.1. <code class="docutils literal notranslate"><span class="pre">/api/generate</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#api-chat">7.13.2. <code class="docutils literal notranslate"><span class="pre">/api/chat</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#streaming-vs-non-streaming">7.13.3. Streaming vs non-streaming</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#windows-powershell-api-examples">7.13.4. Windows PowerShell API examples</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#python-native-ollama-sdk">7.9. Python: Native Ollama SDK</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-chat">7.9.1. Basic chat</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#streaming">7.9.2. Streaming</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#python-native-ollama-sdk">7.14. Python: Native Ollama SDK</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-chat">7.14.1. Basic chat</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#streaming">7.14.2. Streaming</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#python-openai-compatible-sdk">7.10. Python: OpenAI-Compatible SDK</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#minimal-example">7.10.1. Minimal example</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#why-this-matters">7.10.2. Why this matters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#python-openai-compatible-sdk">7.15. Python: OpenAI-Compatible SDK</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#minimal-example">7.15.1. Minimal example</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#why-this-matters">7.15.2. Why this matters</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#javascript-node-js">7.11. JavaScript / Node.js</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#modelfile-create-your-own-local-assistant">7.12. Modelfile: Create Your Own Local Assistant</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-generic-assistant">7.12.1. Basic generic assistant</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#useful-modelfile-instructions">7.12.2. Useful Modelfile instructions</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#view-an-existing-model-s-modelfile">7.12.3. View an existing model’s Modelfile</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#javascript-node-js">7.16. JavaScript / Node.js</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#modelfile-create-your-own-local-assistant">7.17. Modelfile: Create Your Own Local Assistant</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-generic-assistant">7.17.1. Basic generic assistant</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#useful-modelfile-instructions">7.17.2. Useful Modelfile instructions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#view-an-existing-model-s-modelfile">7.17.3. View an existing model’s Modelfile</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#runtime-parameters-you-should-understand">7.13. Runtime Parameters You Should Understand</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#practical-presets">7.13.1. Practical presets</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#runtime-parameters-you-should-understand">7.18. Runtime Parameters You Should Understand</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#practical-presets">7.18.1. Practical presets</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#context-length-and-memory">7.14. Context Length and Memory</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#check-actual-context-allocation">7.14.1. Check actual context allocation</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#increase-context-globally-when-serving">7.14.2. Increase context globally when serving</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#increase-context-through-modelfile">7.14.3. Increase context through Modelfile</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#context-length-and-memory">7.19. Context Length and Memory</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#check-actual-context-allocation">7.19.1. Check actual context allocation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#increase-context-globally-when-serving">7.19.2. Increase context globally when serving</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#increase-context-through-modelfile">7.19.3. Increase context through Modelfile</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#toy-experiment-1-compare-system-prompts">7.15. Toy Experiment 1 — Compare System Prompts</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#plain-model">7.15.1. Plain model</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#custom-model">7.15.2. Custom model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#toy-experiment-1-compare-system-prompts">7.20. Toy Experiment 1 — Compare System Prompts</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#plain-model">7.20.1. Plain model</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#custom-model">7.20.2. Custom model</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#toy-experiment-2-build-a-tiny-local-rag-system">7.16. Toy Experiment 2 — Build a Tiny Local RAG System</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rag-architecture-for-real-projects">7.17. RAG Architecture for Real Projects</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rag-database-design-example">7.17.1. RAG database design example</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#toy-experiment-2-build-a-tiny-local-rag-system">7.21. Toy Experiment 2 — Build a Tiny Local RAG System</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rag-architecture-for-real-projects">7.22. RAG Architecture for Real Projects</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rag-database-design-example">7.22.1. RAG database design example</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#toy-experiment-3-tool-calling">7.18. Toy Experiment 3 — Tool Calling</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tool-calling-pattern-for-web-applications">7.19. Tool Calling Pattern for Web Applications</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#embeddings-what-they-are-and-how-ollama-uses-them">7.20. Embeddings: What They Are and How Ollama Uses Them</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#generate-embeddings-with-curl">7.20.1. Generate embeddings with cURL</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#generate-embeddings-in-python">7.20.2. Generate embeddings in Python</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#important-embedding-rule">7.20.3. Important embedding rule</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#toy-experiment-3-tool-calling">7.23. Toy Experiment 3 — Tool Calling</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tool-calling-pattern-for-web-applications">7.24. Tool Calling Pattern for Web Applications</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#embeddings-what-they-are-and-how-ollama-uses-them">7.25. Embeddings: What They Are and How Ollama Uses Them</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#generate-embeddings-with-curl">7.25.1. Generate embeddings with cURL</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#generate-embeddings-in-python">7.25.2. Generate embeddings in Python</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#important-embedding-rule">7.25.3. Important embedding rule</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#structured-outputs-json-mode">7.21. Structured Outputs / JSON Mode</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#json-output-with-api-chat">7.21.1. JSON output with <code class="docutils literal notranslate"><span class="pre">/api/chat</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#practical-use">7.21.2. Practical use</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#structured-outputs-json-mode">7.26. Structured Outputs / JSON Mode</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#json-output-with-api-chat">7.26.1. JSON output with <code class="docutils literal notranslate"><span class="pre">/api/chat</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#practical-use">7.26.2. Practical use</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vision-models">7.22. Vision Models</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hugging-face-gguf-workflow">7.23. Hugging Face GGUF Workflow</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#direct-run-from-hugging-face">7.23.1. Direct run from Hugging Face</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#full-filename-as-tag">7.23.2. Full filename as tag</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#manual-gguf-import">7.23.3. Manual GGUF import</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sharded-gguf-warning">7.23.4. Sharded GGUF warning</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vision-models">7.27. Vision Models</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hugging-face-gguf-workflow">7.28. Hugging Face GGUF Workflow</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#direct-run-from-hugging-face">7.28.1. Direct run from Hugging Face</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#full-filename-as-tag">7.28.2. Full filename as tag</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#manual-gguf-import">7.28.3. Manual GGUF import</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sharded-gguf-warning">7.28.4. Sharded GGUF warning</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cloud-models">7.24. Cloud Models</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#web-search">7.25. Web Search</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#open-webui-and-anythingllm">7.26. Open WebUI and AnythingLLM</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#production-pattern-for-django-fastapi">7.27. Production Pattern for Django / FastAPI</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#minimal-backend-architecture">7.27.1. Minimal backend architecture</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#generic-service-wrapper">7.27.2. Generic service wrapper</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#recommended-environment-variables">7.27.3. Recommended environment variables</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cloud-models">7.29. Cloud Models</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#web-search">7.30. Web Search</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#open-webui-and-anythingllm">7.31. Open WebUI and AnythingLLM</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#production-pattern-for-django-fastapi">7.32. Production Pattern for Django / FastAPI</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#minimal-backend-architecture">7.32.1. Minimal backend architecture</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#generic-service-wrapper">7.32.2. Generic service wrapper</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#recommended-environment-variables">7.32.3. Recommended environment variables</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#performance-tuning-checklist">7.28. Performance Tuning Checklist</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#if-responses-are-slow">7.28.1. If responses are slow</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#if-you-run-out-of-memory">7.28.2. If you run out of memory</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#if-api-connection-fails">7.28.3. If API connection fails</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#performance-tuning-checklist">7.33. Performance Tuning Checklist</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#if-responses-are-slow">7.33.1. If responses are slow</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#if-you-run-out-of-memory">7.33.2. If you run out of memory</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#if-api-connection-fails">7.33.3. If API connection fails</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#security-and-privacy-rules">7.29. Security and Privacy Rules</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#good-rules">7.29.1. Good rules</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bad-patterns">7.29.2. Bad patterns</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#security-and-privacy-rules">7.34. Security and Privacy Rules</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#good-rules">7.34.1. Good rules</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bad-patterns">7.34.2. Bad patterns</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#troubleshooting-table">7.30. Troubleshooting Table</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#recommended-learning-path">7.31. Recommended Learning Path</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#phase-1-basic-control">7.31.1. Phase 1 — Basic control</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#phase-2-api-coding">7.31.2. Phase 2 — API coding</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#phase-3-customization">7.31.3. Phase 3 — Customization</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#phase-4-rag">7.31.4. Phase 4 — RAG</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#phase-5-agent-tools">7.31.5. Phase 5 — Agent/tools</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#phase-6-advanced-model-sourcing">7.31.6. Phase 6 — Advanced model sourcing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#troubleshooting-table">7.35. Troubleshooting Table</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#recommended-learning-path">7.36. Recommended Learning Path</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#phase-1-basic-control">7.36.1. Phase 1 — Basic control</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#phase-2-api-coding">7.36.2. Phase 2 — API coding</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#phase-3-customization">7.36.3. Phase 3 — Customization</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#phase-4-rag">7.36.4. Phase 4 — RAG</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#phase-5-agent-tools">7.36.5. Phase 5 — Agent/tools</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#phase-6-advanced-model-sourcing">7.36.6. Phase 6 — Advanced model sourcing</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#end-to-end-workflow-for-a-local-ai-stack">7.32. End-to-End Workflow for a Local AI Stack</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mini-project-generic-local-documentation-assistant">7.33. Mini Project — Generic Local Documentation Assistant</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#goal">7.33.1. Goal</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#suggested-stack">7.33.2. Suggested stack</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-system-prompt">7.33.3. Example system prompt</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#end-to-end-workflow-for-a-local-ai-stack">7.37. End-to-End Workflow for a Local AI Stack</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mini-project-generic-local-documentation-assistant">7.38. Mini Project — Generic Local Documentation Assistant</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#goal">7.38.1. Goal</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#suggested-stack">7.38.2. Suggested stack</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-system-prompt">7.38.3. Example system prompt</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#knowledge-quiz">7.34. Knowledge Quiz</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#q1-what-command-shows-downloaded-local-models">7.34.1. Q1. What command shows downloaded local models?</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#q2-what-command-shows-currently-running-models-and-context-length">7.34.2. Q2. What command shows currently running models and context length?</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#q3-what-does-glm-5-2-cloud-mean">7.34.3. Q3. What does <code class="docutils literal notranslate"><span class="pre">glm-5.2:cloud</span></code> mean?</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#q4-what-is-the-easiest-way-to-reuse-existing-openai-sdk-code-with-ollama">7.34.4. Q4. What is the easiest way to reuse existing OpenAI SDK code with Ollama?</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#q5-what-is-the-basic-rag-pipeline">7.34.5. Q5. What is the basic RAG pipeline?</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#q6-why-should-you-not-mix-embedding-models-in-one-vector-index">7.34.6. Q6. Why should you not mix embedding models in one vector index?</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#q7-what-is-a-modelfile">7.34.7. Q7. What is a Modelfile?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#knowledge-quiz">7.39. Knowledge Quiz</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#q1-what-command-shows-downloaded-local-models">7.39.1. Q1. What command shows downloaded local models?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#q2-what-command-shows-currently-running-models-and-context-length">7.39.2. Q2. What command shows currently running models and context length?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#q3-what-does-glm-5-2-cloud-mean">7.39.3. Q3. What does <code class="docutils literal notranslate"><span class="pre">glm-5.2:cloud</span></code> mean?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#q4-what-is-the-easiest-way-to-reuse-existing-openai-sdk-code-with-ollama">7.39.4. Q4. What is the easiest way to reuse existing OpenAI SDK code with Ollama?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#q5-what-is-the-basic-rag-pipeline">7.39.5. Q5. What is the basic RAG pipeline?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#q6-why-should-you-not-mix-embedding-models-in-one-vector-index">7.39.6. Q6. Why should you not mix embedding models in one vector index?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#q7-what-is-a-modelfile">7.39.7. Q7. What is a Modelfile?</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#appendix-a-cross-platform-examples-macos-windows-and-linux">7.35. Appendix A — Cross-Platform Examples: macOS, Windows, and Linux</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-1-health-check-and-model-list">7.35.1. A.1 Health check and model list</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-2-run-the-same-model-on-each-os">7.35.2. A.2 Run the same model on each OS</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-3-python-virtual-environment-setup">7.35.3. A.3 Python virtual environment setup</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-4-run-toy-scripts">7.35.4. A.4 Run toy scripts</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-5-environment-variables">7.35.5. A.5 Environment variables</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-6-api-calls-curl-vs-powershell">7.35.6. A.6 API calls: cURL vs PowerShell</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-7-check-which-process-owns-port-11434">7.35.7. A.7 Check which process owns port 11434</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-8-import-a-local-gguf-file">7.35.8. A.8 Import a local GGUF file</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-9-open-webui-with-docker">7.35.9. A.9 Open WebUI with Docker</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-10-common-path-translations">7.35.10. A.10 Common path translations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#appendix-a-cross-platform-examples-macos-windows-and-linux">7.40. Appendix A — Cross-Platform Examples: macOS, Windows, and Linux</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-1-health-check-and-model-list">7.40.1. A.1 Health check and model list</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-2-run-the-same-model-on-each-os">7.40.2. A.2 Run the same model on each OS</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-3-python-virtual-environment-setup">7.40.3. A.3 Python virtual environment setup</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-4-run-toy-scripts">7.40.4. A.4 Run toy scripts</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-5-environment-variables">7.40.5. A.5 Environment variables</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-6-api-calls-curl-vs-powershell">7.40.6. A.6 API calls: cURL vs PowerShell</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-7-check-which-process-owns-port-11434">7.40.7. A.7 Check which process owns port 11434</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-8-import-a-local-gguf-file">7.40.8. A.8 Import a local GGUF file</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-9-open-webui-with-docker">7.40.9. A.9 Open WebUI with Docker</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-10-common-path-translations">7.40.10. A.10 Common path translations</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#final-practical-advice">7.36. Final Practical Advice</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reference-links-for-further-reading">7.37. Reference Links for Further Reading</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ollama-official">7.37.1. Ollama official</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hugging-face-gguf">7.37.2. Hugging Face / GGUF</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ui-and-local-ai-apps">7.37.3. UI and local AI apps</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rag-agents">7.37.4. RAG / agents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#final-practical-advice">7.41. Final Practical Advice</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reference-links-for-further-reading">7.42. Reference Links for Further Reading</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ollama-official">7.42.1. Ollama official</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hugging-face-gguf">7.42.2. Hugging Face / GGUF</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ui-and-local-ai-apps">7.42.3. UI and local AI apps</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rag-agents">7.42.4. RAG / agents</a></li>
 </ul>
 </li>
 </ul>
@@ -3612,7 +3655,7 @@ Your UI gives it a useful product experience.
   <div class="footer-item">
     
 <p class="component-author">
-By Yalin Yang
+By AI Workshop Contributors
 </p>
 
   </div>

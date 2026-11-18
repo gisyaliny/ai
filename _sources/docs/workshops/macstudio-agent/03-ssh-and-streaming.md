@@ -242,11 +242,11 @@ const { sshRequest, completion } = require('../src/transport');
 async function main() {
   if (!process.env.MACSTUDIO_API_KEY) throw new Error('Set MACSTUDIO_API_KEY first');
   const options = {
-    host: 'macstudio', identity: '~/.ssh/id_ed25519',
+    host: 'macstudio', identity: '~/.ssh/macstudio_course',
     python: '/usr/bin/python3', mode: 'direct', timeout: 120,
     direct: {
       baseUrl: 'http://127.0.0.1:11436/v1',
-      model: 'qwen3.8-flash-next-q6',
+      model: 'YOUR_MODEL_ID',
       apiKey: process.env.MACSTUDIO_API_KEY
     }
   };

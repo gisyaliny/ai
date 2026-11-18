@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>2. Complex Tasks &amp; Terminal Control &#8212; AI Tools Learning Handbook</title>
+    <title>2. 02 - Refactor Without Losing Behavior Workshop &#8212; AI Tools Learning Handbook</title>
   
   
   
@@ -34,7 +34,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
     <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=6a604523" />
   
@@ -60,14 +60,378 @@
     <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs"></script>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk@0.2.0/dist/mermaid-layout-elk.esm.min.mjs"></script>
+    <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs";import elkLayouts from "https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk@0.2.0/dist/mermaid-layout-elk.esm.min.mjs";mermaid.registerLayoutLoaders(elkLayouts);mermaid.initialize({startOnLoad:false});</script>
+    <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+    <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs";
+
+const defaultStyle = document.createElement('style');
+defaultStyle.textContent = `pre.mermaid {
+    /* Same as .mermaid-container > pre */
+    display: block;
+    width: 100%;
+}
+
+pre.mermaid > svg {
+    /* Same as .mermaid-container > pre > svg */
+    height: 500px;
+    width: 100%;
+    max-width: 100% !important;
+}
+`;
+document.head.appendChild(defaultStyle);
+
+const fullscreenStyle = document.createElement('style');
+fullscreenStyle.textContent = `.mermaid-container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+.mermaid-container > pre {
+    display: block;
+    width: 100%;
+}
+
+.mermaid-container > pre > svg {
+    height: 500px;
+    width: 100%;
+    max-width: 100% !important;
+}
+
+.mermaid-fullscreen-btn {
+    width: 28px;
+    height: 28px;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    font-size: 14px;
+    line-height: 1;
+    padding: 0;
+    color: #333;
+}
+
+.mermaid-fullscreen-btn:hover {
+    opacity: 100% !important;
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+    transform: scale(1.1);
+}
+
+.mermaid-fullscreen-btn.dark-theme {
+    background: rgba(50, 50, 50, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #e0e0e0;
+}
+
+.mermaid-fullscreen-btn.dark-theme:hover {
+    background: rgba(60, 60, 60, 1);
+    box-shadow: 0 3px 10px rgba(255, 255, 255, 0.2);
+}
+
+.mermaid-fullscreen-modal {
+    display: none;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 95vw;
+    height: 100vh;
+    background: rgba(255, 255, 255, 0.98);
+    z-index: 9999;
+    padding: 20px;
+    overflow: auto;
+}
+
+.mermaid-fullscreen-modal.dark-theme {
+    background: rgba(0, 0, 0, 0.98);
+}
+
+.mermaid-fullscreen-modal.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mermaid-container-fullscreen {
+    position: relative;
+    width: 95vw;
+    height: 90vh;
+    max-width: 95vw;
+    max-height: 90vh;
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    overflow: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mermaid-container-fullscreen.dark-theme {
+    background: #1a1a1a;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+}
+
+.mermaid-container-fullscreen pre.mermaid {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mermaid-container-fullscreen .mermaid svg {
+    height: 100% !important;
+    width: 100% !important;
+    cursor: grab;
+}
+
+.mermaid-fullscreen-close {
+    position: fixed !important;
+    top: 20px !important;
+    right: 20px !important;
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    transition: all 0.2s;
+    font-size: 24px;
+    line-height: 1;
+    color: #333;
+}
+
+.mermaid-fullscreen-close:hover {
+    background: white;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+    transform: scale(1.1);
+}
+
+.mermaid-fullscreen-close.dark-theme {
+    background: rgba(50, 50, 50, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #e0e0e0;
+}
+
+.mermaid-fullscreen-close.dark-theme:hover {
+    background: rgba(60, 60, 60, 1);
+    box-shadow: 0 6px 16px rgba(255, 255, 255, 0.2);
+}
+
+.mermaid-fullscreen-modal .mermaid-fullscreen-btn {
+    display: none !important;
+}`;
+document.head.appendChild(fullscreenStyle);
+
+// Detect if page has dark background
+const isDarkTheme = () => {
+    const bgColor = window.getComputedStyle(document.body).backgroundColor;
+    const match = bgColor.match(/rgb\((\d+),\s*(\d+),\s*(\d+)/);
+    if (match) {
+        const r = parseInt(match[1]);
+        const g = parseInt(match[2]);
+        const b = parseInt(match[3]);
+        const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+        return brightness < 128;
+    }
+    return false;
+};
+
+const load = async () => {
+    await mermaid.run();
+
+    const all_mermaids = document.querySelectorAll(".mermaid");
+    const mermaids_processed = document.querySelectorAll(".mermaid[data-processed='true']");
+
+    if ("False" === "True") {
+        const mermaids_to_add_zoom = -1 === -1 ? all_mermaids.length : -1;
+        if(mermaids_to_add_zoom > 0) {
+            var svgs = d3.selectAll("");
+            if(all_mermaids.length !== mermaids_processed.length) {
+                setTimeout(load, 200);
+                return;
+            } else if(svgs.size() !== mermaids_to_add_zoom) {
+                setTimeout(load, 200);
+                return;
+            } else {
+                svgs.each(function() {
+                    var svg = d3.select(this);
+                    svg.html("<g class='wrapper'>" + svg.html() + "</g>");
+                    var inner = svg.select("g");
+                    var zoom = d3.zoom().on("zoom", function(event) {
+                        inner.attr("transform", event.transform);
+                    });
+                    svg.call(zoom);
+                });
+            }
+        }
+    } else if(all_mermaids.length !== mermaids_processed.length) {
+        // Wait for mermaid to process all diagrams
+        setTimeout(load, 200);
+        return;
+    }
+
+    const darkTheme = isDarkTheme();
+
+    // Stop here if not adding fullscreen capability
+    if ("True" !== "True") return;
+
+    const modal = document.createElement('div');
+    modal.className = 'mermaid-fullscreen-modal' + (darkTheme ? ' dark-theme' : '');
+    modal.setAttribute('role', 'dialog');
+    modal.setAttribute('aria-modal', 'true');
+    modal.setAttribute('aria-label', 'Fullscreen diagram viewer');
+    modal.innerHTML = `
+        <button class="mermaid-fullscreen-close${darkTheme ? ' dark-theme' : ''}" aria-label="Close fullscreen">✕</button>
+        <div class="mermaid-container-fullscreen${darkTheme ? ' dark-theme' : ''}"></div>
+    `;
+    document.body.appendChild(modal);
+
+    const modalContent = modal.querySelector('.mermaid-container-fullscreen');
+    const closeBtn = modal.querySelector('.mermaid-fullscreen-close');
+
+    let previousScrollOffset = [window.scrollX, window.scrollY];
+
+    const closeModal = () => {
+        modal.classList.remove('active');
+        modalContent.innerHTML = '';
+        document.body.style.overflow = ''
+        window.scrollTo({left: previousScrollOffset[0], top: previousScrollOffset[1], behavior: 'instant'});
+    };
+
+    closeBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+    });
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal.classList.contains('active')) {
+            closeModal();
+        }
+    });
+
+    const allButtons = [];
+
+    document.querySelectorAll('.mermaid').forEach((mermaidDiv) => {
+        if (mermaidDiv.parentNode.classList.contains('mermaid-container') ||
+            mermaidDiv.closest('.mermaid-fullscreen-modal')) {
+            return;
+        }
+
+        const container = document.createElement('div');
+        container.className = 'mermaid-container';
+        mermaidDiv.parentNode.insertBefore(container, mermaidDiv);
+        container.appendChild(mermaidDiv);
+
+        const fullscreenBtn = document.createElement('button');
+        fullscreenBtn.className = 'mermaid-fullscreen-btn' + (darkTheme ? ' dark-theme' : '');
+        fullscreenBtn.setAttribute('aria-label', 'View diagram in fullscreen');
+        fullscreenBtn.textContent = '⛶';
+        fullscreenBtn.style.opacity = '50%';
+
+        // Calculate dynamic position based on diagram's margin and padding
+        const diagramStyle = window.getComputedStyle(mermaidDiv);
+        const marginTop = parseFloat(diagramStyle.marginTop) || 0;
+        const marginRight = parseFloat(diagramStyle.marginRight) || 0;
+        const paddingTop = parseFloat(diagramStyle.paddingTop) || 0;
+        const paddingRight = parseFloat(diagramStyle.paddingRight) || 0;
+        fullscreenBtn.style.top = `${marginTop + paddingTop + 4}px`;
+        fullscreenBtn.style.right = `${marginRight + paddingRight + 4}px`;
+
+        fullscreenBtn.addEventListener('click', () => {
+            previousScrollOffset = [window.scroll, window.scrollY];
+            const clone = mermaidDiv.cloneNode(true);
+            modalContent.innerHTML = '';
+            modalContent.appendChild(clone);
+
+            const svg = clone.querySelector('svg');
+            if (svg) {
+                svg.removeAttribute('width');
+                svg.removeAttribute('height');
+                svg.style.width = '100%';
+                svg.style.height = 'auto';
+                svg.style.maxWidth = '100%';
+                svg.style.sdisplay = 'block';
+
+                if ("False" === "True") {
+                    setTimeout(() => {
+                        const g = svg.querySelector('g');
+                        if (g) {
+                            var svgD3 = d3.select(svg);
+                            svgD3.html("<g class='wrapper'>" + svgD3.html() + "</g>");
+                            var inner = svgD3.select("g");
+                            var zoom = d3.zoom().on("zoom", function(event) {
+                                inner.attr("transform", event.transform);
+                            });
+                            svgD3.call(zoom);
+                        }
+                    }, 100);
+                }
+            }
+
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+
+        container.appendChild(fullscreenBtn);
+        allButtons.push(fullscreenBtn);
+    });
+
+    // Update theme classes when theme changes
+    const updateTheme = () => {
+        const dark = isDarkTheme();
+        allButtons.forEach(btn => {
+            if (dark) {
+                btn.classList.add('dark-theme');
+            } else {
+                btn.classList.remove('dark-theme');
+            }
+        });
+        if (dark) {
+            modal.classList.add('dark-theme');
+            modalContent.classList.add('dark-theme');
+            closeBtn.classList.add('dark-theme');
+        } else {
+            modal.classList.remove('dark-theme');
+            modalContent.classList.remove('dark-theme');
+            closeBtn.classList.remove('dark-theme');
+        }
+    };
+
+    // Watch for theme changes
+    const observer = new MutationObserver(updateTheme);
+    observer.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ['class', 'style', 'data-theme']
+    });
+    observer.observe(document.body, {
+        attributes: true,
+        attributeFilter: ['class', 'style']
+    });
+};
+
+window.addEventListener("load", load);
+</script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'docs/vibe-coding/02-complex-tasks-and-terminal';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
-    <link rel="canonical" href="https://gisyaliny.github.io/AI/docs/vibe-coding/02-complex-tasks-and-terminal.html" />
-    <link rel="icon" href="../../_static/fav.ico"/>
+    <link rel="canonical" href="https://gisyaliny.github.io/ai/docs/vibe-coding/02-complex-tasks-and-terminal.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="3. Multimodal &amp; Context Management" href="03-multimodal-and-context.html" />
-    <link rel="prev" title="1. Environment Setup &amp; Basic Interaction (Environment Setup &amp; Basic Interaction)" href="01-environment-and-basics.html" />
+    <link rel="next" title="3. 03 - Reproduce a Design and Preserve Context Workshop" href="03-multimodal-and-context.html" />
+    <link rel="prev" title="1. 01 - Build and Test a Small App Workshop" href="01-environment-and-basics.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
@@ -194,14 +558,8 @@
   
   
   
-    
-    
-      
-    
-    
-    <img src="../../_static/logo.png" class="logo__image only-light" alt="AI Tools Learning Handbook - Home"/>
-    <img src="../../_static/logo.png" class="logo__image only-dark pst-js-only" alt="AI Tools Learning Handbook - Home"/>
   
+    <p class="title logo__title">AI Tools Learning Handbook</p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -213,30 +571,32 @@
 </button></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
-        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Vibe Coding</span></p>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Vibe Coding Workshops</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="01-environment-and-basics.html">1. Environment Setup &amp; Basic Interaction (Environment Setup &amp; Basic Interaction)</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">2. Complex Tasks &amp; Terminal Control</a></li>
-<li class="toctree-l1"><a class="reference internal" href="03-multimodal-and-context.html">3. Multimodal &amp; Context Management</a></li>
-<li class="toctree-l1"><a class="reference internal" href="04-advanced-features.html">4. Advanced Features &amp; Customization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="01-environment-and-basics.html">1. 01 - Build and Test a Small App Workshop</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">2. 02 - Refactor Without Losing Behavior Workshop</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03-multimodal-and-context.html">3. 03 - Reproduce a Design and Preserve Context Workshop</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04-advanced-features.html">4. 04 - Create a Reusable Review Skill Workshop</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Research</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Research Workshop</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../research/01-ai-prompts-for-research.html">5. AI Prompts &amp; Skills for Academic Research</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../research/01-ai-prompts-for-research.html">5. 05 - Audit Claims Before Adding Citations Workshop</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Local LLM</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Local LLM Workshops</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../local-llm/01-deploy-local-llm.html">6. Deploy Open-Source LLMs Locally with Ollama &amp; AnythingLLM</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../local-llm/02-mastering-ollama.html">7. — Mastering Ollama: Local Models, APIs, RAG, Tools, and Production Patterns</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../local-llm/01-deploy-local-llm.html">6. 06 - Run a Local Model and Verify the Endpoint Workshop</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../local-llm/02-mastering-ollama.html">7. 07 - From Local Chat to a Grounded API Response Workshop</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">RAG</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">RAG Workshops</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../rag/01-what-is-rag.html">8. What is RAG? (Retrieval-Augmented Generation)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../rag/02-implementing-rag.html">9. Implementing RAG with Python</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../rag/03-graph-rag.html">10. Graph RAG: Knowledge Graphs Meet Retrieval</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rag/01-what-is-rag.html">8. 08 - Observe Retrieval Before Generation Workshop</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rag/02-implementing-rag.html">9. 09 - Build a Small Grounded Question-Answering Pipeline Workshop</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rag/03-graph-rag.html">10. 10 - Retrieve a Two-Hop Evidence Path Workshop</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Workshops</span></p>
 <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../workshops/index.html">AI Hands-on Workshops</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../workshops/invitation.html">Build Your Own Coding Agent — Workshop Invitation</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../workshops/macstudio-agent/index.html">00 - Build a Mac Studio Coding Agent for VS Code</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../workshops/macstudio-agent/01-architecture-and-connection.html">01 - Architecture and Connection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../workshops/macstudio-agent/02-first-extension.html">02 - Your First VS Code Extension</a></li>
@@ -308,7 +668,7 @@
       
       
       
-      <li><a href="https://github.com/gisyaliny/AI" target="_blank"
+      <li><a href="https://github.com/gisyaliny/ai" target="_blank"
    class="btn btn-sm btn-source-repository-button dropdown-item"
    title="Source repository"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -325,7 +685,7 @@
       
       
       
-      <li><a href="https://github.com/gisyaliny/AI/edit/main/docs/vibe-coding/02-complex-tasks-and-terminal.md" target="_blank"
+      <li><a href="https://github.com/gisyaliny/ai/edit/main/docs/vibe-coding/02-complex-tasks-and-terminal.md" target="_blank"
    class="btn btn-sm btn-source-edit-button dropdown-item"
    title="Suggest edit"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -342,7 +702,7 @@
       
       
       
-      <li><a href="https://github.com/gisyaliny/AI/issues/new?title=Issue%20on%20page%20%2Fdocs/vibe-coding/02-complex-tasks-and-terminal.html&body=Your%20issue%20content%20here." target="_blank"
+      <li><a href="https://github.com/gisyaliny/ai/issues/new?title=Issue%20on%20page%20%2Fdocs/vibe-coding/02-complex-tasks-and-terminal.html&body=Your%20issue%20content%20here." target="_blank"
    class="btn btn-sm btn-source-issues-button dropdown-item"
    title="Open an issue"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -448,7 +808,7 @@
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Complex Tasks & Terminal Control</h1>
+    <h1>02 - Refactor Without Losing Behavior Workshop</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -458,10 +818,10 @@
             </div>
             <nav aria-label="Page">
                 <ul class="pst-show_toc_level nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#executing-terminal-commands-bash">2.1. Executing Terminal Commands (Bash)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#refactoring-projects-using-plan-mode">2.2. Refactoring Projects using Plan Mode</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#disabling-all-permission-checks-dangerously-skip-permissions">2.3. Disabling All Permission Checks (dangerously-skip-permissions)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#background-task-management">2.4. Background Task Management</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#workshop-preparation">2.1. Workshop preparation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hands-on-route">2.2. Hands-on route</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#acceptance-evidence">2.3. Acceptance evidence</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#troubleshooting-and-cleanup">2.4. Troubleshooting and cleanup</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#read-more">2.5. Read More</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#knowledge-quiz">2.6. Knowledge Quiz</a></li>
 </ul>
@@ -475,73 +835,61 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="complex-tasks-terminal-control">
-<h1><span class="section-number">2. </span>Complex Tasks &amp; Terminal Control<a class="headerlink" href="#complex-tasks-terminal-control" title="Link to this heading">#</a></h1>
-<p>After mastering basic interactions, we will learn how to let Claude Code execute terminal commands, manage long-running background tasks, and explore more complex architectural refactoring.</p>
-<section id="executing-terminal-commands-bash">
-<h2><span class="section-number">2.1. </span>Executing Terminal Commands (Bash)<a class="headerlink" href="#executing-terminal-commands-bash" title="Link to this heading">#</a></h2>
-<p>Besides conversing with the model, you can directly execute Bash commands within the Claude Code interface.</p>
-<ul class="simple">
-<li><p>Type <code class="docutils literal notranslate"><span class="pre">!</span></code> to enter Bash mode. Start with an exclamation mark followed by the terminal command, for instance:
-<code class="docutils literal notranslate"><span class="pre">!</span> <span class="pre">open</span> <span class="pre">index.html</span></code></p></li>
-<li><p>Although you can have the large language model write all the code for you, directly calling system commands is a highly efficient aspect of testing and previewing.</p></li>
-</ul>
+  <section class="tex2jax_ignore mathjax_ignore" id="refactor-without-losing-behavior-workshop">
+<h1><span class="section-number">2. </span>02 - Refactor Without Losing Behavior Workshop<a class="headerlink" href="#refactor-without-losing-behavior-workshop" title="Link to this heading">#</a></h1>
+<p><strong>Time:</strong> 50 minutes · <strong>Audience:</strong> beginners · <strong>Updated:</strong> November 18, 2026.</p>
+<section id="workshop-preparation">
+<h2><span class="section-number">2.1. </span>Workshop preparation<a class="headerlink" href="#workshop-preparation" title="Link to this heading">#</a></h2>
+<p>The completed to-do app from the previous workshop; Git; Node only if you choose the optional Vite extension.</p>
+<p>Download the <a class="reference download internal" download="" href="../../_downloads/0b5c1fa20b29575096ee36a77e8402ae/workshop-kit.zip"><code class="xref download docutils literal notranslate"><span class="pre">shared</span> <span class="pre">workshop</span> <span class="pre">kit</span></code></a> and extract it into a disposable folder. <a class="reference internal" href="../workshops/index.html"><span class="std std-doc">Browse all workshops</span></a>. Code blocks run in your local terminal, not on this web page. Record your tool versions and use synthetic inputs.</p>
 </section>
-<section id="refactoring-projects-using-plan-mode">
-<h2><span class="section-number">2.2. </span>Refactoring Projects using Plan Mode<a class="headerlink" href="#refactoring-projects-using-plan-mode" title="Link to this heading">#</a></h2>
-<p>When we need to refactor a single HTML file project into a modern <code class="docutils literal notranslate"><span class="pre">React</span> <span class="pre">+</span> <span class="pre">TypeScript</span> <span class="pre">+</span> <span class="pre">Vite</span></code> architecture, letting the model modify things directly can get chaotic. This is where <code class="docutils literal notranslate"><span class="pre">Plan</span> <span class="pre">Mode</span></code> comes in handy:</p>
+<section id="hands-on-route">
+<h2><span class="section-number">2.2. </span>Hands-on route<a class="headerlink" href="#hands-on-route" title="Link to this heading">#</a></h2>
 <ol class="arabic simple">
-<li><p>Press <code class="docutils literal notranslate"><span class="pre">Shift</span> <span class="pre">+</span> <span class="pre">Tab</span></code> to toggle to <strong>Plan Mode</strong>.</p></li>
-<li><p>Type your complete refactor prompt. If it involves multiple lines, press <code class="docutils literal notranslate"><span class="pre">Shift</span> <span class="pre">+</span> <span class="pre">Enter</span></code> to start a new line. Alternatively, press <code class="docutils literal notranslate"><span class="pre">Ctrl</span> <span class="pre">+</span> <span class="pre">G</span></code> to quickly edit long text prompts in a pop-up VSCode window.
-<em>Example: <code class="docutils literal notranslate"><span class="pre">Refactor</span> <span class="pre">the</span> <span class="pre">current</span> <span class="pre">ToDo</span> <span class="pre">application</span> <span class="pre">to</span> <span class="pre">use</span> <span class="pre">a</span> <span class="pre">React+TypeScript+Vite</span> <span class="pre">project</span> <span class="pre">structure.</span> <span class="pre">Retain</span> <span class="pre">all</span> <span class="pre">functionality,</span> <span class="pre">including</span> <span class="pre">the</span> <span class="pre">high,</span> <span class="pre">medium,</span> <span class="pre">and</span> <span class="pre">low</span> <span class="pre">priority</span> <span class="pre">markers.</span></code></em></p></li>
-<li><p>Claude Code will output a detailed plan including the directory structure and a modification checklist. If you are unsatisfied, you can continue modifying it; if satisfied, you can choose to execute the plan and enter the Auto-Accept mode.</p></li>
+<li><p>Run the previous acceptance cases and record the baseline. Commit the working files with <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">add</span> <span class="pre">index.html</span></code> and <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">commit</span> <span class="pre">-m</span> <span class="pre">&quot;Working</span> <span class="pre">baseline&quot;</span></code> after reviewing their contents.</p></li>
+<li><p>Ask for a read-only plan to split HTML, CSS and JavaScript into separate files. Require the same behavior and no new dependencies.</p></li>
+<li><p>Review the plan, then request implementation. Inspect <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">diff</span></code> before accepting the result.</p></li>
+<li><p>Serve the folder with <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">http.server</span> <span class="pre">8000</span> <span class="pre">--bind</span> <span class="pre">127.0.0.1</span></code> in a separate terminal. Visit <code class="docutils literal notranslate"><span class="pre">http://127.0.0.1:8000</span></code>; run the same acceptance cases.</p></li>
+<li><p>Stop the server with Ctrl+C. Record a regression if any previously passing behavior fails. Ask for a narrow repair and rerun the case.</p></li>
 </ol>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Read the app. Propose a behavior-preserving split into index.html, styles.css,
+and app.js. Do not edit yet. List files, risks, and the regression checks.
+</pre></div>
+</div>
+<p>Optional: migrate to Vite only after the dependency-free refactor passes. Consult Vite’s current runtime requirements instead of assuming every Node release works.</p>
 </section>
-<section id="disabling-all-permission-checks-dangerously-skip-permissions">
-<h2><span class="section-number">2.3. </span>Disabling All Permission Checks (dangerously-skip-permissions)<a class="headerlink" href="#disabling-all-permission-checks-dangerously-skip-permissions" title="Link to this heading">#</a></h2>
-<p>Even in Auto mode, Claude Code will still ask your permission when executing <strong>terminal commands</strong> like <code class="docutils literal notranslate"><span class="pre">npm</span> <span class="pre">install</span></code>. If you want to delegate complete authority:</p>
-<ul class="simple">
-<li><p>Add a parameter when starting: <code class="docutils literal notranslate"><span class="pre">claude</span> <span class="pre">dangerously-skip-permissions</span></code></p></li>
-<li><p>This will enter the <strong>Bypass Permissions</strong> mode. It will no longer ask whether it’s installing dependencies, creating directories, or deleting files.
-<em>⚠️ Warning: This grants the AI the exact same system-level terminal execution permissions as you have. It is a double-edged sword offering high efficiency but high risk. Use with extreme caution!</em></p></li>
-</ul>
-<blockquote>
-<div><p><strong>Image Suggestion (Nanobanana Prompt)</strong>: A hyper-realistic, dramatic shot of a glowing red futuristic terminal screen displaying a massive hazard warning sign with the text “Bypass Permissions Mode Active” in bold, dripping digital font. The console interface is surrounded by complex holographic code streams floating in the air. The physical terminal has metallic edges, yellow caution tape detailing around the screen, set in a dark, atmospheric sci-fi server room with faint neon red and orange lighting. 8k resolution, cinematic composition.</p>
+<section id="acceptance-evidence">
+<h2><span class="section-number">2.3. </span>Acceptance evidence<a class="headerlink" href="#acceptance-evidence" title="Link to this heading">#</a></h2>
+<p>A before/after file map, reviewed diff, passing regression table, and stopped server.</p>
+<p>Create <code class="docutils literal notranslate"><span class="pre">evidence.md</span></code> with your environment, commands, observed outputs, failures and fixes. Label anything you did not run. Do not include secrets, screenshots of account pages, or private paths.</p>
+</section>
+<section id="troubleshooting-and-cleanup">
+<h2><span class="section-number">2.4. </span>Troubleshooting and cleanup<a class="headerlink" href="#troubleshooting-and-cleanup" title="Link to this heading">#</a></h2>
+<p>Port occupied: choose 8001. Styles missing: check relative link paths. Do not use permission bypass to solve a missing dependency. Stop any demo server when finished; retain only the small fixture and evidence needed to reproduce your result.</p>
+<pre  class="mermaid">
+        flowchart LR
+    A[&quot;Prepare synthetic fixture&quot;] --&gt; B[&quot;Run guided task&quot;]
+    B --&gt; C[&quot;Check observed result&quot;]
+    C --&gt; D[&quot;Record evidence and limitations&quot;]
+    </pre><blockquote>
+<div><p><strong>Image Suggestion (Nanobanana Prompt)</strong>: A clean technical workshop illustration titled “Refactor Without Losing Behavior”, with a neutral editor window, a small synthetic fixture, and an evidence checklist. Use legible navy and teal typography on a light background, even lighting, and a visible “Concept illustration” label. Show no account identity, private paths, or simulated success presented as a screenshot.</p>
 </div></blockquote>
 </section>
-<section id="background-task-management">
-<h2><span class="section-number">2.4. </span>Background Task Management<a class="headerlink" href="#background-task-management" title="Link to this heading">#</a></h2>
-<p>When you execute a command through Claude Code that blocks the terminal, such as a local server <code class="docutils literal notranslate"><span class="pre">npm</span> <span class="pre">run</span> <span class="pre">dev</span></code>, the model can no longer respond to your text inputs.</p>
-<ul class="simple">
-<li><p><strong>Suspend to Background</strong>: Press <code class="docutils literal notranslate"><span class="pre">Ctrl</span> <span class="pre">+</span> <span class="pre">B</span></code> to push the currently running service to the background.</p></li>
-<li><p><strong>View Tasks</strong>: Type the <code class="docutils literal notranslate"><span class="pre">/tasks</span></code> command to view the list of commands currently running in the background.</p></li>
-<li><p><strong>Terminate Task</strong>: In the task list interface, select the target task and press the <code class="docutils literal notranslate"><span class="pre">K</span></code> key to kill the background service process.</p></li>
-</ul>
-<p><img alt="calude code tasks" src="../../_images/0021.png" /></p>
-</section>
-<hr class="docutils" />
 <section id="read-more">
 <h2><span class="section-number">2.5. </span>Read More<a class="headerlink" href="#read-more" title="Link to this heading">#</a></h2>
 <ul class="simple">
-<li><p><a class="reference external" href="https://docs.anthropic.com/en/docs/claude-code/cli-reference">Claude Code CLI Reference</a> — Full list of CLI commands including <code class="docutils literal notranslate"><span class="pre">dangerously-skip-permissions</span></code>.</p></li>
-<li><p><a class="reference external" href="https://docs.anthropic.com/en/docs/claude-code/security">Claude Code Permissions and Security</a> — Understanding permission models and best practices.</p></li>
-<li><p><a class="reference external" href="https://vite.dev/guide/">Vite Getting Started</a> — Official Vite documentation for modern frontend tooling.</p></li>
-<li><p><a class="reference external" href="https://react-typescript-cheatsheet.netlify.app/">React + TypeScript Cheatsheet</a> — Comprehensive patterns for React with TypeScript.</p></li>
+<li><p><a class="reference external" href="https://code.claude.com/docs/en/quickstart">Claude Code quickstart</a> — Installation and account setup.</p></li>
+<li><p><a class="reference external" href="https://code.claude.com/docs/en/skills">Skills</a> — Supported skill paths and invocation.</p></li>
+<li><p><a class="reference external" href="https://code.claude.com/docs/en/permissions">Permissions</a> — Review the installed client’s permission behavior.</p></li>
+<li><p><a class="reference external" href="https://code.claude.com/docs/en/mcp">MCP</a> — Configure a specific trusted server and inspect access.</p></li>
 </ul>
 </section>
-<hr class="docutils" />
 <section id="knowledge-quiz">
 <h2><span class="section-number">2.6. </span>Knowledge Quiz<a class="headerlink" href="#knowledge-quiz" title="Link to this heading">#</a></h2>
-<p><strong>Q1: How can you edit a long prompt in VSCode without exiting the Claude Code dialog box?</strong></p>
-<details>
-<summary>Answer</summary>
-Press `Ctrl + G`. This will pop up a VSCode tab. After editing, save and close it, and the content will be back-filled into Claude Code's input box.
-</details>
-<p><strong>Q2: How do you place a terminal-blocking local development server into the background?</strong></p>
-<details>
-<summary>Answer</summary>
-Press `Ctrl + B` to send it to the background. Subsequently, you can use `/tasks` to view it and press `K` to close it.
-</details>
+<p><strong>What evidence makes this lab complete?</strong></p>
+<details><summary>Answer</summary>The acceptance artifacts listed above and actual observed results. A model's claim of success is insufficient.</details>
+<p><strong>Does accepting file edits approve every terminal command or remote action?</strong></p>
+<details><summary>Answer</summary>No. Editing, shell execution and remote tool permissions are separate controls; inspect the actual scope before approving.</details>
 </section>
 </section>
 
@@ -581,7 +929,7 @@ Press `Ctrl + B` to send it to the background. Subsequently, you can use `/tasks
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title"><span class="section-number">1. </span>Environment Setup &amp; Basic Interaction (Environment Setup &amp; Basic Interaction)</p>
+        <p class="prev-next-title"><span class="section-number">1. </span>01 - Build and Test a Small App Workshop</p>
       </div>
     </a>
     <a class="right-next"
@@ -589,7 +937,7 @@ Press `Ctrl + B` to send it to the background. Subsequently, you can use `/tasks
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">3. </span>Multimodal &amp; Context Management</p>
+        <p class="prev-next-title"><span class="section-number">3. </span>03 - Reproduce a Design and Preserve Context Workshop</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -611,10 +959,10 @@ Press `Ctrl + B` to send it to the background. Subsequently, you can use `/tasks
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#executing-terminal-commands-bash">2.1. Executing Terminal Commands (Bash)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#refactoring-projects-using-plan-mode">2.2. Refactoring Projects using Plan Mode</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#disabling-all-permission-checks-dangerously-skip-permissions">2.3. Disabling All Permission Checks (dangerously-skip-permissions)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#background-task-management">2.4. Background Task Management</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#workshop-preparation">2.1. Workshop preparation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hands-on-route">2.2. Hands-on route</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#acceptance-evidence">2.3. Acceptance evidence</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#troubleshooting-and-cleanup">2.4. Troubleshooting and cleanup</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#read-more">2.5. Read More</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#knowledge-quiz">2.6. Knowledge Quiz</a></li>
 </ul>
@@ -631,7 +979,7 @@ Press `Ctrl + B` to send it to the background. Subsequently, you can use `/tasks
   <div class="footer-item">
     
 <p class="component-author">
-By Yalin Yang
+By AI Workshop Contributors
 </p>
 
   </div>

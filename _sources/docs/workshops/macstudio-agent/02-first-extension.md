@@ -32,7 +32,7 @@ If that folder already exists, choose a different empty name. This is the extens
   "name": "macstudio-assistant",
   "displayName": "Mac Studio Assistant",
   "version": "0.2.0",
-  "publisher": "yyang-local",
+  "publisher": "workshop-example",
   "engines": { "vscode": "^1.96.0" },
   "main": "./src/extension.js",
   "activationEvents": ["onCommand:macstudio.open"],
@@ -97,7 +97,7 @@ The manifest is the contract between your extension and VS Code. It declares com
   "displayName": "Mac Studio Assistant",
   "description": "A coding assistant powered by a remote Mac, with reviewed client-side edits.",
   "version": "0.2.0",
-  "publisher": "yyang-local",
+  "publisher": "workshop-example",
   "license": "MIT",
   "engines": {
     "vscode": "^1.96.0"
@@ -183,7 +183,7 @@ The manifest is the contract between your extension and VS Code. It declares com
         },
         "macstudio.sshIdentityFile": {
           "type": "string",
-          "default": "~/.ssh/id_ed25519",
+          "default": "~/.ssh/macstudio_course",
           "scope": "machine",
           "description": "Local private key path. Leave empty to use SSH config or agent."
         },
@@ -241,7 +241,7 @@ The manifest is the contract between your extension and VS Code. It declares com
         },
         "macstudio.modelId": {
           "type": "string",
-          "default": "qwen3.8-flash-next-q6",
+          "default": "YOUR_MODEL_ID",
           "scope": "machine",
           "description": "Explicit model ID for direct mode."
         }

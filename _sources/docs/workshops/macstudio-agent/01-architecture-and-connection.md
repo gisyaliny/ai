@@ -94,20 +94,20 @@ Edit the Windows SSH config at `$env:USERPROFILE\.ssh\config`. Replace the examp
 ```text
 Host macstudio
     HostName YOUR_MAC_HOSTNAME_OR_IP
-    User sshremote
-    IdentityFile ~/.ssh/id_ed25519
+    User YOUR_SSH_USER
+    IdentityFile ~/.ssh/macstudio_course
     ServerAliveInterval 30
     ServerAliveCountMax 3
 ```
 
-For a newly created course key, use `~/.ssh/macstudio_course` instead, both here and in the extension setting. Our working machine used `id_ed25519`; its other `macstudio` key was not accepted. Matching the actual authorized key matters more than its filename.
+For a newly created course key, use `~/.ssh/macstudio_course` instead, both here and in the extension setting. Use the key that you authorized for your own account. Matching the actual authorized key matters more than its filename.
 
 Connect interactively once, verify the host fingerprint against your Mac through a trusted channel, and accept it only if it matches. Then test the exact noninteractive behavior used by the extension:
 
 ```powershell
-ssh -i "$env:USERPROFILE\.ssh\id_ed25519" sshremote@macstudio
+ssh -i "$env:USERPROFILE\.ssh\macstudio_course" YOUR_SSH_USER@macstudio
 # After checking the host and logging in, type exit to return to Windows.
-ssh -T -o BatchMode=yes -o StrictHostKeyChecking=yes -i "$env:USERPROFILE\.ssh\id_ed25519" macstudio "whoami; /usr/bin/python3 --version"
+ssh -T -o BatchMode=yes -o StrictHostKeyChecking=yes -i "$env:USERPROFILE\.ssh\macstudio_course" macstudio "whoami; /usr/bin/python3 --version"
 ```
 
 **Checkpoint:** The second command prints the account and Python version without asking for a password. A successful interactive password login alone is insufficient. If Python has a different path, record that path for `macstudio.remotePython`.
@@ -118,7 +118,7 @@ The running service in our example advertises:
 
 ```text
 Base URL: http://127.0.0.1:11436/v1
-Model ID: qwen3.8-flash-next-q6
+Model ID: YOUR_MODEL_ID
 ```
 
 These are deployment-specific values. The model name does not independently prove its context size, vision support, or tool reliability. We will test the protocol behaviors we use. This course does not require a cloud API key.
@@ -131,7 +131,7 @@ import json
 import urllib.request
 
 base = "http://127.0.0.1:11436/v1"
-model = "qwen3.8-flash-next-q6"
+model = "YOUR_MODEL_ID"
 key = getpass.getpass("Local API key: ")
 
 def request(route, body=None):
