@@ -34,7 +34,7 @@
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
     <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=6a604523" />
   
@@ -65,8 +65,8 @@
     <link rel="canonical" href="https://gisyaliny.github.io/ai/docs/workshops/macstudio-agent/02-first-extension.html" />
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="03 - SSH Bridge and Streaming Responses" href="03-ssh-and-streaming.html" />
-    <link rel="prev" title="01 - Architecture and Connection" href="01-architecture-and-connection.html" />
+    <link rel="next" title="03 - Local/SSH Transport and Streaming" href="03-ssh-and-streaming.html" />
+    <link rel="prev" title="01 - Choose Your Platform and Connect a Model" href="01-architecture-and-connection.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
@@ -232,10 +232,10 @@
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../index.html">AI Hands-on Workshops</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../invitation.html">Build Your Own Coding Agent — Workshop Invitation</a></li>
-<li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">00 - Build a Mac Studio Coding Agent for VS Code</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="01-architecture-and-connection.html">01 - Architecture and Connection</a></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">00 - Build Your Own Coding Agent: Windows, Linux and macOS</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="01-architecture-and-connection.html">01 - Choose Your Platform and Connect a Model</a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">02 - Your First VS Code Extension</a></li>
-<li class="toctree-l2"><a class="reference internal" href="03-ssh-and-streaming.html">03 - SSH Bridge and Streaming Responses</a></li>
+<li class="toctree-l2"><a class="reference internal" href="03-ssh-and-streaming.html">03 - Local/SSH Transport and Streaming</a></li>
 <li class="toctree-l2"><a class="reference internal" href="04-project-tools.html">04 - Project Tools and the Agent Loop</a></li>
 <li class="toctree-l2"><a class="reference internal" href="05-controller-and-interface.html">05 - Controller and Sidebar Interface</a></li>
 <li class="toctree-l2"><a class="reference internal" href="06-capstone-and-tests.html">06 - Capstone: Fix, Review, and Verify</a></li>
@@ -472,7 +472,7 @@
                 <article class="bd-article">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="your-first-vs-code-extension">
-<span id="macstudio-lab-02"></span><h1>02 - Your First VS Code Extension<a class="headerlink" href="#your-first-vs-code-extension" title="Link to this heading">#</a></h1>
+<span id="localagent-lab-02"></span><h1>02 - Your First VS Code Extension<a class="headerlink" href="#your-first-vs-code-extension" title="Link to this heading">#</a></h1>
 <p><strong>Format:</strong> hands-on lab · <strong>Suggested time:</strong> 35 minutes · <strong>Original course lessons:</strong> 3–4.</p>
 <div class="tip admonition">
 <p class="admonition-title">Learning objectives</p>
@@ -483,25 +483,34 @@
 <h2>3. Build your first extension<a class="headerlink" href="#build-your-first-extension" title="Link to this heading">#</a></h2>
 <section id="create-a-clean-source-folder">
 <h3>3.1 Create a clean source folder<a class="headerlink" href="#create-a-clean-source-folder" title="Link to this heading">#</a></h3>
-<p><strong>Run on Windows:</strong></p>
-<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">New-Item</span> <span class="n">-ItemType</span> <span class="n">Directory</span> <span class="n">-Path</span> <span class="s2">"$env:USERPROFILE\Documents\macstudio-assistant-course"</span>
-<span class="nb">Set-Location</span> <span class="s2">"$env:USERPROFILE\Documents\macstudio-assistant-course"</span>
+<p><strong>Run on your client:</strong></p>
+<p><strong>Windows PowerShell:</strong></p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">New-Item</span> <span class="n">-ItemType</span> <span class="n">Directory</span> <span class="n">-Path</span> <span class="s2">"$env:USERPROFILE\Documents\localagent-assistant-course"</span>
+<span class="nb">Set-Location</span> <span class="s2">"$env:USERPROFILE\Documents\localagent-assistant-course"</span>
 <span class="nb">New-Item</span> <span class="n">-ItemType</span> <span class="n">Directory</span> <span class="n">-Path</span> <span class="n">src</span><span class="p">,</span><span class="n">media</span><span class="p">,</span><span class="n">test</span><span class="p">,.</span><span class="n">vscode</span>
 <span class="n">code</span> <span class="p">.</span>
 </pre></div>
 </div>
-<p>If that folder already exists, choose a different empty name. This is the extension source folder, not the project the agent will later edit.</p>
+<p><strong>Linux Bash / macOS zsh:</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mkdir<span class="w"> </span>-p<span class="w"> </span><span class="s2">"</span><span class="nv">$HOME</span><span class="s2">/Documents"</span>
+mkdir<span class="w"> </span><span class="s2">"</span><span class="nv">$HOME</span><span class="s2">/Documents/localagent-assistant-course"</span>
+<span class="nb">cd</span><span class="w"> </span><span class="s2">"</span><span class="nv">$HOME</span><span class="s2">/Documents/localagent-assistant-course"</span>
+mkdir<span class="w"> </span>src<span class="w"> </span>media<span class="w"> </span><span class="nb">test</span><span class="w"> </span>.vscode
+code<span class="w"> </span>.
+</pre></div>
+</div>
+<p>If that folder already exists, choose a different empty name. On Windows CMD you can use <code class="docutils literal notranslate"><span class="pre">mkdir</span></code>, <code class="docutils literal notranslate"><span class="pre">cd</span> <span class="pre">/d</span></code>, and <code class="docutils literal notranslate"><span class="pre">npm.cmd</span></code>; PowerShell variables such as <code class="docutils literal notranslate"><span class="pre">$env:USERPROFILE</span></code> do not work in CMD. This is the extension source folder, not the project the agent will later edit.</p>
 <p><strong>Create <code class="docutils literal notranslate"><span class="pre">package.json</span></code>:</strong></p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">  </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"macstudio-assistant"</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">"displayName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Mac Studio Assistant"</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">"version"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0.2.0"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"localagent-assistant"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"displayName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Local Coding Assistant"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"version"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0.3.0"</span><span class="p">,</span>
 <span class="w">  </span><span class="nt">"publisher"</span><span class="p">:</span><span class="w"> </span><span class="s2">"workshop-example"</span><span class="p">,</span>
 <span class="w">  </span><span class="nt">"engines"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">"vscode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"^1.96.0"</span><span class="w"> </span><span class="p">},</span>
 <span class="w">  </span><span class="nt">"main"</span><span class="p">:</span><span class="w"> </span><span class="s2">"./src/extension.js"</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">"activationEvents"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"onCommand:macstudio.open"</span><span class="p">],</span>
+<span class="w">  </span><span class="nt">"activationEvents"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"onCommand:localagent.open"</span><span class="p">],</span>
 <span class="w">  </span><span class="nt">"contributes"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nt">"commands"</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="nt">"command"</span><span class="p">:</span><span class="w"> </span><span class="s2">"macstudio.open"</span><span class="p">,</span><span class="w"> </span><span class="nt">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Mac Studio: Open chat"</span><span class="p">}]</span>
+<span class="w">    </span><span class="nt">"commands"</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="nt">"command"</span><span class="p">:</span><span class="w"> </span><span class="s2">"localagent.open"</span><span class="p">,</span><span class="w"> </span><span class="nt">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Local Agent: Open chat"</span><span class="p">}]</span>
 <span class="w">  </span><span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
@@ -511,7 +520,7 @@
 
 <span class="kd">function</span><span class="w"> </span><span class="nx">activate</span><span class="p">(</span><span class="nx">context</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="w">  </span><span class="nx">context</span><span class="p">.</span><span class="nx">subscriptions</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span>
-<span class="w">    </span><span class="nx">vscode</span><span class="p">.</span><span class="nx">commands</span><span class="p">.</span><span class="nx">registerCommand</span><span class="p">(</span><span class="s1">'macstudio.open'</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">vscode</span><span class="p">.</span><span class="nx">commands</span><span class="p">.</span><span class="nx">registerCommand</span><span class="p">(</span><span class="s1">'localagent.open'</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
 <span class="w">      </span><span class="nx">vscode</span><span class="p">.</span><span class="nb">window</span><span class="p">.</span><span class="nx">showInformationMessage</span><span class="p">(</span><span class="s1">'Your extension is running.'</span><span class="p">);</span>
 <span class="w">    </span><span class="p">})</span>
 <span class="w">  </span><span class="p">);</span>
@@ -523,10 +532,10 @@
 <p><code class="docutils literal notranslate"><span class="pre">require('vscode')</span></code> works inside the extension host because VS Code supplies the module. Running <code class="docutils literal notranslate"><span class="pre">node</span> <span class="pre">src/extension.js</span></code> in an ordinary terminal is not a valid activation test. No npm installation is necessary for this first checkpoint.</p>
 <p><strong>Create <code class="docutils literal notranslate"><span class="pre">.vscode/launch.json</span></code>:</strong></p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">  </span><span class="nt">"version"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0.2.0"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"version"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0.3.0"</span><span class="p">,</span>
 <span class="w">  </span><span class="nt">"configurations"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
 <span class="w">    </span><span class="p">{</span>
-<span class="w">      </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Run Mac Studio extension"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Run Local Agent extension"</span><span class="p">,</span>
 <span class="w">      </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"extensionHost"</span><span class="p">,</span>
 <span class="w">      </span><span class="nt">"request"</span><span class="p">:</span><span class="w"> </span><span class="s2">"launch"</span><span class="p">,</span>
 <span class="w">      </span><span class="nt">"args"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
@@ -538,7 +547,7 @@
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>Press <strong>F5</strong> in the source window. A second window, the <strong>Extension Development Host</strong>, opens. In that second window, press <code class="docutils literal notranslate"><span class="pre">Ctrl+Shift+P</span></code>, run <strong>Mac Studio: Open chat</strong>, and look for the notification. The launch configuration disables other installed extensions for this development session to avoid conflicts with the installed edition.</p>
+<p>Press <strong>F5</strong> in the source window. A second window, the <strong>Extension Development Host</strong>, opens. In that second window, press <code class="docutils literal notranslate"><span class="pre">Ctrl+Shift+P</span></code> (Windows/Linux) or <code class="docutils literal notranslate"><span class="pre">Cmd+Shift+P</span></code> (macOS), run <strong>Local Agent: Open chat</strong>, and look for the notification. The launch configuration disables other installed extensions for this development session to avoid conflicts with the installed edition.</p>
 <p>This is the standard extension debugging workflow; see Microsoft’s <a class="reference external" href="https://code.visualstudio.com/api/get-started/your-first-extension">first extension guide</a>.</p>
 <p><strong>Checkpoint:</strong> You can change the message, stop and restart debugging, and see the new message. You now know which window contains source code and which window runs the extension.</p>
 </section>
@@ -548,10 +557,10 @@
 <p>The manifest is the contract between your extension and VS Code. It declares commands, settings, the activity-bar container, and the view ID. The identifiers must agree with the JavaScript you will write later.</p>
 <p><strong>Replace <code class="docutils literal notranslate"><span class="pre">package.json</span></code> with the complete manifest below.</strong> The example publisher is for local development; it is not permission to publish to a marketplace account.</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">  </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"macstudio-assistant"</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">"displayName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Mac Studio Assistant"</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"A coding assistant powered by a remote Mac, with reviewed client-side edits."</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">"version"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0.2.0"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"localagent-assistant"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"displayName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Local Coding Assistant"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"A coding assistant for Windows, Linux and macOS, with reviewed project edits."</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"version"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0.3.0"</span><span class="p">,</span>
 <span class="w">  </span><span class="nt">"publisher"</span><span class="p">:</span><span class="w"> </span><span class="s2">"workshop-example"</span><span class="p">,</span>
 <span class="w">  </span><span class="nt">"license"</span><span class="p">:</span><span class="w"> </span><span class="s2">"MIT"</span><span class="p">,</span>
 <span class="w">  </span><span class="nt">"engines"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
@@ -566,7 +575,7 @@
 <span class="w">    </span><span class="s2">"workspace"</span>
 <span class="w">  </span><span class="p">],</span>
 <span class="w">  </span><span class="nt">"activationEvents"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">    </span><span class="s2">"onView:macstudio.chat"</span>
+<span class="w">    </span><span class="s2">"onView:localagent.chat"</span>
 <span class="w">  </span><span class="p">],</span>
 <span class="w">  </span><span class="nt">"capabilities"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="nt">"untrustedWorkspaces"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
@@ -578,16 +587,16 @@
 <span class="w">    </span><span class="nt">"viewsContainers"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">      </span><span class="nt">"activitybar"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
 <span class="w">        </span><span class="p">{</span>
-<span class="w">          </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"macstudio"</span><span class="p">,</span>
-<span class="w">          </span><span class="nt">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Mac Studio"</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"localagent"</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Local Agent"</span><span class="p">,</span>
 <span class="w">          </span><span class="nt">"icon"</span><span class="p">:</span><span class="w"> </span><span class="s2">"media/icon.svg"</span>
 <span class="w">        </span><span class="p">}</span>
 <span class="w">      </span><span class="p">]</span>
 <span class="w">    </span><span class="p">},</span>
 <span class="w">    </span><span class="nt">"views"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">      </span><span class="nt">"macstudio"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">      </span><span class="nt">"localagent"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
 <span class="w">        </span><span class="p">{</span>
-<span class="w">          </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"macstudio.chat"</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"localagent.chat"</span><span class="p">,</span>
 <span class="w">          </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Assistant"</span><span class="p">,</span>
 <span class="w">          </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"webview"</span>
 <span class="w">        </span><span class="p">}</span>
@@ -595,72 +604,72 @@
 <span class="w">    </span><span class="p">},</span>
 <span class="w">    </span><span class="nt">"commands"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
 <span class="w">      </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">"command"</span><span class="p">:</span><span class="w"> </span><span class="s2">"macstudio.open"</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Mac Studio: Open chat"</span>
+<span class="w">        </span><span class="nt">"command"</span><span class="p">:</span><span class="w"> </span><span class="s2">"localagent.open"</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Local Agent: Open chat"</span>
 <span class="w">      </span><span class="p">},</span>
 <span class="w">      </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">"command"</span><span class="p">:</span><span class="w"> </span><span class="s2">"macstudio.connect"</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Mac Studio: Check connection"</span>
+<span class="w">        </span><span class="nt">"command"</span><span class="p">:</span><span class="w"> </span><span class="s2">"localagent.connect"</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Local Agent: Check connection"</span>
 <span class="w">      </span><span class="p">},</span>
 <span class="w">      </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">"command"</span><span class="p">:</span><span class="w"> </span><span class="s2">"macstudio.settings"</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Mac Studio: Connection settings"</span>
+<span class="w">        </span><span class="nt">"command"</span><span class="p">:</span><span class="w"> </span><span class="s2">"localagent.settings"</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Local Agent: Connection settings"</span>
 <span class="w">      </span><span class="p">},</span>
 <span class="w">      </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">"command"</span><span class="p">:</span><span class="w"> </span><span class="s2">"macstudio.attach"</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Mac Studio: Attach selection or file"</span>
+<span class="w">        </span><span class="nt">"command"</span><span class="p">:</span><span class="w"> </span><span class="s2">"localagent.attach"</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Local Agent: Attach selection or file"</span>
 <span class="w">      </span><span class="p">},</span>
 <span class="w">      </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">"command"</span><span class="p">:</span><span class="w"> </span><span class="s2">"macstudio.newChat"</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Mac Studio: New chat"</span>
+<span class="w">        </span><span class="nt">"command"</span><span class="p">:</span><span class="w"> </span><span class="s2">"localagent.newChat"</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Local Agent: New chat"</span>
 <span class="w">      </span><span class="p">},</span>
 <span class="w">      </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">"command"</span><span class="p">:</span><span class="w"> </span><span class="s2">"macstudio.setApiKey"</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Mac Studio: Set API key"</span>
+<span class="w">        </span><span class="nt">"command"</span><span class="p">:</span><span class="w"> </span><span class="s2">"localagent.setApiKey"</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Local Agent: Set API key"</span>
 <span class="w">      </span><span class="p">}</span>
 <span class="w">    </span><span class="p">],</span>
 <span class="w">    </span><span class="nt">"menus"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">      </span><span class="nt">"editor/context"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
 <span class="w">        </span><span class="p">{</span>
-<span class="w">          </span><span class="nt">"command"</span><span class="p">:</span><span class="w"> </span><span class="s2">"macstudio.attach"</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"command"</span><span class="p">:</span><span class="w"> </span><span class="s2">"localagent.attach"</span><span class="p">,</span>
 <span class="w">          </span><span class="nt">"group"</span><span class="p">:</span><span class="w"> </span><span class="s2">"navigation@90"</span>
 <span class="w">        </span><span class="p">}</span>
 <span class="w">      </span><span class="p">]</span>
 <span class="w">    </span><span class="p">},</span>
 <span class="w">    </span><span class="nt">"configuration"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">      </span><span class="nt">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Mac Studio Assistant"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Local Coding Assistant"</span><span class="p">,</span>
 <span class="w">      </span><span class="nt">"properties"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">"macstudio.sshHost"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">"localagent.sshHost"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">          </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="p">,</span>
-<span class="w">          </span><span class="nt">"default"</span><span class="p">:</span><span class="w"> </span><span class="s2">"macstudio"</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"default"</span><span class="p">:</span><span class="w"> </span><span class="s2">"model-server"</span><span class="p">,</span>
 <span class="w">          </span><span class="nt">"scope"</span><span class="p">:</span><span class="w"> </span><span class="s2">"machine"</span><span class="p">,</span>
 <span class="w">          </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"SSH config alias or user@host. Host fingerprint must already be trusted."</span>
 <span class="w">        </span><span class="p">},</span>
-<span class="w">        </span><span class="nt">"macstudio.sshIdentityFile"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">"localagent.sshIdentityFile"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">          </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="p">,</span>
-<span class="w">          </span><span class="nt">"default"</span><span class="p">:</span><span class="w"> </span><span class="s2">"~/.ssh/macstudio_course"</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"default"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span>
 <span class="w">          </span><span class="nt">"scope"</span><span class="p">:</span><span class="w"> </span><span class="s2">"machine"</span><span class="p">,</span>
 <span class="w">          </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Local private key path. Leave empty to use SSH config or agent."</span>
 <span class="w">        </span><span class="p">},</span>
-<span class="w">        </span><span class="nt">"macstudio.sshExecutable"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">"localagent.sshExecutable"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">          </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="p">,</span>
 <span class="w">          </span><span class="nt">"default"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ssh"</span><span class="p">,</span>
 <span class="w">          </span><span class="nt">"scope"</span><span class="p">:</span><span class="w"> </span><span class="s2">"machine"</span><span class="p">,</span>
 <span class="w">          </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Local OpenSSH executable."</span>
 <span class="w">        </span><span class="p">},</span>
-<span class="w">        </span><span class="nt">"macstudio.remotePython"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">"localagent.remotePython"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">          </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="p">,</span>
-<span class="w">          </span><span class="nt">"default"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/usr/bin/python3"</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"default"</span><span class="p">:</span><span class="w"> </span><span class="s2">"python3"</span><span class="p">,</span>
 <span class="w">          </span><span class="nt">"scope"</span><span class="p">:</span><span class="w"> </span><span class="s2">"machine"</span><span class="p">,</span>
-<span class="w">          </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Python 3 executable on the Mac."</span>
+<span class="w">          </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Python 3 executable on a Linux/macOS SSH bridge host. Windows servers use a tunnel with local transport."</span>
 <span class="w">        </span><span class="p">},</span>
-<span class="w">        </span><span class="nt">"macstudio.remoteConfig"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">"localagent.remoteConfig"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">          </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="p">,</span>
 <span class="w">          </span><span class="nt">"default"</span><span class="p">:</span><span class="w"> </span><span class="s2">"~/.openclaw/openclaw.json"</span><span class="p">,</span>
 <span class="w">          </span><span class="nt">"scope"</span><span class="p">:</span><span class="w"> </span><span class="s2">"machine"</span><span class="p">,</span>
 <span class="w">          </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Remote OpenClaw JSON configuration; only used by legacy modes."</span>
 <span class="w">        </span><span class="p">},</span>
-<span class="w">        </span><span class="nt">"macstudio.mode"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">"localagent.mode"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">          </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="p">,</span>
 <span class="w">          </span><span class="nt">"enum"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
 <span class="w">            </span><span class="s2">"direct"</span><span class="p">,</span>
@@ -670,45 +679,61 @@
 <span class="w">          </span><span class="nt">"default"</span><span class="p">:</span><span class="w"> </span><span class="s2">"direct"</span><span class="p">,</span>
 <span class="w">          </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Direct uses the configured API. Other modes use the remote OpenClaw configuration."</span>
 <span class="w">        </span><span class="p">},</span>
-<span class="w">        </span><span class="nt">"macstudio.maxOutputTokens"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">"localagent.maxOutputTokens"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">          </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"integer"</span><span class="p">,</span>
 <span class="w">          </span><span class="nt">"default"</span><span class="p">:</span><span class="w"> </span><span class="mi">4096</span><span class="p">,</span>
 <span class="w">          </span><span class="nt">"minimum"</span><span class="p">:</span><span class="w"> </span><span class="mi">256</span><span class="p">,</span>
 <span class="w">          </span><span class="nt">"maximum"</span><span class="p">:</span><span class="w"> </span><span class="mi">16384</span>
 <span class="w">        </span><span class="p">},</span>
-<span class="w">        </span><span class="nt">"macstudio.timeoutSeconds"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">"localagent.timeoutSeconds"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">          </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"integer"</span><span class="p">,</span>
 <span class="w">          </span><span class="nt">"default"</span><span class="p">:</span><span class="w"> </span><span class="mi">600</span><span class="p">,</span>
 <span class="w">          </span><span class="nt">"minimum"</span><span class="p">:</span><span class="w"> </span><span class="mi">30</span><span class="p">,</span>
 <span class="w">          </span><span class="nt">"maximum"</span><span class="p">:</span><span class="w"> </span><span class="mi">3600</span>
 <span class="w">        </span><span class="p">},</span>
-<span class="w">        </span><span class="nt">"macstudio.maxToolRounds"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">"localagent.maxToolRounds"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">          </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"integer"</span><span class="p">,</span>
 <span class="w">          </span><span class="nt">"default"</span><span class="p">:</span><span class="w"> </span><span class="mi">12</span><span class="p">,</span>
 <span class="w">          </span><span class="nt">"minimum"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
 <span class="w">          </span><span class="nt">"maximum"</span><span class="p">:</span><span class="w"> </span><span class="mi">30</span>
 <span class="w">        </span><span class="p">},</span>
-<span class="w">        </span><span class="nt">"macstudio.baseUrl"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">"localagent.baseUrl"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">          </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="p">,</span>
-<span class="w">          </span><span class="nt">"default"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://127.0.0.1:11436/v1"</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"default"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://127.0.0.1:11434/v1"</span><span class="p">,</span>
 <span class="w">          </span><span class="nt">"scope"</span><span class="p">:</span><span class="w"> </span><span class="s2">"machine"</span><span class="p">,</span>
-<span class="w">          </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Model API loopback URL on the Mac, reached through SSH."</span>
+<span class="w">          </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Loopback model URL as seen by the Python bridge: local machine/tunnel in local transport, server in SSH transport."</span>
 <span class="w">        </span><span class="p">},</span>
-<span class="w">        </span><span class="nt">"macstudio.modelId"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">"localagent.modelId"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">          </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="p">,</span>
 <span class="w">          </span><span class="nt">"default"</span><span class="p">:</span><span class="w"> </span><span class="s2">"YOUR_MODEL_ID"</span><span class="p">,</span>
 <span class="w">          </span><span class="nt">"scope"</span><span class="p">:</span><span class="w"> </span><span class="s2">"machine"</span><span class="p">,</span>
 <span class="w">          </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Explicit model ID for direct mode."</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="nt">"localagent.transport"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"enum"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="s2">"local"</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">"ssh"</span>
+<span class="w">          </span><span class="p">],</span>
+<span class="w">          </span><span class="nt">"default"</span><span class="p">:</span><span class="w"> </span><span class="s2">"local"</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"scope"</span><span class="p">:</span><span class="w"> </span><span class="s2">"machine"</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Local Python for a same-machine API or SSH tunnel; SSH bridge for a Linux/macOS server with a POSIX login shell."</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="nt">"localagent.localPython"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"default"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"scope"</span><span class="p">:</span><span class="w"> </span><span class="s2">"machine"</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Python 3 executable on the extension host; empty selects python on Windows or python3 elsewhere. Use a path, not a command with arguments."</span>
 <span class="w">        </span><span class="p">}</span>
 <span class="w">      </span><span class="p">}</span>
 <span class="w">    </span><span class="p">}</span>
 <span class="w">  </span><span class="p">},</span>
 <span class="w">  </span><span class="nt">"scripts"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nt">"test"</span><span class="p">:</span><span class="w"> </span><span class="s2">"node --test test/core.test.js"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"test"</span><span class="p">:</span><span class="w"> </span><span class="s2">"node --test test/core.test.js test/transport.test.js"</span><span class="p">,</span>
 <span class="w">    </span><span class="nt">"test:live"</span><span class="p">:</span><span class="w"> </span><span class="s2">"node test/live.js"</span><span class="p">,</span>
 <span class="w">    </span><span class="nt">"test:host"</span><span class="p">:</span><span class="w"> </span><span class="s2">"node test/run-host.js"</span><span class="p">,</span>
 <span class="w">    </span><span class="nt">"package"</span><span class="p">:</span><span class="w"> </span><span class="s2">"vsce package --allow-missing-repository"</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">"test:bridge"</span><span class="p">:</span><span class="w"> </span><span class="s2">"python test/bridge_test.py"</span>
+<span class="w">    </span><span class="nt">"test:bridge"</span><span class="p">:</span><span class="w"> </span><span class="s2">"node test/run-bridge.js"</span>
 <span class="w">  </span><span class="p">},</span>
 <span class="w">  </span><span class="nt">"devDependencies"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="nt">"@vscode/vsce"</span><span class="p">:</span><span class="w"> </span><span class="s2">"3.9.2"</span><span class="p">,</span>
@@ -717,7 +742,7 @@
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>The <code class="docutils literal notranslate"><span class="pre">main</span></code> entry points to executable JavaScript. <code class="docutils literal notranslate"><span class="pre">extensionKind:</span> <span class="pre">[&quot;workspace&quot;]</span></code> means the extension belongs with the workspace; in this course the workspace is local Windows. If you instead open a Remote-SSH workspace, the execution location can change. This course’s “Windows commands” assumptions no longer apply unchanged.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">main</span></code> entry points to executable JavaScript. <code class="docutils literal notranslate"><span class="pre">extensionKind:</span> <span class="pre">[&quot;workspace&quot;]</span></code> means the extension belongs with the workspace; in this course the workspace is local to your desktop OS. Remote-SSH or WSL changes the extension host location; use the commands, Python path and loopback address appropriate to that host.</p>
 <p><code class="docutils literal notranslate"><span class="pre">untrustedWorkspaces.supported:</span> <span class="pre">false</span></code> disables this extension in Restricted Mode. File and command methods also check trust at runtime. See <a class="reference external" href="https://code.visualstudio.com/api/extension-guides/workspace-trust">Workspace Trust for extension authors</a>.</p>
 <p>Connection settings use <code class="docutils literal notranslate"><span class="pre">scope:</span> <span class="pre">&quot;machine&quot;</span></code> so they are machine-specific rather than taken from a project’s settings. The API key is absent from the manifest because it belongs in SecretStorage.</p>
 <p><strong>Create <code class="docutils literal notranslate"><span class="pre">media/icon.svg</span></code>:</strong></p>
@@ -732,19 +757,22 @@ test-results/
 __pycache__/
 </pre></div>
 </div>
-<p><strong>Run on Windows, in the source folder:</strong></p>
+<p><strong>Run in the extension source folder:</strong></p>
+<p><strong>Windows PowerShell:</strong></p>
 <div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="n">npm</span><span class="p">.</span><span class="n">cmd</span> <span class="n">install</span>
 </pre></div>
 </div>
-<p>Keep the resulting <code class="docutils literal notranslate"><span class="pre">package-lock.json</span></code>. If using the included completed reference, run <code class="docutils literal notranslate"><span class="pre">npm.cmd</span> <span class="pre">ci</span></code> instead: it already has a lockfile. Runtime code uses built-in Node/Python APIs and VS Code APIs; the npm dependencies are for packaging and integration tests.</p>
+<p><strong>Linux Bash / macOS zsh:</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>npm<span class="w"> </span>install
+</pre></div>
+</div>
+<p>Keep the resulting <code class="docutils literal notranslate"><span class="pre">package-lock.json</span></code>. If using the included completed reference, run <code class="docutils literal notranslate"><span class="pre">npm.cmd</span> <span class="pre">ci</span></code> (Windows) or <code class="docutils literal notranslate"><span class="pre">npm</span> <span class="pre">ci</span></code> (Linux/macOS) instead: it already has a lockfile. Runtime code uses built-in Node/Python APIs and VS Code APIs; the npm dependencies are for packaging and integration tests.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">test</span></code> script refers to the transport regression added in Lab 6; until then run <code class="docutils literal notranslate"><span class="pre">node</span> <span class="pre">--test</span> <span class="pre">test/core.test.js</span></code> at the Lab 4 checkpoint.</p>
 <p><strong>Checkpoint:</strong> Installation succeeds and the manifest parses. The final sidebar is not ready yet. Continue through Lesson 10 before testing the complete UI. Your old hello-world controller will be replaced in Lesson 9.</p>
 <div class="important admonition">
 <p class="admonition-title">Lab acceptance evidence</p>
 <p>Show the hello-world notification from your own F5 session and identify the source window versus the test window.</p>
 </div>
-<blockquote>
-<div><p><strong>Image Suggestion (Nanobanana Prompt)</strong>: Create a clean educational illustration for “Your First VS Code Extension”, using a neutral VS Code-inspired desktop palette, legible monospace labels, a Windows workstation and a Mac Studio where relevant, and clearly marked “Illustration” text. Emphasize the lab’s actual control or execution boundary. Include no real credentials, personal paths, or fabricated test results. Use even lighting and a flat technical-documentation style rather than decorative effects.</p>
-</div></blockquote>
 <p><strong>Continue:</strong> <a class="reference internal" href="01-architecture-and-connection.html"><span class="std std-doc">Previous</span></a> · <a class="reference internal" href="03-ssh-and-streaming.html"><span class="std std-doc">Next</span></a> · <a class="reference internal" href="index.html"><span class="std std-doc">Workshop guide</span></a></p>
 </section>
 <section id="read-more">
@@ -813,7 +841,7 @@ __pycache__/
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">01 - Architecture and Connection</p>
+        <p class="prev-next-title">01 - Choose Your Platform and Connect a Model</p>
       </div>
     </a>
     <a class="right-next"
@@ -821,7 +849,7 @@ __pycache__/
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">03 - SSH Bridge and Streaming Responses</p>
+        <p class="prev-next-title">03 - Local/SSH Transport and Streaming</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

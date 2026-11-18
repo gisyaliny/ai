@@ -1,205 +1,241 @@
-(macstudio-lab-01)=
-# 01 - Architecture and Connection
+(localagent-lab-01)=
+# 01 - Choose Your Platform and Connect a Model
 
-**Format:** hands-on lab · **Suggested time:** 45 minutes · **Original course lessons:** 1–2.
+**Format:** hands-on lab · **Suggested time:** 45–60 minutes, excluding model download.
 
-```{admonition} Learning objectives
-:class: tip
-Locate every execution boundary; verify noninteractive SSH and the authenticated model endpoint.
-```
+Build the same agent on **Windows, Linux, or macOS**. No Mac Studio is required. The **client（客户端）** runs VS Code and project tools. The **model server（模型服务器）** may be the same computer or another computer on your network. A Mac Studio is one possible server, alongside a Linux GPU machine or a Windows workstation.
 
-**Start here:** [Workshop guide](index.md). Download the reference bundle there before the lab. Each file block is complete unless marked Illustration. In this workshop, “Lesson” refers to the original numbered sections retained below.
+## 1. Choose one connection route
 
-## 1. Understand the architecture before writing code
+| Route | Client OS | Model server OS | Python bridge runs on | Extension setting |
+|---|---|---|---|---|
+| A — Same computer (begin here) | Windows / Linux / macOS | Same computer | Client | `localagent.transport: local` |
+| B — SSH tunnel（SSH 隧道） | Windows / Linux / macOS | Windows / Linux / macOS with SSH server | Client | `local`, forwarded Base URL |
+| C — Remote Python bridge (optional) | Windows / Linux / macOS | Linux / macOS with POSIX login shell | Server | `ssh` |
 
-An **extension host（扩展宿主）** is the process in which VS Code runs extension code. In this course it runs on Windows. A **Webview（网页视图）** renders our sidebar. It sends small messages to the extension host; it does not run SSH or touch project files directly.
-
-The **inference server（推理服务）** lives on the Mac. It generates text and structured tool-call requests. It does not gain access to your Windows filesystem merely because a model produced a filename.
+Routes A and B use identical extension code. Route B forwards only HTTP traffic; it does not execute Python through the server's shell. This avoids Windows/POSIX remote-shell quoting differences. Route C preserves the earlier SSH bridge as an advanced exercise; do not select C for a Windows SSH server.
 
 ```{mermaid}
 flowchart LR
-    U[You] --> W[Windows sidebar Webview]
-    W <-->|postMessage| E[Windows extension host]
-    E <-->|encrypted SSH stdin/stdout| P[Temporary Python process on Mac]
-    P <-->|loopback HTTP| M[Mac model API]
-    E <-->|read / reviewed edit| F[Windows project files]
-    E -->|approved command| T[Windows PowerShell]
+    U["VS Code sidebar"] <--> E["Extension host: Windows / Linux / macOS"]
+    E <--> F["Project files and approved commands"]
+    E <--> P["Local Python bridge"]
+    P <-->|"A: loopback HTTP"| L["Same-machine model"]
+    P <-->|"B: SSH tunnel"| R["Remote model: Windows / Linux / macOS"]
 ```
 
-The arrows show request and response boundaries. File operations and approved commands belong to the Windows extension host.
+Tool calls are requests, not permissions. The extension reads files, proposes changes, and asks you to approve commands on the **workspace extension host（工作区扩展宿主）**. The model receives only the context the client sends. In a Remote-SSH or WSL VS Code window, the extension host may itself be remote: its paths, Python, loopback address and command shell follow that location. For your first run, use a normal desktop VS Code window and a local project folder.
 
-Our design uses SSH as a request/response bridge. It does **not** run `ssh -L`, create a Windows HTTP listener, or upload the whole project. Each model request starts a temporary Python process on the Mac, sends JSON through standard input, and returns the response through standard output.
+## 2. Install and verify prerequisites
 
-There are two meanings of `127.0.0.1`: in a Windows browser it means Windows; inside the remote Python process it means the Mac. Our Base URL is evaluated by the latter.
+Install [desktop VS Code](https://code.visualstudio.com/download), a supported [Node.js LTS](https://nodejs.org/en/download) compatible with the bundled packaging tool, and [Python 3](https://www.python.org/downloads/). The initial reference used Node 22; record your actual version. Browser-only VS Code cannot run this extension's subprocesses.
 
-A **tool call（工具调用）** is a request for the application to invoke a named function with JSON arguments. The application must decide whether to execute it. A minimal **agent loop（智能体循环）** is:
+- **Windows:** use the official installers. Make Python available as `python` in a newly opened terminal. If `python` opens the Microsoft Store, fix the app execution alias or set `localagent.localPython` to your real Python executable. Use PowerShell blocks below; `npm.cmd` avoids the `npm.ps1` execution-policy issue.
+- **Linux:** install VS Code and Node from their official distribution instructions for your architecture. On Debian/Ubuntu, Python and the SSH client can be installed with `sudo apt update` followed by `sudo apt install python3 openssh-client`. Other distributions use their own package managers.
+- **macOS:** install VS Code, Node and Python for your CPU architecture. In VS Code's Command Palette, run **Shell Command: Install 'code' command in PATH**, or open the folder through the GUI. Use `python3`; do not assume an unversioned `python` exists.
 
-1. Send conversation messages and available tool descriptions to the model.
-2. Receive text, tool calls, or both.
-3. Validate and execute permitted tool calls.
-4. Add each tool result to the conversation using the matching call ID.
-5. Ask the model to continue. Stop when it returns a final answer or a limit is reached.
-
-**Checkpoint:** If the model requests `local_read_file("src/main.py")`, the Windows extension reads the selected Windows project. The Mac does not interpret that as a path on its own disk.
-
-## 2. Prepare the two computers
-
-### 2.1 Prerequisites and environment checks
-
-| Windows client | Mac Studio |
-|---|---|
-| Desktop VS Code | Running OpenAI-compatible Chat Completions API |
-| Node.js and npm | Python 3 usable over SSH |
-| OpenSSH client | SSH access for your account |
-| Python 3 for local bridge tests | Model service accessible through Mac loopback |
-| Network route to the Mac, such as your Tailscale connection | Same reachable network or tailnet |
-
-The original implementation was exercised with Node 22.16.0; use a supported Node version compatible with the packaging tools. `engines.vscode` in the manifest declares an API floor, not proof that every older VS Code release has been tested. You do not need a Windows GPU or model weights on Windows.
-
-**Run on Windows, in PowerShell:**
+### Windows — PowerShell
 
 ```powershell
 node --version
 npm.cmd --version
 python --version
-ssh -V
 code --version
+# Only routes B/C need SSH:
+ssh -V
 ```
 
-Use `npm.cmd` on Windows if execution policy prevents `npm.ps1` from running. If `code` is not on PATH, open VS Code normally and use its menus. Do not change a global execution policy just to follow this course.
-
-### 2.2 Make SSH reliable before building a GUI
-
-If you already have working key authentication, reuse it. Never overwrite an existing private key. If you need a new key, create a distinct one on Windows:
-
-```powershell
-ssh-keygen -t ed25519 -f "$env:USERPROFILE\.ssh\macstudio_course"
-Get-Content "$env:USERPROFILE\.ssh\macstudio_course.pub"
-```
-
-Only the `.pub` file is copied to the Mac. Keep the private key on Windows. On the Mac, append the public-key line to the account's `~/.ssh/authorized_keys`; do not replace existing keys. For example, after logging in interactively on the Mac:
+### Linux — Bash
 
 ```bash
-mkdir -p ~/.ssh
-chmod 700 ~/.ssh
-touch ~/.ssh/authorized_keys
-chmod 600 ~/.ssh/authorized_keys
-nano ~/.ssh/authorized_keys
+node --version
+npm --version
+python3 --version
+code --version
+ssh -V
 ```
 
-Paste the single public-key line on its own line and save. An encrypted private key needs to be unlocked in an SSH agent usable by the process that launches VS Code. Our extension will not show SSH password or passphrase prompts.
+### macOS — Terminal (zsh)
 
-Edit the Windows SSH config at `$env:USERPROFILE\.ssh\config`. Replace the example hostname with the reachable name or address of your Mac. Merge this block into your existing file rather than replacing the file:
+```bash
+node --version
+npm --version
+python3 --version
+code --version
+ssh -V
+```
+
+The shell examples shared by Linux and macOS below use portable syntax supported by both Bash and zsh. Approved agent commands run in `/bin/sh` on these systems, so do not ask the agent to rely on Bash/zsh-specific syntax without explicitly invoking that shell.
+
+## 3. Start a model endpoint
+
+If you already have a working **OpenAI-compatible Chat Completions API**, keep it. Record its Base URL, exact model ID, and authentication requirements. A server offering plain text alone is not enough: the later labs require streaming, tool calls, and tool-result continuation.
+
+For a new installation, [Ollama](https://docs.ollama.com/quickstart) is one example across all three systems. Install its official Windows/macOS application; for Linux follow the [official Linux instructions](https://docs.ollama.com/linux). To review the Linux installer before running it:
+
+```bash
+curl -fsSL https://ollama.com/install.sh -o ollama-install.sh
+less ollama-install.sh
+sh ollama-install.sh
+```
+
+Start the installed application/service. If no server is running, `ollama serve` starts one in the foreground; leave that terminal open. If the port is already in use, check the existing service instead of starting a second copy.
+
+**Windows PowerShell / CMD, Linux Bash, macOS zsh — same commands:**
 
 ```text
-Host macstudio
-    HostName YOUR_MAC_HOSTNAME_OR_IP
-    User YOUR_SSH_USER
-    IdentityFile ~/.ssh/macstudio_course
-    ServerAliveInterval 30
-    ServerAliveCountMax 3
+ollama --version
+ollama pull qwen3:4b
+ollama list
+ollama run qwen3:4b "Reply with a short greeting. /no_think"
 ```
 
-For a newly created course key, use `~/.ssh/macstudio_course` instead, both here and in the extension setting. Use the key that you authorized for your own account. Matching the actual authorized key matters more than its filename.
+`qwen3:4b` is a modest [example model with a tools tag](https://ollama.com/library/qwen3:4b), not a guarantee of reliable coding on your hardware. Choose a model that fits memory and passes Lab 6. Weight size is not total runtime memory; context and concurrent requests also consume memory. GPU support depends on runtime, OS and drivers; CPU inference can be slower. Do not buy hardware based on this exercise alone.
 
-Connect interactively once, verify the host fingerprint against your Mac through a trusted channel, and accept it only if it matches. Then test the exact noninteractive behavior used by the extension:
+For local Ollama, use `http://127.0.0.1:11434/v1` and the ID reported by `ollama list` / `/v1/models`. Its local compatibility API ignores the supplied key; enter the nonsecret placeholder `ollama` when this workshop prompts. For an authenticated server, use that server's real credential privately. See [Ollama's compatibility documentation](https://docs.ollama.com/api/openai-compatibility). A llama.cpp or other compatible server can use another port; change the settings rather than assuming 11434.
 
-```powershell
-ssh -i "$env:USERPROFILE\.ssh\macstudio_course" YOUR_SSH_USER@macstudio
-# After checking the host and logging in, type exit to return to Windows.
-ssh -T -o BatchMode=yes -o StrictHostKeyChecking=yes -i "$env:USERPROFILE\.ssh\macstudio_course" macstudio "whoami; /usr/bin/python3 --version"
-```
+## 4. Probe the API with one portable Python script
 
-**Checkpoint:** The second command prints the account and Python version without asking for a password. A successful interactive password login alone is insufficient. If Python has a different path, record that path for `macstudio.remotePython`.
-
-### 2.3 Check the API on the Mac
-
-The running service in our example advertises:
-
-```text
-Base URL: http://127.0.0.1:11436/v1
-Model ID: YOUR_MODEL_ID
-```
-
-These are deployment-specific values. The model name does not independently prove its context size, vision support, or tool reliability. We will test the protocol behaviors we use. This course does not require a cloud API key.
-
-Create `probe_api.py` on the Mac with the following complete diagnostic script. It prompts for your configured service key without storing it in source code:
+Create `probe_api.py` in a temporary course folder. This uses only Python's standard library and never writes the key to a file.
 
 ```python
 import getpass
 import json
 import urllib.request
 
-base = "http://127.0.0.1:11436/v1"
-model = "YOUR_MODEL_ID"
-key = getpass.getpass("Local API key: ")
+base = input("Base URL [http://127.0.0.1:11434/v1]: ").strip() or "http://127.0.0.1:11434/v1"
+model = input("Exact installed model ID: ").strip()
+key = getpass.getpass("API key (ollama for a default local Ollama server): ")
 
 def request(route, body=None):
     req = urllib.request.Request(
-        base + route,
-        data=None if body is None else json.dumps(body).encode(),
-        headers={"Authorization": "Bearer " + key,
-                 "Content-Type": "application/json"},
+        base.rstrip("/") + route,
+        data=None if body is None else json.dumps(body).encode("utf-8"),
+        headers={"Authorization": "Bearer " + key, "Content-Type": "application/json"},
     )
-    with urllib.request.urlopen(req, timeout=120) as response:
+    with urllib.request.urlopen(req, timeout=180) as response:
         return json.load(response)
 
-print(json.dumps(request("/models"), indent=2))
+models = request("/models")
+print(json.dumps(models, indent=2))
+if model not in [item["id"] for item in models.get("data", [])]:
+    raise SystemExit("Use an exact ID from the model list.")
 reply = request("/chat/completions", {
-    "model": model,
-    "messages": [{"role": "user", "content": "Reply only OK."}],
-    "max_tokens": 128,
-    "stream": False,
+    "model": model, "messages": [{"role": "user", "content": "Reply only OK. /no_think"}],
+    "max_tokens": 512, "stream": False,
 })
 print(reply["choices"][0]["message"]["content"])
 ```
 
-**Run on Mac:** `python3 probe_api.py`. Use the key configured for your service; the tutorial deliberately does not embed your real key. Expect your model in `/models` and a short reply. An HTTP 401 is an authentication problem; a refused connection usually means the address, port, or service state is wrong.
+**Windows:** `python probe_api.py`. **Linux/macOS:** `python3 probe_api.py`.
+Use a trusted loopback endpoint: for A run on the model computer; for B run on the client after creating the tunnel below. For C first run on the server. An empty answer may mean a reasoning model exhausted its output budget; inspect the service's supported reasoning controls rather than declaring success.
 
-**Checkpoint:** Do not proceed until SSH and the API work independently. A sidebar cannot repair an unavailable service.
+## 5. Route B: reach another computer through SSH
 
-```{admonition} Lab acceptance evidence
-:class: important
-Record a successful SSH account/Python check and an API probe. Do not paste credentials into your notes.
+Skip this section for A. The server must already run the model on its own loopback interface. Enable SSH only on the server:
+
+| Server | Setup |
+|---|---|
+| Windows | Follow [Microsoft's OpenSSH Server setup](https://learn.microsoft.com/en-us/windows-server/administration/openssh/openssh_install_firstuse); start `sshd` and permit SSH in its firewall. |
+| Linux (Debian/Ubuntu) | `sudo apt install openssh-server`, then `sudo systemctl enable --now ssh`; other distributions may call the service `sshd`. |
+| macOS | System Settings → General → Sharing → Remote Login; allow your intended account. |
+
+Use an account you are authorized to access. On the **client**, add this block to SSH config (Windows: `$env:USERPROFILE\.ssh\config`; Linux/macOS: `~/.ssh/config`). Replace the uppercase placeholders, keeping the alias `model-server`:
+
+```text
+Host model-server
+    HostName YOUR_SERVER_HOSTNAME_OR_IP
+    User YOUR_SSH_USER
+    ServerAliveInterval 30
+    ServerAliveCountMax 3
 ```
 
-> **Image Suggestion (Nanobanana Prompt)**: Create a clean educational illustration for “Architecture and Connection”, using a neutral VS Code-inspired desktop palette, legible monospace labels, a Windows workstation and a Mac Studio where relevant, and clearly marked “Illustration” text. Emphasize the lab's actual control or execution boundary. Include no real credentials, personal paths, or fabricated test results. Use even lighting and a flat technical-documentation style rather than decorative effects.
+Connect once with `ssh model-server`, verify the host fingerprint through a trusted channel, and type `exit` after login. Then run this exact command in a dedicated **client terminal** on any of the three platforms:
 
-**Continue:** [Previous](index.md) · [Next](02-first-extension.md) · [Workshop guide](index.md)
+```text
+ssh -N -T -o ExitOnForwardFailure=yes -o StrictHostKeyChecking=yes -L 127.0.0.1:11435:127.0.0.1:11434 model-server
+```
 
-## Read More
+Leave it running. Password/passphrase prompts are allowed in this manually opened terminal. A quiet terminal is normal. The first port (11435) belongs to the client; the last (11434) belongs to the server. Change the last port if your model uses another port. Binding the listener to `127.0.0.1` keeps it local; there is no need to expose the model API on `0.0.0.0`. See [OpenSSH port forwarding](https://man.openbsd.org/ssh).
 
-- [VS Code extension tutorial](https://code.visualstudio.com/api/get-started/your-first-extension) — Extension activation and debugging.
-- [Webview API](https://code.visualstudio.com/api/extension-guides/webview) — UI messages, resources, and content security.
-- [Workspace Trust](https://code.visualstudio.com/api/extension-guides/workspace-trust) — Trust boundaries for extension authors.
-- [MCP architecture](https://modelcontextprotocol.io/docs/learn/architecture) — Hosts, clients, servers, and capability discovery.
-- [OpenClaw skills](https://docs.openclaw.ai/tools/skills) — Optional server-side instruction packages.
+Run the Python probe on the client with Base URL `http://127.0.0.1:11435/v1`. If 11435 is busy, select another free client port and update the Base URL. A successful SSH login does not prove the target API is running. Stop the tunnel with Ctrl+C when finished.
+
+## 6. Configure the completed extension (used in Lab 5)
+
+Use **Preferences: Open User Settings (JSON)** and merge these keys; do not replace your entire settings file. These machine-scoped settings are not taken from project settings. API keys go through **Local Agent: Set API key** into SecretStorage, not this JSON.
+
+**Route A — all client platforms:**
+
+```json
+{
+  "localagent.transport": "local",
+  "localagent.mode": "direct",
+  "localagent.baseUrl": "http://127.0.0.1:11434/v1",
+  "localagent.modelId": "qwen3:4b"
+}
+```
+
+For **route B**, keep `transport: local` and change Base URL to `http://127.0.0.1:11435/v1`. Do not choose `ssh` merely because you use a tunnel. The extension starts local Python, which connects through that tunnel.
+
+Empty `localagent.localPython` selects `python` on Windows and `python3` on Linux/macOS. If necessary, set the full executable path, without extra arguments. VS Code may need a restart after PATH changes. Replace `qwen3:4b` with your actual model ID when using another model.
+
+## 7. Route C: optional remote Python bridge
+
+This route launches Python over SSH for every model request; it requires a Linux/macOS server with a POSIX login shell and working noninteractive key authentication. You do not start `ssh -L`. Python is required on the server for live requests and on the client for the offline bridge tests.
+
+If you need a course key, create a **new**, distinct key; never overwrite an existing private key.
+
+**Windows PowerShell:**
+
+```powershell
+ssh-keygen -t ed25519 -f "$env:USERPROFILE\.ssh\agent_course"
+Get-Content "$env:USERPROFILE\.ssh\agent_course.pub"
+```
+
+**Linux/macOS:**
+
+```bash
+ssh-keygen -t ed25519 -f "$HOME/.ssh/agent_course"
+cat "$HOME/.ssh/agent_course.pub"
+```
+
+Append only the public-key line to the server account's `~/.ssh/authorized_keys`; preserve existing keys. On the Linux/macOS server use `mkdir -p ~/.ssh`, `chmod 700 ~/.ssh`, `touch ~/.ssh/authorized_keys`, and `chmod 600 ~/.ssh/authorized_keys`. Unlock an encrypted key in an SSH agent accessible to VS Code. Add `IdentityFile ~/.ssh/agent_course` to the client's `Host model-server` block.
+
+**Any client terminal:**
+
+```text
+ssh -T -o BatchMode=yes -o StrictHostKeyChecking=yes model-server "python3 --version"
+```
+
+The command must finish without a password/passphrase prompt. Find the server's Python path if this fails. Then merge:
+
+```json
+{
+  "localagent.transport": "ssh",
+  "localagent.sshHost": "model-server",
+  "localagent.sshIdentityFile": "",
+  "localagent.remotePython": "python3",
+  "localagent.mode": "direct",
+  "localagent.baseUrl": "http://127.0.0.1:11434/v1",
+  "localagent.modelId": "qwen3:4b"
+}
+```
+
+An empty identity setting lets OpenSSH use its config/agent. Here Base URL is evaluated **on the server**. In A/B it is evaluated **on the client**. This distinction matters more than the operating system names.
+
+## Acceptance evidence
+
+Record the client OS, model-host OS, route A/B/C, tool execution location, program versions, and successful model discovery plus a short response. Use generic labels in shared notes; omit credentials, account names, host addresses and personal paths. Route A needs no SSH evidence; B needs a working forwarded API; C needs the BatchMode check.
 
 ## Knowledge Quiz
 
-**1. Where does local_read_file execute?**
+**Does a model running on Linux make file tools execute on Linux?**
+<details><summary>Answer</summary>No. File tools execute in the VS Code workspace extension host. Server OS and tool execution location are separate.</details>
 
-<details>
-<summary>Answer</summary>
+**Can a Windows model server use route C?**
+<details><summary>Answer</summary>Not in this implementation. Use route B; its SSH tunnel does not depend on remote-shell Python quoting.</details>
 
-In the Windows extension host, against the selected client workspace.
+**Does plain chat prove agent readiness?**
+<details><summary>Answer</summary>No. Test streaming, structured tools, and tool-result continuation in the later labs.</details>
 
-</details>
-
-**2. Why is a successful password-based SSH login insufficient?**
-
-<details>
-<summary>Answer</summary>
-
-The extension uses BatchMode and cannot answer interactive password prompts.
-
-</details>
-
-**3. Which computer does the Base URL loopback address refer to?**
-
-<details>
-<summary>Answer</summary>
-
-The Mac, because the remote Python process sends the HTTP request.
-
-</details>
+**Continue:** [Workshop guide](index.md) · [Lab 2](02-first-extension.md).

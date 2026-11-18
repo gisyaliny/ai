@@ -34,7 +34,7 @@
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
     <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=6a604523" />
   
@@ -232,10 +232,10 @@
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../index.html">AI Hands-on Workshops</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../invitation.html">Build Your Own Coding Agent — Workshop Invitation</a></li>
-<li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">00 - Build a Mac Studio Coding Agent for VS Code</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="01-architecture-and-connection.html">01 - Architecture and Connection</a></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">00 - Build Your Own Coding Agent: Windows, Linux and macOS</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="01-architecture-and-connection.html">01 - Choose Your Platform and Connect a Model</a></li>
 <li class="toctree-l2"><a class="reference internal" href="02-first-extension.html">02 - Your First VS Code Extension</a></li>
-<li class="toctree-l2"><a class="reference internal" href="03-ssh-and-streaming.html">03 - SSH Bridge and Streaming Responses</a></li>
+<li class="toctree-l2"><a class="reference internal" href="03-ssh-and-streaming.html">03 - Local/SSH Transport and Streaming</a></li>
 <li class="toctree-l2"><a class="reference internal" href="04-project-tools.html">04 - Project Tools and the Agent Loop</a></li>
 <li class="toctree-l2"><a class="reference internal" href="05-controller-and-interface.html">05 - Controller and Sidebar Interface</a></li>
 <li class="toctree-l2"><a class="reference internal" href="06-capstone-and-tests.html">06 - Capstone: Fix, Review, and Verify</a></li>
@@ -474,7 +474,7 @@
                 <article class="bd-article">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="packaging-and-model-selection">
-<span id="macstudio-lab-07"></span><h1>07 - Packaging and Model Selection<a class="headerlink" href="#packaging-and-model-selection" title="Link to this heading">#</a></h1>
+<span id="localagent-lab-07"></span><h1>07 - Packaging and Model Selection<a class="headerlink" href="#packaging-and-model-selection" title="Link to this heading">#</a></h1>
 <p><strong>Format:</strong> hands-on lab · <strong>Suggested time:</strong> 35 minutes · <strong>Original course lessons:</strong> 13–14.</p>
 <div class="tip admonition">
 <p class="admonition-title">Learning objectives</p>
@@ -495,36 +495,52 @@ test-results/**
 .vscode/**
 __pycache__/**
 **/__pycache__/**
+scripts/**
 </pre></div>
 </div>
 <p>This keeps dependencies, fixtures, test profiles, logs, and previous packages out of the VSIX. Copy <code class="docutils literal notranslate"><span class="pre">LICENSE</span></code> from the reference if retaining this implementation’s MIT license; if starting your own distribution, decide your license and publisher identity deliberately.</p>
 <p><strong>Create <code class="docutils literal notranslate"><span class="pre">README.md</span></code> in the extension source folder:</strong></p>
-<div class="highlight-markdown notranslate"><div class="highlight"><pre><span></span><span class="gh"># Mac Studio Assistant</span>
+<div class="highlight-markdown notranslate"><div class="highlight"><pre><span></span><span class="gh"># Local Coding Assistant 0.3.0</span>
 
-A VS Code coding assistant that uses a model service on a remote Mac.
+A beginner VS Code extension workshop for Windows, Linux and macOS.
+Use a local OpenAI-compatible model endpoint, or forward a server endpoint
+through SSH. The optional remote Python bridge requires a Linux/macOS server
+with a POSIX login shell. Windows servers use SSH port forwarding instead.
 
-Open a local project, run Mac Studio: Open chat, choose direct mode,
-and connect using your SSH configuration and service API key.
+Read the workshop at https://gisyaliny.github.io/ai/docs/workshops/macstudio-agent/index.html
+and start at Lab 1 before running live tests (offline: ../COURSE.md).
+Windows: npm.cmd ci; npm.cmd test; npm.cmd run test:bridge.
+Linux/macOS: npm ci; npm test; npm run test:bridge.
+Python: python on Windows, python3 elsewhere; override with AGENT_PYTHON.
+Convenience checks: powershell -File scripts/check.ps1 or sh scripts/check.sh.
 
-Files are read on demand. Proposed edits require review and application.
-Client commands require explicit approval and run with your user permissions.
-The extension is not an operating-system sandbox.
+Press F5, open a disposable project, then Local Agent: Open chat.
+Set localagent.transport=local and localagent.modelId to an installed model.
+Use Local Agent: Set API key; a nonsecret placeholder is sufficient only
+when your local server intentionally ignores authentication.
+Run npm run package (npm.cmd on Windows) to create a VSIX.
 
-Development: npm install, then press F5.
-Tests: npm test and npm run test:bridge.
-Live tests require MACSTUDIO_API_KEY in the terminal environment.
-Package: npm run package.
+Edits require review and explicit application. Commands require approval.
+Tools run on the VS Code workspace extension host, with your permissions.
+This is not an OS sandbox. MCP and automatic skill loading are design labs.
+This new extension ID does not migrate older settings or SecretStorage.
 </pre></div>
 </div>
-<p><strong>Run from the Windows source folder:</strong></p>
+<p><strong>Run from the extension source folder:</strong></p>
+<p><strong>Windows PowerShell:</strong></p>
 <div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="n">npm</span><span class="p">.</span><span class="n">cmd</span> <span class="n">run</span> <span class="n">package</span>
-<span class="n">code</span> <span class="p">-</span><span class="n">-install-extension</span> <span class="p">.\</span><span class="n">macstudio-assistant</span><span class="p">-</span><span class="n">0</span><span class="p">.</span><span class="n">2</span><span class="p">.</span><span class="n">0</span><span class="p">.</span><span class="n">vsix</span> <span class="p">-</span><span class="n">-force</span>
+<span class="n">code</span> <span class="p">-</span><span class="n">-install-extension</span> <span class="p">.\</span><span class="n">localagent-assistant</span><span class="p">-</span><span class="n">0</span><span class="p">.</span><span class="n">3</span><span class="p">.</span><span class="n">0</span><span class="p">.</span><span class="n">vsix</span> <span class="p">-</span><span class="n">-force</span>
 </pre></div>
 </div>
-<p>Alternatively use <strong>Extensions → … → Install from VSIX…</strong>. Reload VS Code, open a project folder, and run <strong>Mac Studio: Open chat</strong>. Installation under the same extension ID updates/replaces the installed edition. Do this only when you intend to use your reconstruction instead of the previously installed version.</p>
+<p><strong>Linux Bash / macOS zsh:</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>npm<span class="w"> </span>run<span class="w"> </span>package
+code<span class="w"> </span>--install-extension<span class="w"> </span>./localagent-assistant-0.3.0.vsix<span class="w"> </span>--force
+</pre></div>
+</div>
+<p>Alternatively use <strong>Extensions → … → Install from VSIX…</strong>. Reload VS Code, open a project folder, and run <strong>Local Agent: Open chat</strong>. Installation under the same extension ID updates/replaces that same extension ID. This platform-neutral edition has a new ID (<code class="docutils literal notranslate"><span class="pre">workshop-example.localagent-assistant</span></code>); it does not replace or import settings from the earlier Mac-specific extension.</p>
 <p>The packaging utility is <code class="docutils literal notranslate"><span class="pre">vsce</span></code>; a VSIX can be installed locally without publishing to a marketplace. See Microsoft’s <a class="reference external" href="https://code.visualstudio.com/api/working-with-extensions/publishing-extension">packaging and publishing guide</a>.</p>
 <p>A package should contain source/assets and the manifest, not private keys, API tokens, <code class="docutils literal notranslate"><span class="pre">node_modules</span></code>, or test profiles. Inspect the file listing printed during packaging. Keep the npm lockfile in your source repository even though it is excluded from the VSIX.</p>
-<p>The installed extension uses SecretStorage configured through its password prompt. It does not read the terminal test environment variable. If a live test passed but the installed extension reports 401, use <strong>Mac Studio: Set API key</strong> and check the active mode.</p>
+<p>The installed extension uses SecretStorage configured through its password prompt. It does not read the terminal test environment variable. If a live test passed but the installed extension reports 401, use <strong>Local Agent: Set API key</strong> and check the active mode.</p>
 <p><strong>Checkpoint:</strong> Close the development host and verify the installed extension independently. A successful F5 session is not proof that your VSIX included every required asset.</p>
 </section>
 <section id="change-the-model-without-confusing-the-user">
@@ -540,8 +556,8 @@ Package: npm run package.
 </thead>
 <tbody>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">direct</span></code></p></td>
-<td><p>Explicit <code class="docutils literal notranslate"><span class="pre">macstudio.modelId</span></code> and <code class="docutils literal notranslate"><span class="pre">macstudio.baseUrl</span></code></p></td>
-<td><p>No discovery-based automatic switch</p></td>
+<td><p>Explicit <code class="docutils literal notranslate"><span class="pre">localagent.modelId</span></code> and <code class="docutils literal notranslate"><span class="pre">localagent.baseUrl</span></code></p></td>
+<td><p>No discovery-based automatic switch; independent of the client OS</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">qwen</span></code></p></td>
 <td><p>Reads <code class="docutils literal notranslate"><span class="pre">agents.defaults.model.primary</span></code> and its provider from remote JSON on each request</p></td>
@@ -555,14 +571,15 @@ Package: npm run package.
 </table>
 </div>
 <p>If a service keeps a stable model alias while replacing the weights behind it, direct mode can use the changed backend without a settings change. That is server alias behavior, not model discovery in our extension. An ID in <code class="docutils literal notranslate"><span class="pre">/models</span></code> is not a universal declaration of the “primary” model.</p>
+<p>Legacy <code class="docutils literal notranslate"><span class="pre">qwen</span></code> / <code class="docutils literal notranslate"><span class="pre">openclaw</span></code> modes read configuration on the <strong>bridge host</strong>: the client with local transport, or the Linux/macOS server with SSH transport. A tunnel alone does not make a remote configuration file local. Prefer SSH transport for remote server-owned configuration.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">qwen</span></code> mode includes Qwen-oriented inference options and requires literal string credentials in the remote JSON. It is not a universal provider adapter. Its name should become clearer before exposing it to a broad audience.</p>
 </section>
 <section id="exercise-switch-a-pinned-model">
 <h3>14.2 Exercise: switch a pinned model<a class="headerlink" href="#exercise-switch-a-pinned-model" title="Link to this heading">#</a></h3>
 <ol class="arabic simple">
-<li><p>Start the replacement model on the Mac using your established serving workflow.</p></li>
+<li><p>Start the replacement model on your chosen model host using its serving workflow.</p></li>
 <li><p>Run model discovery and note the exact model ID. Do not guess it from a filename.</p></li>
-<li><p>In VS Code settings, change <code class="docutils literal notranslate"><span class="pre">macstudio.modelId</span></code>; change Base URL only if necessary.</p></li>
+<li><p>In VS Code settings, change <code class="docutils literal notranslate"><span class="pre">localagent.modelId</span></code>; change Base URL only if necessary.</p></li>
 <li><p>Finish or stop the current task, then start a new chat.</p></li>
 <li><p>Click Connect and repeat the live tool-continuation test against the replacement.</p></li>
 </ol>
@@ -573,14 +590,11 @@ Package: npm run package.
 <p>This is a future feature, <strong>not integrated into the reference</strong>. Design the policy before adding a dropdown. Two modes are enough: <strong>Pinned model（固定模型）</strong> and <strong>Follow server default（跟随服务端默认模型）</strong>.</p>
 <p>In follow mode, use an explicit trusted source of truth, such as a gateway’s supported default-model API or a managed server configuration. Do not choose the first <code class="docutils literal notranslate"><span class="pre">/models</span></code> item. Resolve the endpoint/model at task start, display it, and keep the selection stable for all tool rounds in that task.</p>
 <p>Add tests for an absent default, multiple advertised models, a missing configured ID, a change between tasks, and a change during a task. On uncertainty, explain the problem and ask for a deliberate selection. Never silently send a continuation to an unrelated model.</p>
-<p><strong>UI improvement:</strong> Display <code class="docutils literal notranslate"><span class="pre">Model:</span> <span class="pre">…</span></code>, <code class="docutils literal notranslate"><span class="pre">Selection:</span> <span class="pre">Pinned</span> <span class="pre">/</span> <span class="pre">Server</span> <span class="pre">default</span></code>, and <code class="docutils literal notranslate"><span class="pre">Tools</span> <span class="pre">run</span> <span class="pre">on:</span> <span class="pre">Windows</span></code>. Report an actual resolved value rather than a label inferred from the requested configuration.</p>
+<p><strong>UI improvement:</strong> Display <code class="docutils literal notranslate"><span class="pre">Model:</span> <span class="pre">…</span></code>, <code class="docutils literal notranslate"><span class="pre">Selection:</span> <span class="pre">Pinned</span> <span class="pre">/</span> <span class="pre">Server</span> <span class="pre">default</span></code>, and <code class="docutils literal notranslate"><span class="pre">Tools</span> <span class="pre">run</span> <span class="pre">on:</span> <span class="pre">the</span> <span class="pre">actual</span> <span class="pre">extension-host</span> <span class="pre">OS</span></code>. Report an actual resolved value rather than a label inferred from the requested configuration.</p>
 <div class="important admonition">
 <p class="admonition-title">Lab acceptance evidence</p>
 <p>Produce a VSIX and document which settings and tests must change when you replace the model.</p>
 </div>
-<blockquote>
-<div><p><strong>Image Suggestion (Nanobanana Prompt)</strong>: Create a clean educational illustration for “Packaging and Model Selection”, using a neutral VS Code-inspired desktop palette, legible monospace labels, a Windows workstation and a Mac Studio where relevant, and clearly marked “Illustration” text. Emphasize the lab’s actual control or execution boundary. Include no real credentials, personal paths, or fabricated test results. Use even lighting and a flat technical-documentation style rather than decorative effects.</p>
-</div></blockquote>
 <p><strong>Continue:</strong> <a class="reference internal" href="06-capstone-and-tests.html"><span class="std std-doc">Previous</span></a> · <a class="reference internal" href="08-mcp-skills-and-next-steps.html"><span class="std std-doc">Next</span></a> · <a class="reference internal" href="index.html"><span class="std std-doc">Workshop guide</span></a></p>
 </section>
 </section>

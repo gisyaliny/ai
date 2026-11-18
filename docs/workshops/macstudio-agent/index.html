@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>00 - Build a Mac Studio Coding Agent for VS Code &#8212; AI Tools Learning Handbook</title>
+    <title>00 - Build Your Own Coding Agent: Windows, Linux and macOS &#8212; AI Tools Learning Handbook</title>
   
   
   
@@ -34,7 +34,7 @@
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
     <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=6a604523" />
   
@@ -430,7 +430,7 @@ window.addEventListener("load", load);
     <link rel="canonical" href="https://gisyaliny.github.io/ai/docs/workshops/macstudio-agent/index.html" />
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="01 - Architecture and Connection" href="01-architecture-and-connection.html" />
+    <link rel="next" title="01 - Choose Your Platform and Connect a Model" href="01-architecture-and-connection.html" />
     <link rel="prev" title="Build Your Own Coding Agent — Workshop Invitation" href="../invitation.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -597,10 +597,10 @@ window.addEventListener("load", load);
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../index.html">AI Hands-on Workshops</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../invitation.html">Build Your Own Coding Agent — Workshop Invitation</a></li>
-<li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">00 - Build a Mac Studio Coding Agent for VS Code</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="01-architecture-and-connection.html">01 - Architecture and Connection</a></li>
+<li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">00 - Build Your Own Coding Agent: Windows, Linux and macOS</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="01-architecture-and-connection.html">01 - Choose Your Platform and Connect a Model</a></li>
 <li class="toctree-l2"><a class="reference internal" href="02-first-extension.html">02 - Your First VS Code Extension</a></li>
-<li class="toctree-l2"><a class="reference internal" href="03-ssh-and-streaming.html">03 - SSH Bridge and Streaming Responses</a></li>
+<li class="toctree-l2"><a class="reference internal" href="03-ssh-and-streaming.html">03 - Local/SSH Transport and Streaming</a></li>
 <li class="toctree-l2"><a class="reference internal" href="04-project-tools.html">04 - Project Tools and the Agent Loop</a></li>
 <li class="toctree-l2"><a class="reference internal" href="05-controller-and-interface.html">05 - Controller and Sidebar Interface</a></li>
 <li class="toctree-l2"><a class="reference internal" href="06-capstone-and-tests.html">06 - Capstone: Fix, Review, and Verify</a></li>
@@ -808,7 +808,7 @@ window.addEventListener("load", load);
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>00 - Build a Mac Studio Coding Agent for VS Code</h1>
+    <h1>00 - Build Your Own Coding Agent: Windows, Linux and macOS</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -839,36 +839,36 @@ window.addEventListener("load", load);
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="build-a-mac-studio-coding-agent-for-vs-code">
-<span id="macstudio-workshop"></span><h1>00 - Build a Mac Studio Coding Agent for VS Code<a class="headerlink" href="#build-a-mac-studio-coding-agent-for-vs-code" title="Link to this heading">#</a></h1>
-<p>Build an inspectable coding assistant from a blank extension folder. Your Windows computer runs VS Code and project tools; a Mac Studio runs the model. You will connect them over SSH, implement streaming and tool calling, review code changes, and package a working extension.</p>
-<p><strong>Audience:</strong> beginners with basic JavaScript or Python experience. <strong>Language:</strong> English, with Chinese annotations for key terminology. <strong>Workshop edition:</strong> November 17, 2026. <strong>Reference implementation:</strong> Mac Studio Assistant 0.2.0.</p>
+  <section class="tex2jax_ignore mathjax_ignore" id="build-your-own-coding-agent-windows-linux-and-macos">
+<span id="localagent-workshop"></span><h1>00 - Build Your Own Coding Agent: Windows, Linux and macOS<a class="headerlink" href="#build-your-own-coding-agent-windows-linux-and-macos" title="Link to this heading">#</a></h1>
+<p>Build an inspectable coding assistant from a blank VS Code extension folder. Use <strong>Windows, Linux, or macOS</strong> for your project and a local or remote OpenAI-compatible model. You will implement streaming, tool calling, reviewed edits, command approval, and a sidebar interface.</p>
+<p><strong>Audience:</strong> beginners with basic JavaScript or Python experience. <strong>Language:</strong> English, with Chinese annotations for key terminology. <strong>Edition:</strong> November 18, 2026. <strong>Reference:</strong> Local Coding Assistant 0.3.0.</p>
+<p>The URL retains the original <code class="docutils literal notranslate"><span class="pre">macstudio-agent</span></code> slug so existing shared links keep working; the course and code are now platform-neutral. Mac Studio is an optional model host, not a prerequisite. This edition uses a new extension ID and <code class="docutils literal notranslate"><span class="pre">localagent.*</span></code> settings; re-enter settings and the API key if coming from the older extension.</p>
 <section id="workshop-outcomes">
 <h2>Workshop outcomes<a class="headerlink" href="#workshop-outcomes" title="Link to this heading">#</a></h2>
 <p>By the end you can trace an <strong>agent loop（智能体循环）</strong>, implement <strong>built-in tools（内置工具）</strong>, build a <strong>Webview（网页视图）</strong>, and distinguish a proposed edit from an applied and tested change. You will also know what model switching, <strong>MCP（模型上下文协议）</strong>, and <strong>skills（技能指令包）</strong> do—and what this reference does not implement.</p>
 <pre  class="mermaid">
         flowchart LR
-    U[&quot;Windows: VS Code sidebar&quot;] &lt;--&gt; E[&quot;Windows: extension and reviewed tools&quot;]
-    E &lt;--&gt;|&quot;SSH&quot;| B[&quot;Mac: temporary Python bridge&quot;]
-    B &lt;--&gt;|&quot;loopback HTTP&quot;| M[&quot;Mac: model API&quot;]
-    E &lt;--&gt; F[&quot;Windows project files&quot;]
+    U[&quot;VS Code on Windows / Linux / macOS&quot;] &lt;--&gt; E[&quot;Extension and reviewed project tools&quot;]
+    E &lt;--&gt; B[&quot;Python bridge: local or optional remote&quot;]
+    B &lt;--&gt; M[&quot;Same-machine API or remote API through SSH&quot;]
+    E &lt;--&gt; F[&quot;Selected project files&quot;]
     </pre></section>
 <section id="download-the-workshop-materials">
 <h2>Download the workshop materials<a class="headerlink" href="#download-the-workshop-materials" title="Link to this heading">#</a></h2>
 <ul class="simple">
-<li><p><a class="reference download internal" download="" href="../../../_downloads/0459fe81fb0711c813e445dda689b342/MacStudio-Beginner-Course.zip"><code class="xref download docutils literal notranslate"><span class="pre">Complete</span> <span class="pre">tutorial</span> <span class="pre">and</span> <span class="pre">reference</span> <span class="pre">source</span></code></a> — includes the English reference project, lockfile, intentionally broken exercise, and original validation record. Extract it locally; do not run it inside a browser notebook.</p></li>
+<li><p><a class="reference download internal" download="" href="../../../_downloads/f3d25bbcac1c25c899ce5b9eb91ad4ac/Coding-Agent-Workshop.zip"><code class="xref download docutils literal notranslate"><span class="pre">Complete</span> <span class="pre">tutorial</span> <span class="pre">and</span> <span class="pre">reference</span> <span class="pre">source</span></code></a> — includes the English reference project, lockfile, intentionally broken exercise, and current validation record. Extract it locally; do not run it inside a browser notebook.</p></li>
 <li><p><a class="reference internal" href="validation.html"><span class="std std-doc">Validation and reproducibility notes</span></a> — what was tested, when, and what remains a learner check.</p></li>
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The downloadable reference was tested on November 11, 2026. Publication on November 17 does not imply every model service or MCP integration was retested. Hostnames, model IDs, ports, and key paths are examples; use your own deployment. No private keys or real API credentials are included.</p>
+<p>The current validation record separates Windows fixture tests from live-model and other-OS checks. Cross-platform code and commands do not imply that every OS/model combination has been tested. Never submit real keys, account names, or private host addresses as workshop evidence.</p>
 </div>
 </section>
 <section id="prerequisites-and-preflight">
 <h2>Prerequisites and preflight<a class="headerlink" href="#prerequisites-and-preflight" title="Link to this heading">#</a></h2>
-<p>Bring a Windows computer with desktop VS Code, Node.js/npm, OpenSSH, and Python 3. You need access to a Mac with SSH, Python 3, and an already-running OpenAI-compatible model API. The workshop teaches the agent client, not model training or weight installation.</p>
-<p>Complete the SSH and API checks in Lab 1 before a group session. If you cannot access a model, you can still complete the hello-world extension, offline file-tool tests, and UI reading. Mark live checkpoints as <strong>not run</strong>; do not substitute fabricated outputs.</p>
-<p>This book page is the instruction surface. PowerShell commands run in a Windows terminal; Mac commands run on the Mac; extension code runs in the VS Code Development Host. Copyable code blocks are deliberately not executed during Jupyter Book builds.</p>
+<p>Bring desktop VS Code, Node.js/npm, and Python 3. <a class="reference internal" href="01-architecture-and-connection.html"><span class="std std-doc">Lab 1</span></a> supplies separate Windows PowerShell, Linux Bash and macOS Terminal commands, plus a portable probe. Choose <strong>A: same computer</strong>, <strong>B: SSH tunnel to any supported server OS</strong>, or <strong>C: optional Linux/macOS remote bridge</strong>. If you lack a model, complete the offline tests and UI construction and mark live exercises as not run.</p>
+<p>The book contains copyable examples; it does not execute shell commands during a build. Run commands only in the labelled terminal. Downloaded scripts include <code class="docutils literal notranslate"><span class="pre">scripts/check.ps1</span></code>, <code class="docutils literal notranslate"><span class="pre">scripts/check.cmd</span></code> and <code class="docutils literal notranslate"><span class="pre">scripts/check.sh</span></code>. The shared Python and JavaScript source is identical across platforms.</p>
 </section>
 <section id="agenda-and-pacing">
 <h2>Agenda and pacing<a class="headerlink" href="#agenda-and-pacing" title="Link to this heading">#</a></h2>
@@ -890,7 +890,7 @@ window.addEventListener("load", load);
 <td><p>35 min</p></td>
 </tr>
 <tr class="row-even"><td><p>3</p></td>
-<td><p><a class="reference internal" href="03-ssh-and-streaming.html"><span class="std std-doc">SSH Bridge and Streaming Responses</span></a></p></td>
+<td><p><a class="reference internal" href="03-ssh-and-streaming.html"><span class="std std-doc">Local/SSH Transport and Streaming</span></a></p></td>
 <td><p>50 min</p></td>
 </tr>
 <tr class="row-odd"><td><p>4</p></td>
@@ -939,7 +939,7 @@ window.addEventListener("load", load);
 </thead>
 <tbody>
 <tr class="row-even"><td><p>Connection record</p></td>
-<td><p>Noninteractive SSH and authenticated API discovery succeed</p></td>
+<td><p>The selected route reaches the API and discovers the configured model</p></td>
 </tr>
 <tr class="row-odd"><td><p>Agent trace</p></td>
 <td><p>A model tool call receives the matching result and continues</p></td>
@@ -963,14 +963,11 @@ window.addEventListener("load", load);
 <section id="instructor-notes">
 <h2>Instructor notes<a class="headerlink" href="#instructor-notes" title="Link to this heading">#</a></h2>
 <p>Prepare a known-working reference on a separate demo folder. Test the serving model’s tool template before class, reserve time for SSH-agent issues, and avoid having a whole class saturate one model server simultaneously. Pair participants for diff review and ask each to explain which computer executes a command.</p>
-<p>Do not distribute a private SSH key or shared production credentials. Use individual authorized access and disposable exercise files. Remote server tools have their own policy; the Windows command confirmation does not automatically govern them.</p>
+<p>Do not distribute a private SSH key or shared production credentials. Use individual authorized access and disposable exercise files. Remote server tools have their own policy; the client command confirmation does not automatically govern them.</p>
 </section>
 <section id="scope-and-follow-up">
 <h2>Scope and follow-up<a class="headerlink" href="#scope-and-follow-up" title="Link to this heading">#</a></h2>
 <p>Implemented: streaming text, local list/read/search tools, edit proposals, native diffs, explicit apply, and approved commands. Optional design exercises: automatic primary-model discovery, a general MCP client, and automatic skill loading. Image input, persistent conversations, and a hardened process sandbox are not delivered features.</p>
-<blockquote>
-<div><p><strong>Image Suggestion (Nanobanana Prompt)</strong>: Create a welcoming workshop cover with a Windows laptop showing a restrained editor sidebar and a Mac Studio on a neutral desk. Label the devices “Project tools” and “Model inference”; add the title “Build a Mac Studio Coding Agent”. Use clean typography, soft daylight, a navy and teal palette, and a small “Concept illustration” caption. Do not show passwords or imply a real screenshot.</p>
-</div></blockquote>
 </section>
 <section id="read-more">
 <h2>Read More<a class="headerlink" href="#read-more" title="Link to this heading">#</a></h2>
@@ -984,10 +981,10 @@ window.addEventListener("load", load);
 </section>
 <section id="knowledge-quiz">
 <h2>Knowledge Quiz<a class="headerlink" href="#knowledge-quiz" title="Link to this heading">#</a></h2>
-<p><strong>1. Does this workshop run the model on Windows?</strong></p>
+<p><strong>1. Must the model run on a Mac?</strong></p>
 <details>
 <summary>Answer</summary>
-<p>No. Windows runs the extension and client project tools; the example model runs on the Mac.</p>
+<p>No. The model can run on Windows, Linux or macOS, on the client or a separate server.</p>
 </details>
 <p><strong>2. What is the capstone evidence?</strong></p>
 <details>
@@ -1048,7 +1045,7 @@ window.addEventListener("load", load);
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">01 - Architecture and Connection</p>
+        <p class="prev-next-title">01 - Choose Your Platform and Connect a Model</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

@@ -34,7 +34,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
     <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=6a604523" />
   
@@ -65,7 +65,7 @@
     <link rel="canonical" href="https://gisyaliny.github.io/ai/docs/workshops/invitation.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="00 - Build a Mac Studio Coding Agent for VS Code" href="macstudio-agent/index.html" />
+    <link rel="next" title="00 - Build Your Own Coding Agent: Windows, Linux and macOS" href="macstudio-agent/index.html" />
     <link rel="prev" title="AI Hands-on Workshops" href="index.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -232,10 +232,10 @@
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="index.html">AI Hands-on Workshops</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Build Your Own Coding Agent — Workshop Invitation</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="macstudio-agent/index.html">00 - Build a Mac Studio Coding Agent for VS Code</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="macstudio-agent/01-architecture-and-connection.html">01 - Architecture and Connection</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="macstudio-agent/index.html">00 - Build Your Own Coding Agent: Windows, Linux and macOS</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="macstudio-agent/01-architecture-and-connection.html">01 - Choose Your Platform and Connect a Model</a></li>
 <li class="toctree-l2"><a class="reference internal" href="macstudio-agent/02-first-extension.html">02 - Your First VS Code Extension</a></li>
-<li class="toctree-l2"><a class="reference internal" href="macstudio-agent/03-ssh-and-streaming.html">03 - SSH Bridge and Streaming Responses</a></li>
+<li class="toctree-l2"><a class="reference internal" href="macstudio-agent/03-ssh-and-streaming.html">03 - Local/SSH Transport and Streaming</a></li>
 <li class="toctree-l2"><a class="reference internal" href="macstudio-agent/04-project-tools.html">04 - Project Tools and the Agent Loop</a></li>
 <li class="toctree-l2"><a class="reference internal" href="macstudio-agent/05-controller-and-interface.html">05 - Controller and Sidebar Interface</a></li>
 <li class="toctree-l2"><a class="reference internal" href="macstudio-agent/06-capstone-and-tests.html">06 - Capstone: Fix, Review, and Verify</a></li>
@@ -471,14 +471,14 @@
 <section id="id1">
 <h2>中文<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
 <p>还在担心 token 不够用、写代码总被额度打断？让手边的算力多做一点！从合适的本地模型出发，动手打造拥有 Codex / Claude Code 式工作流程的编程助手：读代码、提修改、看差异、跑测试。</p>
-<p>这套免费公开 workshop 用 8 个实验，带你连接 Windows VS Code 与 Mac Studio，理解工具调用、界面设计，以及 MCP 和 skills 的扩展思路。附可复制代码、完整源码和验收任务，照着做，也学会为什么这样做。</p>
-<p>旧显卡也可能运行适合的小型量化模型，具体取决于硬件支持和显存；本课程的实操后端使用 Mac Studio。本地推理减少对云端 token 额度的依赖，但不是无限算力，也不保证达到商业产品的全部能力。</p>
+<p>这套免费公开 workshop 用 8 个实验，带你在 Windows、Linux 或 macOS 上，从零搭建 VS Code 编程助手，连接本机或远程模型服务，理解工具调用、界面设计，以及 MCP 和 skills 的扩展思路。附可复制代码、完整源码和验收任务，照着做，也学会为什么这样做。</p>
+<p>旧显卡也可能运行适合的小型量化模型，具体取决于硬件支持和显存。课程提供三种系统的命令和脚本，Mac Studio、Linux GPU 服务器或 Windows 工作站都可以作为模型主机。本地推理减少对云端 token 额度的依赖，但不是无限算力，也不保证达到商业产品的全部能力。</p>
 </section>
 <section id="english">
 <h2>English<a class="headerlink" href="#english" title="Link to this heading">#</a></h2>
 <p>Still watching your token budget instead of building? Put more of your own compute to work. Build a coding assistant with a Codex- or Claude Code-style workflow: read code, propose changes, review diffs, and run tests.</p>
-<p>This free, public workshop walks you through eight hands-on labs connecting Windows VS Code to a Mac Studio model server. Learn tool calling, interface design, and extension paths for MCP and skills—with copyable code, full source, and clear checkpoints.</p>
-<p>An older supported GPU may also run a suitably small quantized model, depending on VRAM and runtime compatibility; this workshop uses Mac Studio. Local inference reduces reliance on cloud token allowances, but hardware limits and capability differences still apply.</p>
+<p>This free, public workshop walks you through eight hands-on labs building a VS Code coding assistant on Windows, Linux, or macOS, with a same-machine model or a remote server reached through SSH. Learn tool calling, interface design, and extension paths for MCP and skills—with copyable code, full source, and clear checkpoints.</p>
+<p>An older supported GPU may also run a suitably small quantized model, depending on VRAM and runtime compatibility; the workshop includes platform-specific commands and scripts for Windows, Linux, and macOS. Local inference reduces reliance on cloud token allowances, but hardware limits and capability differences still apply.</p>
 <p><a class="reference external" href="https://gisyaliny.github.io/ai/docs/workshops/macstudio-agent/index.html">Start the workshop</a> · <a class="reference external" href="https://gisyaliny.github.io/ai/docs/workshops/index.html">Explore all workshops</a></p>
 </section>
 </section>
@@ -527,7 +527,7 @@
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">00 - Build a Mac Studio Coding Agent for VS Code</p>
+        <p class="prev-next-title">00 - Build Your Own Coding Agent: Windows, Linux and macOS</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
