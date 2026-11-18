@@ -19,7 +19,7 @@ This record applies to the English reference accompanying the original downloada
 ## Environment and practical qualifications
 
 - Windows x64, Node 22.16.0, OpenSSH, and Python were used. The Mac was reached using the existing `macstudio` alias and authorized `id_ed25519` key.
-- Live requests selected `qwen3.8-flash-next-q6`. Model discovery also listed another ID at validation time; the reference continued to request its explicitly configured ID. This does not establish what weights the server may route behind a model alias.
+- Live requests selected `YOUR_MODEL_ID`. Model discovery also listed another ID at validation time; the reference continued to request its explicitly configured ID. This does not establish what weights the server may route behind a model alias.
 - The regular VS Code installation was updating and could not launch the initial test. The host test was rerun successfully with an existing separate VS Code 1.139.1 test build.
 - That archived test build logged an unrelated missing TextMate worker resource. The extension-host assertions, Webview readiness, and model edit flow still passed. This is not a claim of flawless editor installation or visual pixel-level review.
 - Packaging and host tests reused the existing development dependencies. A fresh-machine npm installation was not performed; the reference includes the resolved package lockfile for reproduction.

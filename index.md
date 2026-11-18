@@ -12,6 +12,10 @@ This Jupyter Book contains my study notes and tutorials on various AI tools and 
 - **Skills**: Creating and using AI agent skills
 - And more...
 
+## Start a Workshop
+
+[Choose a hands-on learning path](docs/workshops/index.md). Each workshop includes prerequisites, concrete tasks, acceptance evidence and troubleshooting. [Read the bilingual invitation](docs/workshops/invitation.md).
+
 ## Getting Started
 
 Browse through the chapters using the sidebar to explore different topics. Each section contains notebooks with examples, explanations, and hands-on tutorials.

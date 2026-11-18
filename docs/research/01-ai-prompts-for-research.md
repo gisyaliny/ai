@@ -1,6 +1,52 @@
-# AI Prompts & Skills for Academic Research
+# 05 - Audit Claims Before Adding Citations Workshop
 
-This tutorial is a curated collection of **battle-tested AI prompts** designed to accelerate your academic research workflow. Whether you need to add citations to a manuscript, generate publication-quality figures, build conference slides, or polish your writing, these prompts will turn any modern LLM (Claude, ChatGPT, Gemini, DeepSeek, etc.) into a powerful research assistant.
+**Time:** 60 minutes · **Audience:** beginners · **Updated:** November 18, 2026.
+
+## Workshop preparation
+
+Any text-capable assistant; the synthetic research fixture from the kit. No manuscript or personal data is needed.
+
+Download the {download}`shared workshop kit <../workshops/assets/workshop-kit.zip>` and extract it into a disposable folder. [Browse all workshops](../workshops/index.md). Code blocks run in your local terminal, not on this web page. Record your tool versions and use synthetic inputs.
+
+## Hands-on route
+
+1. Open `research-fixture.txt` from the downloaded kit. It is invented training data, not a paper and not a citable study.
+2. Send the prompt below with the fixture. Build a claim/evidence/uncertainty table before polishing prose.
+3. Check that the assistant rejects causal, universal and significance claims: there is no control group, only one small sample, and no significance test.
+4. Ask for a restrained two-sentence summary preserving all numbers. Verify 12, 18 and 15 against the fixture manually.
+5. Optional citation exercise: choose one real background claim, locate two primary sources, open them, and record title, DOI/URL, supporting passage and limitations. Mark unsupported claims rather than inventing citations. Do not cite the synthetic fixture as research.
+
+```text
+Use only this synthetic fixture. Produce a claim/evidence/uncertainty table.
+Do not invent authors, papers, p-values, controls, or causal conclusions.
+Rewrite the draft in two sentences with the original numbers and limitations.
+```
+
+## Acceptance evidence
+
+A verified claim table, a two-sentence summary, and either a checked source ledger or an explicit not-run citation extension.
+
+Create `evidence.md` with your environment, commands, observed outputs, failures and fixes. Label anything you did not run. Do not include secrets, screenshots of account pages, or private paths.
+
+## Troubleshooting and cleanup
+
+A plausible citation is not evidence: open its source. If the assistant inserts significance or causality, flag it and revise the summary. Stop any demo server when finished; retain only the small fixture and evidence needed to reproduce your result.
+
+```{mermaid}
+flowchart LR
+    A["Prepare synthetic fixture"] --> B["Run guided task"]
+    B --> C["Check observed result"]
+    C --> D["Record evidence and limitations"]
+```
+
+> **Image Suggestion (Nanobanana Prompt)**: A clean technical workshop illustration titled “Audit Claims Before Adding Citations”, with a neutral editor window, a small synthetic fixture, and an evidence checklist. Use legible navy and teal typography on a light background, even lighting, and a visible “Concept illustration” label. Show no account identity, private paths, or simulated success presented as a screenshot.
+
+## Reference and optional extensions
+
+The material below provides background. Complete the guided acceptance test above first; vendor interfaces and example model IDs can change. Consult the linked official documentation for the version you use.
+
+
+This tutorial is a curated collection of **adaptable AI prompt examples** designed to accelerate your academic research workflow. Whether you need to add citations to a manuscript, generate publication-quality figures, build conference slides, or polish your writing, these prompts will turn any modern LLM (Claude, ChatGPT, Gemini, DeepSeek, etc.) into a powerful research assistant.
 
 > **Prerequisites**: Access to an LLM with a "thinking" or "extended reasoning" mode (e.g., Claude with Extended Thinking, ChatGPT o1/o3, Gemini 2.5 Pro, DeepSeek R1). A web-search-enabled mode is strongly recommended for citation tasks.
 
@@ -23,7 +69,7 @@ Step 2: Use your search tools to find relevant, high-quality academic papers for
         claim. Selection criteria:
         - Prefer peer-reviewed journal articles or top-tier conference papers.
         - Prioritize papers with high citation counts (>50 citations preferred).
-        - Strongly prefer papers published within the last 5 years (2021 or later).
+        - Strongly prefer papers published within the last five years relative to your search date.
         - Include foundational/seminal works if they are critical to the claim,
           even if older.
 

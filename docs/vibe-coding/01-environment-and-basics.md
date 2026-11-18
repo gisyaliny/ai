@@ -1,67 +1,58 @@
-# Environment Setup & Basic Interaction (Environment Setup & Basic Interaction)
+# 01 - Build and Test a Small App Workshop
 
-This chapter will guide you from scratch to set up the runtime environment for Claude Code and complete your first basic interaction. As a highly popular AI programming Agent, Claude Code can significantly boost your development efficiency.
+**Time:** 45 minutes · **Audience:** beginners · **Updated:** November 18, 2026.
 
-## Installing Claude Code
+## Workshop preparation
 
-To install Claude Code, perform the following steps:
-1. Visit the official Claude Code website and copy the installation command.
-2. Paste and run the installation command in your terminal.
-Example:
-```bash
-# Typical installation command (based on official prompts)
-npm install -g @anthropic-ai/claude-code
+Desktop editor, Git, a supported Claude Code installation and account; no private project data.
+
+Download the {download}`shared workshop kit <../workshops/assets/workshop-kit.zip>` and extract it into a disposable folder. [Browse all workshops](../workshops/index.md). Code blocks run in your local terminal, not on this web page. Record your tool versions and use synthetic inputs.
+
+## Hands-on route
+
+1. Follow the [official installation and sign-in guide](https://code.claude.com/docs/en/quickstart), then run `claude --version`. Record the version; account access and billing are separate from this workshop.
+2. Create a fresh folder named `todo-workshop`. Run `git init` there and open it in your editor. Start `claude` from that folder.
+3. Send the prompt below. Review each proposed file and command. Use the normal permission workflow; bypass mode is not a workshop requirement.
+4. Open the generated `index.html` in a browser. Add two tasks, complete one, delete the other, and refresh. Repeat using only keyboard navigation.
+5. Save an evidence table with actions, expected behavior and observed behavior. Ask for a minimal fix for any failed case, then repeat the same test.
+
+```text
+Create a single-file HTML to-do app with no dependencies or network calls.
+Support add, complete, delete, and persistence after refresh using localStorage.
+Reject blank tasks, use textContent for task labels, and label every control.
+Explain the plan first. Ask before running terminal commands.
 ```
 
-> **Image Suggestion (Nanobanana Prompt)**: A sleek, minimalist dark-themed terminal application window on a desk. The terminal screen displays a clean green checkmark in the center, accompanied by glowing crisp white text reading "Claude Code Installed Successfully!". Below the text, there is a prominent progress bar filled to 100%. The surrounding environment is a dimly lit cyberpunk hacker room with subtle neon blue backlighting on the keyboard, ultra-detailed 8k resolution, cinematic lighting.
+## Acceptance evidence
 
-## Login & Authorization
+A working HTML file, five-case manual test table, and a reviewed diff.
 
-After installation, navigate to your project directory in the terminal, for example:
-```bash
-mkdir MyTodo
-cd MyTodo
-claude
+Create `evidence.md` with your environment, commands, observed outputs, failures and fixes. Label anything you did not run. Do not include secrets, screenshots of account pages, or private paths.
+
+## Troubleshooting and cleanup
+
+Blank tasks accepted: test trim() at input. Tasks disappear: inspect localStorage and browser errors. A command fails: record the actual error before asking for a fix. Stop any demo server when finished; retain only the small fixture and evidence needed to reproduce your result.
+
+```{mermaid}
+flowchart LR
+    A["Prepare synthetic fixture"] --> B["Run guided task"]
+    B --> C["Check observed result"]
+    C --> D["Record evidence and limitations"]
 ```
-Upon your first entry, it may prompt you to log in. If not prompted, you can manually trigger the login process by typing the `/login` command.
-- **Login Methods**: The official platform offers two methods: Subscription (Pro/Max) and API Key (Pay-as-you-go).
-- **Authorization**: After making a selection, you will be redirected to a browser page for authorization. Once successful, return to the terminal to complete the login.
 
-## The First Practical Task
+> **Image Suggestion (Nanobanana Prompt)**: A clean technical workshop illustration titled “Build and Test a Small App”, with a neutral editor window, a small synthetic fixture, and an evidence checklist. Use legible navy and teal typography on a light background, even lighting, and a visible “Concept illustration” label. Show no account identity, private paths, or simulated success presented as a screenshot.
 
-Next, we will use Claude Code to create a simple ToDo application.
-- Enter the command: `Make a ToDo app for me, implement it using HTML.`
-- Claude Code will plan to create an `index.html` file and prompt you for permission/authorization.
-
-## Understanding the Three Modes (Default / Auto / Plan)
-
-When Claude Code wants to perform file operations (like creating a file), you face a choice among three authorization modes. You can use the `Shift + Tab` shortcut to toggle between them:
-
-1. **Default Mode ("Press ? for shortcuts")**: The most cautious mode. It asks for the user's explicit permission before every file creation or modification.
-2. **Auto Mode ("Accept edits on")**: The most convenient mode. It automatically agrees to all file read/write operations during the current conversation, stopping repeated prompts.
-3. **Plan Mode ("Plan mode on")**: Dedicated to discussing solutions and making plans without directly modifying project files. Ideal for brainstorming complex architectural changes.
-
-    ![calude code modes](./img/001.png)
----
 ## Read More
 
-- [Claude Code Official Documentation](https://docs.anthropic.com/en/docs/claude-code/overview) — Full feature reference and setup guide.
-- [Claude Code CLI Reference](https://docs.anthropic.com/en/docs/claude-code/cli-reference) — Complete list of commands and flags.
-- [Getting Started with Claude Code (Anthropic Blog)](https://www.anthropic.com/blog/claude-code) — Official introduction and use cases.
-- [Node.js Download](https://nodejs.org/) — Required runtime for Claude Code installation.
-
----
+- [Claude Code quickstart](https://code.claude.com/docs/en/quickstart) — Installation and account setup.
+- [Skills](https://code.claude.com/docs/en/skills) — Supported skill paths and invocation.
+- [Permissions](https://code.claude.com/docs/en/permissions) — Review the installed client's permission behavior.
+- [MCP](https://code.claude.com/docs/en/mcp) — Configure a specific trusted server and inspect access.
 
 ## Knowledge Quiz
 
-**Q1: What command should you use to manually trigger the login process in Claude Code?**
-<details>
-<summary>Answer</summary>
-Type the `/login` command to trigger the login flow manually.
-</details>
+**What evidence makes this lab complete?**
+<details><summary>Answer</summary>The acceptance artifacts listed above and actual observed results. A model's claim of success is insufficient.</details>
 
-**Q2: If you want Claude Code to freely modify code during the current session without bothering you, which mode should you switch to? What shortcut key is used?**
-<details>
-<summary>Answer</summary>
-Switch to Auto mode ("Accept edits on"). Use the `Shift + Tab` shortcut to toggle.
-</details>
+**Does accepting file edits approve every terminal command or remote action?**
+<details><summary>Answer</summary>No. Editing, shell execution and remote tool permissions are separate controls; inspect the actual scope before approving.</details>

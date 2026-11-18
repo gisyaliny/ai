@@ -1,4 +1,48 @@
-# Graph RAG: Knowledge Graphs Meet Retrieval
+# 10 - Retrieve a Two-Hop Evidence Path Workshop
+
+**Time:** 45 minutes · **Audience:** beginners · **Updated:** November 18, 2026.
+
+## Workshop preparation
+
+Python 3.10+ and graph.py from the workshop kit. No database or paid model required for the core lab.
+
+Download the {download}`shared workshop kit <../workshops/assets/workshop-kit.zip>` and extract it into a disposable folder. [Browse all workshops](../workshops/index.md). Code blocks run in your local terminal, not on this web page. Record your tool versions and use synthetic inputs.
+
+## Hands-on route
+
+1. Read the three fictional edges in graph.py. Sketch which equipment is connected to Ada through Project Atlas.
+2. Run `python graph.py`. Expect two edges carrying source IDs S1 and S2 and a passing missing-entity assertion.
+3. Change depth to 1, then 3. Record which source IDs become reachable; distinguish graph reachability from proof of a broader claim.
+4. Add a second person connected to Project Atlas. Ask whether both people work in Lab West. Explain why a project/equipment path alone does not establish personal workplace location.
+5. Optional advanced route: follow Microsoft's current GraphRAG quickstart with a small synthetic corpus and a deliberate indexing budget. Compare local/global questions. The offline lab is a graph-retrieval demonstration, not an implementation of Microsoft's extraction, clustering or community summaries.
+
+```{literalinclude} ../workshops/assets/graph.py
+:language: python
+```
+
+## Acceptance evidence
+
+Two-hop and three-hop path outputs plus a statement of what the graph does not justify.
+
+Create `evidence.md` with your environment, commands, observed outputs, failures and fixes. Label anything you did not run. Do not include secrets, screenshots of account pages, or private paths.
+
+## Troubleshooting and cleanup
+
+No edges: check entity spelling. Too many relations: bound depth and keep provenance. Do not index a large private corpus as the first test. Stop any demo server when finished; retain only the small fixture and evidence needed to reproduce your result.
+
+```{mermaid}
+flowchart LR
+    A["Prepare synthetic fixture"] --> B["Run guided task"]
+    B --> C["Check observed result"]
+    C --> D["Record evidence and limitations"]
+```
+
+> **Image Suggestion (Nanobanana Prompt)**: A clean technical workshop illustration titled “Retrieve a Two-Hop Evidence Path”, with a neutral editor window, a small synthetic fixture, and an evidence checklist. Use legible navy and teal typography on a light background, even lighting, and a visible “Concept illustration” label. Show no account identity, private paths, or simulated success presented as a screenshot.
+
+## Reference and optional extensions
+
+The material below provides background. Complete the guided acceptance test above first; vendor interfaces and example model IDs can change. Consult the linked official documentation for the version you use.
+
 
 Traditional RAG struggles with global questions ("How many times is X mentioned?") and loses inter-chunk relationships. **Graph RAG** solves this by building a **knowledge graph** from your documents, enabling both fine-grained and high-level reasoning.
 
