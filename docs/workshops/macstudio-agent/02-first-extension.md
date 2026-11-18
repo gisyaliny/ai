@@ -1,4 +1,4 @@
-(macstudio-lab-02)=
+(localagent-lab-02)=
 # 02 - Your First VS Code Extension
 
 **Format:** hands-on lab · **Suggested time:** 35 minutes · **Original course lessons:** 3–4.
@@ -14,30 +14,42 @@ Create a manifest, register a command, and launch an isolated Extension Developm
 
 ### 3.1 Create a clean source folder
 
-**Run on Windows:**
+**Run on your client:**
+
+**Windows PowerShell:**
 
 ```powershell
-New-Item -ItemType Directory -Path "$env:USERPROFILE\Documents\macstudio-assistant-course"
-Set-Location "$env:USERPROFILE\Documents\macstudio-assistant-course"
+New-Item -ItemType Directory -Path "$env:USERPROFILE\Documents\localagent-assistant-course"
+Set-Location "$env:USERPROFILE\Documents\localagent-assistant-course"
 New-Item -ItemType Directory -Path src,media,test,.vscode
 code .
 ```
 
-If that folder already exists, choose a different empty name. This is the extension source folder, not the project the agent will later edit.
+**Linux Bash / macOS zsh:**
+
+```bash
+mkdir -p "$HOME/Documents"
+mkdir "$HOME/Documents/localagent-assistant-course"
+cd "$HOME/Documents/localagent-assistant-course"
+mkdir src media test .vscode
+code .
+```
+
+If that folder already exists, choose a different empty name. On Windows CMD you can use `mkdir`, `cd /d`, and `npm.cmd`; PowerShell variables such as `$env:USERPROFILE` do not work in CMD. This is the extension source folder, not the project the agent will later edit.
 
 **Create `package.json`:**
 
 ```json
 {
-  "name": "macstudio-assistant",
-  "displayName": "Mac Studio Assistant",
-  "version": "0.2.0",
+  "name": "localagent-assistant",
+  "displayName": "Local Coding Assistant",
+  "version": "0.3.0",
   "publisher": "workshop-example",
   "engines": { "vscode": "^1.96.0" },
   "main": "./src/extension.js",
-  "activationEvents": ["onCommand:macstudio.open"],
+  "activationEvents": ["onCommand:localagent.open"],
   "contributes": {
-    "commands": [{"command": "macstudio.open", "title": "Mac Studio: Open chat"}]
+    "commands": [{"command": "localagent.open", "title": "Local Agent: Open chat"}]
   }
 }
 ```
@@ -49,7 +61,7 @@ const vscode = require('vscode');
 
 function activate(context) {
   context.subscriptions.push(
-    vscode.commands.registerCommand('macstudio.open', () => {
+    vscode.commands.registerCommand('localagent.open', () => {
       vscode.window.showInformationMessage('Your extension is running.');
     })
   );
@@ -64,10 +76,10 @@ module.exports = { activate };
 
 ```json
 {
-  "version": "0.2.0",
+  "version": "0.3.0",
   "configurations": [
     {
-      "name": "Run Mac Studio extension",
+      "name": "Run Local Agent extension",
       "type": "extensionHost",
       "request": "launch",
       "args": [
@@ -79,7 +91,7 @@ module.exports = { activate };
 }
 ```
 
-Press **F5** in the source window. A second window, the **Extension Development Host**, opens. In that second window, press `Ctrl+Shift+P`, run **Mac Studio: Open chat**, and look for the notification. The launch configuration disables other installed extensions for this development session to avoid conflicts with the installed edition.
+Press **F5** in the source window. A second window, the **Extension Development Host**, opens. In that second window, press `Ctrl+Shift+P` (Windows/Linux) or `Cmd+Shift+P` (macOS), run **Local Agent: Open chat**, and look for the notification. The launch configuration disables other installed extensions for this development session to avoid conflicts with the installed edition.
 
 This is the standard extension debugging workflow; see Microsoft's [first extension guide](https://code.visualstudio.com/api/get-started/your-first-extension).
 
@@ -93,10 +105,10 @@ The manifest is the contract between your extension and VS Code. It declares com
 
 ```json
 {
-  "name": "macstudio-assistant",
-  "displayName": "Mac Studio Assistant",
-  "description": "A coding assistant powered by a remote Mac, with reviewed client-side edits.",
-  "version": "0.2.0",
+  "name": "localagent-assistant",
+  "displayName": "Local Coding Assistant",
+  "description": "A coding assistant for Windows, Linux and macOS, with reviewed project edits.",
+  "version": "0.3.0",
   "publisher": "workshop-example",
   "license": "MIT",
   "engines": {
@@ -111,7 +123,7 @@ The manifest is the contract between your extension and VS Code. It declares com
     "workspace"
   ],
   "activationEvents": [
-    "onView:macstudio.chat"
+    "onView:localagent.chat"
   ],
   "capabilities": {
     "untrustedWorkspaces": {
@@ -123,16 +135,16 @@ The manifest is the contract between your extension and VS Code. It declares com
     "viewsContainers": {
       "activitybar": [
         {
-          "id": "macstudio",
-          "title": "Mac Studio",
+          "id": "localagent",
+          "title": "Local Agent",
           "icon": "media/icon.svg"
         }
       ]
     },
     "views": {
-      "macstudio": [
+      "localagent": [
         {
-          "id": "macstudio.chat",
+          "id": "localagent.chat",
           "name": "Assistant",
           "type": "webview"
         }
@@ -140,72 +152,72 @@ The manifest is the contract between your extension and VS Code. It declares com
     },
     "commands": [
       {
-        "command": "macstudio.open",
-        "title": "Mac Studio: Open chat"
+        "command": "localagent.open",
+        "title": "Local Agent: Open chat"
       },
       {
-        "command": "macstudio.connect",
-        "title": "Mac Studio: Check connection"
+        "command": "localagent.connect",
+        "title": "Local Agent: Check connection"
       },
       {
-        "command": "macstudio.settings",
-        "title": "Mac Studio: Connection settings"
+        "command": "localagent.settings",
+        "title": "Local Agent: Connection settings"
       },
       {
-        "command": "macstudio.attach",
-        "title": "Mac Studio: Attach selection or file"
+        "command": "localagent.attach",
+        "title": "Local Agent: Attach selection or file"
       },
       {
-        "command": "macstudio.newChat",
-        "title": "Mac Studio: New chat"
+        "command": "localagent.newChat",
+        "title": "Local Agent: New chat"
       },
       {
-        "command": "macstudio.setApiKey",
-        "title": "Mac Studio: Set API key"
+        "command": "localagent.setApiKey",
+        "title": "Local Agent: Set API key"
       }
     ],
     "menus": {
       "editor/context": [
         {
-          "command": "macstudio.attach",
+          "command": "localagent.attach",
           "group": "navigation@90"
         }
       ]
     },
     "configuration": {
-      "title": "Mac Studio Assistant",
+      "title": "Local Coding Assistant",
       "properties": {
-        "macstudio.sshHost": {
+        "localagent.sshHost": {
           "type": "string",
-          "default": "macstudio",
+          "default": "model-server",
           "scope": "machine",
           "description": "SSH config alias or user@host. Host fingerprint must already be trusted."
         },
-        "macstudio.sshIdentityFile": {
+        "localagent.sshIdentityFile": {
           "type": "string",
-          "default": "~/.ssh/macstudio_course",
+          "default": "",
           "scope": "machine",
           "description": "Local private key path. Leave empty to use SSH config or agent."
         },
-        "macstudio.sshExecutable": {
+        "localagent.sshExecutable": {
           "type": "string",
           "default": "ssh",
           "scope": "machine",
           "description": "Local OpenSSH executable."
         },
-        "macstudio.remotePython": {
+        "localagent.remotePython": {
           "type": "string",
-          "default": "/usr/bin/python3",
+          "default": "python3",
           "scope": "machine",
-          "description": "Python 3 executable on the Mac."
+          "description": "Python 3 executable on a Linux/macOS SSH bridge host. Windows servers use a tunnel with local transport."
         },
-        "macstudio.remoteConfig": {
+        "localagent.remoteConfig": {
           "type": "string",
           "default": "~/.openclaw/openclaw.json",
           "scope": "machine",
           "description": "Remote OpenClaw JSON configuration; only used by legacy modes."
         },
-        "macstudio.mode": {
+        "localagent.mode": {
           "type": "string",
           "enum": [
             "direct",
@@ -215,45 +227,61 @@ The manifest is the contract between your extension and VS Code. It declares com
           "default": "direct",
           "description": "Direct uses the configured API. Other modes use the remote OpenClaw configuration."
         },
-        "macstudio.maxOutputTokens": {
+        "localagent.maxOutputTokens": {
           "type": "integer",
           "default": 4096,
           "minimum": 256,
           "maximum": 16384
         },
-        "macstudio.timeoutSeconds": {
+        "localagent.timeoutSeconds": {
           "type": "integer",
           "default": 600,
           "minimum": 30,
           "maximum": 3600
         },
-        "macstudio.maxToolRounds": {
+        "localagent.maxToolRounds": {
           "type": "integer",
           "default": 12,
           "minimum": 1,
           "maximum": 30
         },
-        "macstudio.baseUrl": {
+        "localagent.baseUrl": {
           "type": "string",
-          "default": "http://127.0.0.1:11436/v1",
+          "default": "http://127.0.0.1:11434/v1",
           "scope": "machine",
-          "description": "Model API loopback URL on the Mac, reached through SSH."
+          "description": "Loopback model URL as seen by the Python bridge: local machine/tunnel in local transport, server in SSH transport."
         },
-        "macstudio.modelId": {
+        "localagent.modelId": {
           "type": "string",
           "default": "YOUR_MODEL_ID",
           "scope": "machine",
           "description": "Explicit model ID for direct mode."
+        },
+        "localagent.transport": {
+          "type": "string",
+          "enum": [
+            "local",
+            "ssh"
+          ],
+          "default": "local",
+          "scope": "machine",
+          "description": "Local Python for a same-machine API or SSH tunnel; SSH bridge for a Linux/macOS server with a POSIX login shell."
+        },
+        "localagent.localPython": {
+          "type": "string",
+          "default": "",
+          "scope": "machine",
+          "description": "Python 3 executable on the extension host; empty selects python on Windows or python3 elsewhere. Use a path, not a command with arguments."
         }
       }
     }
   },
   "scripts": {
-    "test": "node --test test/core.test.js",
+    "test": "node --test test/core.test.js test/transport.test.js",
     "test:live": "node test/live.js",
     "test:host": "node test/run-host.js",
     "package": "vsce package --allow-missing-repository",
-    "test:bridge": "python test/bridge_test.py"
+    "test:bridge": "node test/run-bridge.js"
   },
   "devDependencies": {
     "@vscode/vsce": "3.9.2",
@@ -262,7 +290,7 @@ The manifest is the contract between your extension and VS Code. It declares com
 }
 ```
 
-The `main` entry points to executable JavaScript. `extensionKind: ["workspace"]` means the extension belongs with the workspace; in this course the workspace is local Windows. If you instead open a Remote-SSH workspace, the execution location can change. This course's “Windows commands” assumptions no longer apply unchanged.
+The `main` entry points to executable JavaScript. `extensionKind: ["workspace"]` means the extension belongs with the workspace; in this course the workspace is local to your desktop OS. Remote-SSH or WSL changes the extension host location; use the commands, Python path and loopback address appropriate to that host.
 
 `untrustedWorkspaces.supported: false` disables this extension in Restricted Mode. File and command methods also check trust at runtime. See [Workspace Trust for extension authors](https://code.visualstudio.com/api/extension-guides/workspace-trust).
 
@@ -284,13 +312,23 @@ test-results/
 __pycache__/
 ```
 
-**Run on Windows, in the source folder:**
+**Run in the extension source folder:**
+
+**Windows PowerShell:**
 
 ```powershell
 npm.cmd install
 ```
 
-Keep the resulting `package-lock.json`. If using the included completed reference, run `npm.cmd ci` instead: it already has a lockfile. Runtime code uses built-in Node/Python APIs and VS Code APIs; the npm dependencies are for packaging and integration tests.
+**Linux Bash / macOS zsh:**
+
+```bash
+npm install
+```
+
+Keep the resulting `package-lock.json`. If using the included completed reference, run `npm.cmd ci` (Windows) or `npm ci` (Linux/macOS) instead: it already has a lockfile. Runtime code uses built-in Node/Python APIs and VS Code APIs; the npm dependencies are for packaging and integration tests.
+
+The `test` script refers to the transport regression added in Lab 6; until then run `node --test test/core.test.js` at the Lab 4 checkpoint.
 
 **Checkpoint:** Installation succeeds and the manifest parses. The final sidebar is not ready yet. Continue through Lesson 10 before testing the complete UI. Your old hello-world controller will be replaced in Lesson 9.
 
@@ -299,7 +337,6 @@ Keep the resulting `package-lock.json`. If using the included completed referenc
 Show the hello-world notification from your own F5 session and identify the source window versus the test window.
 ```
 
-> **Image Suggestion (Nanobanana Prompt)**: Create a clean educational illustration for “Your First VS Code Extension”, using a neutral VS Code-inspired desktop palette, legible monospace labels, a Windows workstation and a Mac Studio where relevant, and clearly marked “Illustration” text. Emphasize the lab's actual control or execution boundary. Include no real credentials, personal paths, or fabricated test results. Use even lighting and a flat technical-documentation style rather than decorative effects.
 
 **Continue:** [Previous](01-architecture-and-connection.md) · [Next](03-ssh-and-streaming.md) · [Workshop guide](index.md)
 

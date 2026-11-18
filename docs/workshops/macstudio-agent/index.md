@@ -1,9 +1,11 @@
-(macstudio-workshop)=
-# 00 - Build a Mac Studio Coding Agent for VS Code
+(localagent-workshop)=
+# 00 - Build Your Own Coding Agent: Windows, Linux and macOS
 
-Build an inspectable coding assistant from a blank extension folder. Your Windows computer runs VS Code and project tools; a Mac Studio runs the model. You will connect them over SSH, implement streaming and tool calling, review code changes, and package a working extension.
+Build an inspectable coding assistant from a blank VS Code extension folder. Use **Windows, Linux, or macOS** for your project and a local or remote OpenAI-compatible model. You will implement streaming, tool calling, reviewed edits, command approval, and a sidebar interface.
 
-**Audience:** beginners with basic JavaScript or Python experience. **Language:** English, with Chinese annotations for key terminology. **Workshop edition:** November 17, 2026. **Reference implementation:** Mac Studio Assistant 0.2.0.
+**Audience:** beginners with basic JavaScript or Python experience. **Language:** English, with Chinese annotations for key terminology. **Edition:** November 18, 2026. **Reference:** Local Coding Assistant 0.3.0.
+
+The URL retains the original `macstudio-agent` slug so existing shared links keep working; the course and code are now platform-neutral. Mac Studio is an optional model host, not a prerequisite. This edition uses a new extension ID and `localagent.*` settings; re-enter settings and the API key if coming from the older extension.
 
 ## Workshop outcomes
 
@@ -11,28 +13,26 @@ By the end you can trace an **agent loop（智能体循环）**, implement **bui
 
 ```{mermaid}
 flowchart LR
-    U["Windows: VS Code sidebar"] <--> E["Windows: extension and reviewed tools"]
-    E <-->|"SSH"| B["Mac: temporary Python bridge"]
-    B <-->|"loopback HTTP"| M["Mac: model API"]
-    E <--> F["Windows project files"]
+    U["VS Code on Windows / Linux / macOS"] <--> E["Extension and reviewed project tools"]
+    E <--> B["Python bridge: local or optional remote"]
+    B <--> M["Same-machine API or remote API through SSH"]
+    E <--> F["Selected project files"]
 ```
 
 ## Download the workshop materials
 
-- {download}`Complete tutorial and reference source <assets/MacStudio-Beginner-Course.zip>` — includes the English reference project, lockfile, intentionally broken exercise, and original validation record. Extract it locally; do not run it inside a browser notebook.
+- {download}`Complete tutorial and reference source <assets/Coding-Agent-Workshop.zip>` — includes the English reference project, lockfile, intentionally broken exercise, and current validation record. Extract it locally; do not run it inside a browser notebook.
 - [Validation and reproducibility notes](validation.md) — what was tested, when, and what remains a learner check.
 
 ```{note}
-The downloadable reference was tested on November 11, 2026. Publication on November 17 does not imply every model service or MCP integration was retested. Hostnames, model IDs, ports, and key paths are examples; use your own deployment. No private keys or real API credentials are included.
+The current validation record separates Windows fixture tests from live-model and other-OS checks. Cross-platform code and commands do not imply that every OS/model combination has been tested. Never submit real keys, account names, or private host addresses as workshop evidence.
 ```
 
 ## Prerequisites and preflight
 
-Bring a Windows computer with desktop VS Code, Node.js/npm, OpenSSH, and Python 3. You need access to a Mac with SSH, Python 3, and an already-running OpenAI-compatible model API. The workshop teaches the agent client, not model training or weight installation.
+Bring desktop VS Code, Node.js/npm, and Python 3. [Lab 1](01-architecture-and-connection.md) supplies separate Windows PowerShell, Linux Bash and macOS Terminal commands, plus a portable probe. Choose **A: same computer**, **B: SSH tunnel to any supported server OS**, or **C: optional Linux/macOS remote bridge**. If you lack a model, complete the offline tests and UI construction and mark live exercises as not run.
 
-Complete the SSH and API checks in Lab 1 before a group session. If you cannot access a model, you can still complete the hello-world extension, offline file-tool tests, and UI reading. Mark live checkpoints as **not run**; do not substitute fabricated outputs.
-
-This book page is the instruction surface. PowerShell commands run in a Windows terminal; Mac commands run on the Mac; extension code runs in the VS Code Development Host. Copyable code blocks are deliberately not executed during Jupyter Book builds.
+The book contains copyable examples; it does not execute shell commands during a build. Run commands only in the labelled terminal. Downloaded scripts include `scripts/check.ps1`, `scripts/check.cmd` and `scripts/check.sh`. The shared Python and JavaScript source is identical across platforms.
 
 ## Agenda and pacing
 
@@ -42,7 +42,7 @@ The eight labs total approximately **6 hours 15 minutes**, excluding installatio
 |---|---|---|
 | 1 | [Architecture and Connection](01-architecture-and-connection.md) | 45 min |
 | 2 | [Your First VS Code Extension](02-first-extension.md) | 35 min |
-| 3 | [SSH Bridge and Streaming Responses](03-ssh-and-streaming.md) | 50 min |
+| 3 | [Local/SSH Transport and Streaming](03-ssh-and-streaming.md) | 50 min |
 | 4 | [Project Tools and the Agent Loop](04-project-tools.md) | 45 min |
 | 5 | [Controller and Sidebar Interface](05-controller-and-interface.md) | 60 min |
 | 6 | [Capstone: Fix, Review, and Verify](06-capstone-and-tests.md) | 60 min |
@@ -65,7 +65,7 @@ Your capstone is a broken addition function with a failing test. The assistant m
 
 | Evidence | Acceptance condition |
 |---|---|
-| Connection record | Noninteractive SSH and authenticated API discovery succeed |
+| Connection record | The selected route reaches the API and discovers the configured model |
 | Agent trace | A model tool call receives the matching result and continues |
 | Reviewed diff | Change is proposed before it is applied |
 | Verification | Actual test output changes from failure to success |
@@ -76,13 +76,12 @@ Your capstone is a broken addition function with a failing test. The assistant m
 
 Prepare a known-working reference on a separate demo folder. Test the serving model's tool template before class, reserve time for SSH-agent issues, and avoid having a whole class saturate one model server simultaneously. Pair participants for diff review and ask each to explain which computer executes a command.
 
-Do not distribute a private SSH key or shared production credentials. Use individual authorized access and disposable exercise files. Remote server tools have their own policy; the Windows command confirmation does not automatically govern them.
+Do not distribute a private SSH key or shared production credentials. Use individual authorized access and disposable exercise files. Remote server tools have their own policy; the client command confirmation does not automatically govern them.
 
 ## Scope and follow-up
 
 Implemented: streaming text, local list/read/search tools, edit proposals, native diffs, explicit apply, and approved commands. Optional design exercises: automatic primary-model discovery, a general MCP client, and automatic skill loading. Image input, persistent conversations, and a hardened process sandbox are not delivered features.
 
-> **Image Suggestion (Nanobanana Prompt)**: Create a welcoming workshop cover with a Windows laptop showing a restrained editor sidebar and a Mac Studio on a neutral desk. Label the devices “Project tools” and “Model inference”; add the title “Build a Mac Studio Coding Agent”. Use clean typography, soft daylight, a navy and teal palette, and a small “Concept illustration” caption. Do not show passwords or imply a real screenshot.
 
 ## Read More
 
@@ -94,12 +93,12 @@ Implemented: streaming text, local list/read/search tools, edit proposals, nativ
 
 ## Knowledge Quiz
 
-**1. Does this workshop run the model on Windows?**
+**1. Must the model run on a Mac?**
 
 <details>
 <summary>Answer</summary>
 
-No. Windows runs the extension and client project tools; the example model runs on the Mac.
+No. The model can run on Windows, Linux or macOS, on the client or a separate server.
 
 </details>
 

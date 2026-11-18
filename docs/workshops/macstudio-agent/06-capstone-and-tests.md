@@ -1,4 +1,4 @@
-(macstudio-lab-06)=
+(localagent-lab-06)=
 # 06 - Capstone: Fix, Review, and Verify
 
 **Format:** hands-on lab · **Suggested time:** 60 minutes · **Original course lessons:** 11–12.
@@ -14,7 +14,9 @@ Fix a deliberately broken function and verify the full edit workflow; run offlin
 
 Use a toy project first. Keep it outside the extension source tree so you can distinguish the code that implements the assistant from the code it edits.
 
-**Run on Windows in a separate PowerShell terminal:**
+**Run in a separate terminal, in a new disposable folder:**
+
+**Windows PowerShell:**
 
 ```powershell
 New-Item -ItemType Directory -Path "$env:USERPROFILE\Documents\agent-playground"
@@ -31,6 +33,25 @@ const { add } = require('./math');
 assert.equal(add(2, 3), 5);
 console.log('PASS');
 '@ | Set-Content -Encoding utf8 math.test.js
+node math.test.js
+```
+
+**Linux Bash / macOS zsh:**
+
+```bash
+mkdir -p "$HOME/Documents"
+mkdir "$HOME/Documents/agent-playground"
+cd "$HOME/Documents/agent-playground"
+cat > math.js <<'EOF'
+function add(a, b) { return a - b; }
+module.exports = { add };
+EOF
+cat > math.test.js <<'EOF'
+const assert = require('node:assert/strict');
+const { add } = require('./math');
+assert.equal(add(2, 3), 5);
+console.log('PASS');
+EOF
 node math.test.js
 ```
 
@@ -131,29 +152,91 @@ if __name__ == '__main__':
     unittest.main()
 ```
 
-**Run:** `npm.cmd run test:bridge`.
+**Create `test/run-bridge.js`:**
+
+```javascript
+const { spawnSync } = require('node:child_process');
+const path = require('node:path');
+const python = process.env.AGENT_PYTHON || (process.platform === 'win32' ? 'python' : 'python3');
+const result = spawnSync(python, [path.join(__dirname, 'bridge_test.py')], {stdio: 'inherit', windowsHide: true});
+if (result.error) console.error(result.error.message);
+process.exitCode = result.status ?? 1;
+```
+
+**Run:** `npm.cmd run test:bridge` (Windows) or `npm run test:bridge` (Linux/macOS).
 
 The fixture server runs on local loopback. The test proves direct mode works without an OpenClaw configuration and rejects the tested non-loopback or credential-bearing URLs. It does not test all HTTP failures, redirects, or real credentials. If your execution environment forbids loopback sockets, run this test in a normal local terminal.
 
-### 12.2 Test actual tool calling and continuation
+### 12.2 Test the complete transport offline, then a real model
+
+Create `test/transport.test.js` to exercise the local Python subprocess against a fixture API: model discovery, UTF-8 streaming, fragmented tool calls, continuation, incomplete responses, missing Python and SSH argument construction. This is a simulated service, not a model-quality test.
+
+```javascript
+const test = require('node:test');
+const assert = require('node:assert/strict');
+const http = require('node:http');
+const { bridgeRequest, completion, sshCommand } = require('../src/transport');
+
+test('local Python discovery, UTF-8 stream and tool continuation; reject incomplete stream', async t => {
+  const server = http.createServer(async (req, res) => {
+    let body = ''; for await (const chunk of req) body += chunk;
+    assert.equal(req.headers.authorization, 'Bearer fixture-only');
+    if (req.url === '/v1/models') { res.end(JSON.stringify({data: [{id: 'fixture'}]})); return; }
+    const payload = JSON.parse(body); assert.equal(payload.model, 'fixture');
+    res.writeHead(200, {'Content-Type':'text/event-stream'});
+    const event = delta => res.write('data: ' + JSON.stringify({choices:[{delta}]}) + '\n\n');
+    if (payload.messages.at(-1).role === 'tool') event({content:'工具 café verified'});
+    else if (payload.tools) {
+      event({tool_calls:[{index:0,id:'call-fixture',function:{name:'local_read_file',arguments:'{"path":'}}]});
+      event({tool_calls:[{index:0,function:{arguments:'"fixture.txt"}'}}]});
+    } else event({content:'hello'});
+    if (payload.user !== 'incomplete') res.write('data: [DONE]\n\n');
+    res.end();
+  });
+  await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
+  t.after(() => new Promise(resolve => server.close(resolve)));
+  const options = {transport:'local', localPython:process.env.AGENT_PYTHON, mode:'direct', timeout:10,
+    direct:{baseUrl:`http://127.0.0.1:${server.address().port}/v1`,model:'fixture',apiKey:'fixture-only'}};
+  const probe = JSON.parse(await bridgeRequest(options,{mode:'direct',operation:'probe',timeout:10}));
+  assert.deepEqual(probe.models,['fixture']);
+  const messages = [{role:'user',content:'Read fixture'}];
+  const first = await completion(options,{messages,tools:[{type:'function'}]});
+  assert.equal(first.tool_calls[0].function.name,'local_read_file');
+  assert.deepEqual(JSON.parse(first.tool_calls[0].function.arguments),{path:'fixture.txt'});
+  messages.push(first,{role:'tool',tool_call_id:first.tool_calls[0].id,content:'fixture'});
+  assert.equal((await completion(options,{messages})).content,'工具 café verified');
+  await assert.rejects(completion(options,{messages,user:'incomplete'}),/Incomplete/);
+  await assert.rejects(bridgeRequest({...options, transport:'unknown'},{}),/Unknown transport/);
+  await assert.rejects(bridgeRequest({...options, localPython:'missing-python-fixture'},{}),/ENOENT/);
+});
+
+test('SSH command preserves executable/key argument boundaries and POSIX quotes', () => {
+  const result = sshCommand({host:'model-server',identity:'key with spaces',python:"/opt/python's/bin/python3"});
+  assert.equal(result.executable,'ssh');
+  assert.equal(result.args[result.args.indexOf('-i')+1],'key with spaces');
+  assert.equal(result.args.at(-2),'model-server');
+  assert.ok(result.args.at(-1).includes("'\\''"));
+  assert.throws(() => sshCommand({host:'-oProxyCommand=bad'}),/Invalid SSH/);
+});
+```
+
+Run `npm.cmd test` (Windows) or `npm test` (Linux/macOS). Expect six tests. The first four came from Lab 4; the new two cover transport. Then use the existing `test/options.js` and `test/with-key.py` from Lab 3 for live checks.
+
 
 **Create `test/live.js`:**
 
 ```javascript
-// Explicit live test: calls the user's Mac; uses fixture text only, never sends messages.
+// Explicit live test: calls the configured model endpoint; uses fixture text only, never sends messages.
 const assert = require('node:assert/strict');
 const fs = require('node:fs/promises');
 const path = require('node:path');
-const { completion, sshRequest } = require('../src/transport');
+const { completion, bridgeRequest } = require('../src/transport');
 async function main() {
   const results = [];
-  for (const mode of (process.env.MACSTUDIO_TEST_MODES || 'direct').split(',')) {
-    const options = { host: 'macstudio', identity: '~/.ssh/macstudio_course', mode, timeout: 300 };
-    if (mode === 'direct') {
-      assert.ok(process.env.MACSTUDIO_API_KEY, 'Set MACSTUDIO_API_KEY for the live test');
-      options.direct = { baseUrl: 'http://127.0.0.1:11436/v1', model: 'YOUR_MODEL_ID', apiKey: process.env.MACSTUDIO_API_KEY };
-    }
-    const probe = JSON.parse(await sshRequest(options, { mode, operation: 'probe', timeout: 30 }));
+  for (const mode of (process.env.LOCALAGENT_TEST_MODES || 'direct').split(',')) {
+    const options = require('./options')(mode);
+    assert.ok(options.direct.apiKey, 'Set LOCALAGENT_API_KEY');
+    const probe = JSON.parse(await bridgeRequest(options, { mode, operation: 'probe', timeout: 30 }));
     assert.equal(probe.ok, true);
     console.log(mode, 'probe passed');
     const tools = [{ type: 'function', function: { name: 'local_read_file', description: 'Read a test fixture on the CLIENT PC. The remote host cannot read this file.', parameters: { type: 'object', properties: { path: { type: 'string' } }, required: ['path'], additionalProperties: false } } }];
@@ -164,9 +247,9 @@ async function main() {
     assert.equal(first.tool_calls?.[0]?.function.name, 'local_read_file');
     assert.equal(JSON.parse(first.tool_calls[0].function.arguments).path, 'fixture.txt');
     messages.push(first);
-    for (const call of first.tool_calls) messages.push({ role: 'tool', tool_call_id: call.id, content: 'Fixture code: WINDOWS_MAC_BRIDGE_OK' });
+    for (const call of first.tool_calls) messages.push({ role: 'tool', tool_call_id: call.id, content: 'Fixture code: AGENT_BRIDGE_OK' });
     const last = await completion(options, { messages, tools, tool_choice: 'none', max_tokens: 1024, user: session });
-    assert.match(last.content, /WINDOWS_MAC_BRIDGE_OK/);
+    assert.match(last.content, /AGENT_BRIDGE_OK/);
     results.push({ mode, success: true, seconds: (Date.now() - started) / 1000, answer: last.content });
     console.log(mode, 'tool call + tool-result continuation passed', last.content);
   }
@@ -176,19 +259,27 @@ async function main() {
 main().catch(error => { console.error(error.message); process.exitCode = 1; });
 ```
 
-Set `MACSTUDIO_API_KEY` with the secure-prompt pattern from Lesson 6, then run:
+Set endpoint/model environment overrides as in Lab 3, then use the credential launcher:
+
+**Windows PowerShell:**
 
 ```powershell
-npm.cmd run test:live
+python test/with-key.py node test/live.js
 ```
 
-This test forces a fixture read call, supplies a synthetic tool result, and verifies that the next answer includes the returned fixture code. It tests protocol handling, not actual filesystem access. The default mode is direct; legacy modes are opt-in through `MACSTUDIO_TEST_MODES`.
+**Linux Bash / macOS zsh:**
+
+```bash
+python3 test/with-key.py node test/live.js
+```
+
+This test forces a fixture read call, supplies a synthetic tool result, and verifies that the next answer includes the returned fixture code. It tests protocol handling, not actual filesystem access. The default mode is direct; legacy modes are opt-in through `LOCALAGENT_TEST_MODES`.
 
 Expected output includes:
 
 ```text
 direct probe passed
-direct tool call + tool-result continuation passed WINDOWS_MAC_BRIDGE_OK
+direct tool call + tool-result continuation passed AGENT_BRIDGE_OK
 ```
 
 If a different model ignores forced tool selection, emits malformed arguments, or fails continuation, do not call that deployment agent-ready merely because plain chat works. Inspect its serving template and supported parameters.
@@ -203,16 +294,22 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs/promises');
 const path = require('node:path');
 exports.run = async function () {
-  const extension = vscode.extensions.getExtension('workshop-example.macstudio-assistant');
+  const extension = vscode.extensions.getExtension('workshop-example.localagent-assistant');
   assert.ok(extension);
   const assistant = await extension.activate();
   assert.ok(assistant);
-  assert.ok(process.env.MACSTUDIO_API_KEY, 'Set MACSTUDIO_API_KEY for direct API host test');
-  await assistant.context.secrets.store('macstudio.apiKey', process.env.MACSTUDIO_API_KEY);
-  await vscode.workspace.getConfiguration('macstudio').update('mode', 'direct', vscode.ConfigurationTarget.Global);
+  assert.ok(process.env.LOCALAGENT_API_KEY, 'Set LOCALAGENT_API_KEY for direct API host test');
+  await assistant.context.secrets.store('localagent.apiKey', process.env.LOCALAGENT_API_KEY);
+  const options = require('./options')();
+  const config = vscode.workspace.getConfiguration('localagent');
+  for (const [key, value] of Object.entries({mode: 'direct', transport: options.transport,
+    localPython: options.localPython || '', sshHost: options.host, sshIdentityFile: options.identity,
+    remotePython: options.python, baseUrl: options.direct.baseUrl, modelId: options.direct.model})) {
+    await config.update(key, value, vscode.ConfigurationTarget.Global);
+  }
   const connection = await assistant.connect();
-  assert.ok(connection.models.includes('YOUR_MODEL_ID'));
-  await vscode.commands.executeCommand('macstudio.open');
+  assert.ok(connection.models.includes(options.direct.model));
+  await vscode.commands.executeCommand('localagent.open');
   const root = vscode.workspace.workspaceFolders[0].uri.fsPath;
   const read = await assistant.executeTool('local_read_file', { path: 'fixture.txt' });
   assert.match(read.content, /original/);
@@ -237,7 +334,7 @@ exports.run = async function () {
   const agentFile = path.join(root, 'agent-fixture.js');
   const original = 'export function add(a, b) { return a - b; }\n';
   await fs.writeFile(agentFile, original);
-  await assistant.send('Integration test. Use only local_read_file and local_propose_edit on the client file agent-fixture.js. Read it, replace subtraction with addition in add(), and propose the edit for review. Do not run commands, send external messages, or access Mac files. Briefly explain when finished.');
+  await assistant.send('Integration test. Use only local_read_file and local_propose_edit on the client file agent-fixture.js. Read it, replace subtraction with addition in add(), and propose the edit for review. Do not run commands, send external messages, or access server files. Briefly explain when finished.');
   assert.equal(await fs.readFile(agentFile, 'utf8'), original, 'Model may only propose before review');
   const change = [...assistant.pending.values()].find(x => x.relative === 'agent-fixture.js');
   assert.ok(change, 'Direct model should request a local edit proposal');
@@ -245,7 +342,7 @@ exports.run = async function () {
   await assistant.apply(change.id);
   assert.match(await fs.readFile(agentFile, 'utf8'), /a\s*\+\s*b/);
   await fs.writeFile(path.resolve(__dirname, '../test-results/host.json'), JSON.stringify({ activated: true, webviewReady: true, viewOpened: true, diffOpened: true, applied: true, staleEditBlocked: true, createFile: true, traversalBlocked: true, liveDirectEditFlow: true }, null, 2));
-  await assistant.context.secrets.delete('macstudio.apiKey');
+  await assistant.context.secrets.delete('localagent.apiKey');
   console.log('PASS: extension activation, webview, actual diff/apply, stale-edit guard, new file, path restrictions, live direct read/propose/apply');
 };
 ```
@@ -278,25 +375,27 @@ main().catch(error => { console.error(error); process.exitCode = 1; });
 
 The runner launches an isolated VS Code profile and a fixture workspace. It tests extension activation, Webview readiness, diffs, approved application, stale-change rejection, new-file creation, and a real model-generated read/propose/apply flow. Automated `apply()` calls here stand in for the human click; they do not exercise a person reading the diff or accepting a shell-command dialog.
 
-Set `MACSTUDIO_API_KEY` in the terminal as before. If you already have VS Code installed at the usual user location, run:
+Use the same endpoint/model overrides. The runner downloads a separate test editor by default (network access and a desktop display are needed). On headless Linux, a configured virtual display is required; otherwise complete this step on a desktop session. Run:
+
+**Windows PowerShell:**
 
 ```powershell
-$env:VSCODE_EXECUTABLE = "$env:LOCALAPPDATA\Programs\Microsoft VS Code\Code.exe"
-Test-Path $env:VSCODE_EXECUTABLE
-npm.cmd run test:host
+python test/with-key.py node test/run-host.js
 ```
 
-If the path check returns `False`, set your actual executable path. If you omit the variable, the runner uses the VS Code test package to obtain a test build, which requires a network download.
+**Linux Bash / macOS zsh:**
+
+```bash
+python3 test/with-key.py node test/run-host.js
+```
+
+Optionally set `VSCODE_EXECUTABLE` to a real editor binary, not a shell wrapper: Windows `Code.exe`, Linux the editor executable, or macOS `Visual Studio Code.app/Contents/MacOS/Electron`. Paths with spaces work because the runner passes an argument array.
 
 The runner intentionally disables workspace trust for its isolated, generated fixture. Do not transfer that flag to your everyday workflow. It also creates a test profile with temporary SecretStorage data; the success path deletes the key entry. A failed run can leave the test profile on disk. Inspect and remove the specific generated profile if you need to clean it up; never delete your real VS Code user profile.
 
-Inspect `test-results/host.json`, `test-results/live.json`, and `test-results/host-run.log`. Remove test environment variables when finished:
+Inspect `test-results/host.json`, `test-results/live.json`, and `test-results/host-run.log`. When finished:
 
-```powershell
-Remove-Item Env:MACSTUDIO_API_KEY -ErrorAction SilentlyContinue
-Remove-Item Env:VSCODE_EXECUTABLE -ErrorAction SilentlyContinue
-Remove-Variable courseSecret -ErrorAction SilentlyContinue
-```
+Close the test terminal to clear its endpoint/model overrides, or remove the variables explicitly. The key launcher keeps the credential out of the parent shell environment.
 
 ### 12.4 Keep the limits visible
 
@@ -310,7 +409,7 @@ Remove-Variable courseSecret -ErrorAction SilentlyContinue
 | 60-second command timer | Commands may time out before they finish |
 | Last 24,000 command-output characters | Earlier output can be truncated |
 
-The history check occurs at the start of a turn; tool results can add more text during that turn. A production token budgeter should reserve room before every model call. A server advertising 262K context does not mean this application safely fills that window. Do not describe the character guard as a tokenizer.
+The history check occurs at the start of a turn; tool results can add more text during that turn. A production token budgeter should reserve room before every model call. A server advertising a large context window does not mean this application safely fills that window. Do not describe the character guard as a tokenizer.
 
 **Checkpoint:** Record which tests ran, which service/model they used, and which behaviors remain manual or untested.
 
@@ -319,7 +418,6 @@ The history check occurs at the start of a turn; tool results can add more text 
 Submit a before/after diff, a passing test, and evidence that stale changes and rejected commands are handled correctly.
 ```
 
-> **Image Suggestion (Nanobanana Prompt)**: Create a clean educational illustration for “Capstone: Fix, Review, and Verify”, using a neutral VS Code-inspired desktop palette, legible monospace labels, a Windows workstation and a Mac Studio where relevant, and clearly marked “Illustration” text. Emphasize the lab's actual control or execution boundary. Include no real credentials, personal paths, or fabricated test results. Use even lighting and a flat technical-documentation style rather than decorative effects.
 
 **Continue:** [Previous](05-controller-and-interface.md) · [Next](07-package-and-models.md) · [Workshop guide](index.md)
 

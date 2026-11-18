@@ -1,4 +1,4 @@
-(macstudio-lab-07)=
+(localagent-lab-07)=
 # 07 - Packaging and Model Selection
 
 **Format:** hands-on lab · **Suggested time:** 35 minutes · **Original course lessons:** 13–14.
@@ -26,6 +26,7 @@ test-results/**
 .vscode/**
 __pycache__/**
 **/__pycache__/**
+scripts/**
 ```
 
 This keeps dependencies, fixtures, test profiles, logs, and previous packages out of the VSIX. Copy `LICENSE` from the reference if retaining this implementation's MIT license; if starting your own distribution, decide your license and publisher identity deliberately.
@@ -33,37 +34,55 @@ This keeps dependencies, fixtures, test profiles, logs, and previous packages ou
 **Create `README.md` in the extension source folder:**
 
 ```markdown
-# Mac Studio Assistant
+# Local Coding Assistant 0.3.0
 
-A VS Code coding assistant that uses a model service on a remote Mac.
+A beginner VS Code extension workshop for Windows, Linux and macOS.
+Use a local OpenAI-compatible model endpoint, or forward a server endpoint
+through SSH. The optional remote Python bridge requires a Linux/macOS server
+with a POSIX login shell. Windows servers use SSH port forwarding instead.
 
-Open a local project, run Mac Studio: Open chat, choose direct mode,
-and connect using your SSH configuration and service API key.
+Read the workshop at https://gisyaliny.github.io/ai/docs/workshops/macstudio-agent/index.html
+and start at Lab 1 before running live tests (offline: ../COURSE.md).
+Windows: npm.cmd ci; npm.cmd test; npm.cmd run test:bridge.
+Linux/macOS: npm ci; npm test; npm run test:bridge.
+Python: python on Windows, python3 elsewhere; override with AGENT_PYTHON.
+Convenience checks: powershell -File scripts/check.ps1 or sh scripts/check.sh.
 
-Files are read on demand. Proposed edits require review and application.
-Client commands require explicit approval and run with your user permissions.
-The extension is not an operating-system sandbox.
+Press F5, open a disposable project, then Local Agent: Open chat.
+Set localagent.transport=local and localagent.modelId to an installed model.
+Use Local Agent: Set API key; a nonsecret placeholder is sufficient only
+when your local server intentionally ignores authentication.
+Run npm run package (npm.cmd on Windows) to create a VSIX.
 
-Development: npm install, then press F5.
-Tests: npm test and npm run test:bridge.
-Live tests require MACSTUDIO_API_KEY in the terminal environment.
-Package: npm run package.
+Edits require review and explicit application. Commands require approval.
+Tools run on the VS Code workspace extension host, with your permissions.
+This is not an OS sandbox. MCP and automatic skill loading are design labs.
+This new extension ID does not migrate older settings or SecretStorage.
 ```
 
-**Run from the Windows source folder:**
+**Run from the extension source folder:**
+
+**Windows PowerShell:**
 
 ```powershell
 npm.cmd run package
-code --install-extension .\macstudio-assistant-0.2.0.vsix --force
+code --install-extension .\localagent-assistant-0.3.0.vsix --force
 ```
 
-Alternatively use **Extensions → … → Install from VSIX…**. Reload VS Code, open a project folder, and run **Mac Studio: Open chat**. Installation under the same extension ID updates/replaces the installed edition. Do this only when you intend to use your reconstruction instead of the previously installed version.
+**Linux Bash / macOS zsh:**
+
+```bash
+npm run package
+code --install-extension ./localagent-assistant-0.3.0.vsix --force
+```
+
+Alternatively use **Extensions → … → Install from VSIX…**. Reload VS Code, open a project folder, and run **Local Agent: Open chat**. Installation under the same extension ID updates/replaces that same extension ID. This platform-neutral edition has a new ID (`workshop-example.localagent-assistant`); it does not replace or import settings from the earlier Mac-specific extension.
 
 The packaging utility is `vsce`; a VSIX can be installed locally without publishing to a marketplace. See Microsoft's [packaging and publishing guide](https://code.visualstudio.com/api/working-with-extensions/publishing-extension).
 
 A package should contain source/assets and the manifest, not private keys, API tokens, `node_modules`, or test profiles. Inspect the file listing printed during packaging. Keep the npm lockfile in your source repository even though it is excluded from the VSIX.
 
-The installed extension uses SecretStorage configured through its password prompt. It does not read the terminal test environment variable. If a live test passed but the installed extension reports 401, use **Mac Studio: Set API key** and check the active mode.
+The installed extension uses SecretStorage configured through its password prompt. It does not read the terminal test environment variable. If a live test passed but the installed extension reports 401, use **Local Agent: Set API key** and check the active mode.
 
 **Checkpoint:** Close the development host and verify the installed extension independently. A successful F5 session is not proof that your VSIX included every required asset.
 
@@ -73,19 +92,21 @@ The installed extension uses SecretStorage configured through its password promp
 
 | Mode | Model selection | What happens after a server-side change |
 |---|---|---|
-| `direct` | Explicit `macstudio.modelId` and `macstudio.baseUrl` | No discovery-based automatic switch |
+| `direct` | Explicit `localagent.modelId` and `localagent.baseUrl` | No discovery-based automatic switch; independent of the client OS |
 | `qwen` | Reads `agents.defaults.model.primary` and its provider from remote JSON on each request | Can follow that configuration if the replacement is a compatible loopback model API |
 | `openclaw` | Calls `openclaw/main` | Server owns agent model routing; loaded config and sessions matter |
 
 If a service keeps a stable model alias while replacing the weights behind it, direct mode can use the changed backend without a settings change. That is server alias behavior, not model discovery in our extension. An ID in `/models` is not a universal declaration of the “primary” model.
 
+Legacy `qwen` / `openclaw` modes read configuration on the **bridge host**: the client with local transport, or the Linux/macOS server with SSH transport. A tunnel alone does not make a remote configuration file local. Prefer SSH transport for remote server-owned configuration.
+
 The `qwen` mode includes Qwen-oriented inference options and requires literal string credentials in the remote JSON. It is not a universal provider adapter. Its name should become clearer before exposing it to a broad audience.
 
 ### 14.2 Exercise: switch a pinned model
 
-1. Start the replacement model on the Mac using your established serving workflow.
+1. Start the replacement model on your chosen model host using its serving workflow.
 2. Run model discovery and note the exact model ID. Do not guess it from a filename.
-3. In VS Code settings, change `macstudio.modelId`; change Base URL only if necessary.
+3. In VS Code settings, change `localagent.modelId`; change Base URL only if necessary.
 4. Finish or stop the current task, then start a new chat.
 5. Click Connect and repeat the live tool-continuation test against the replacement.
 
@@ -99,14 +120,13 @@ In follow mode, use an explicit trusted source of truth, such as a gateway's sup
 
 Add tests for an absent default, multiple advertised models, a missing configured ID, a change between tasks, and a change during a task. On uncertainty, explain the problem and ask for a deliberate selection. Never silently send a continuation to an unrelated model.
 
-**UI improvement:** Display `Model: …`, `Selection: Pinned / Server default`, and `Tools run on: Windows`. Report an actual resolved value rather than a label inferred from the requested configuration.
+**UI improvement:** Display `Model: …`, `Selection: Pinned / Server default`, and `Tools run on: the actual extension-host OS`. Report an actual resolved value rather than a label inferred from the requested configuration.
 
 ```{admonition} Lab acceptance evidence
 :class: important
 Produce a VSIX and document which settings and tests must change when you replace the model.
 ```
 
-> **Image Suggestion (Nanobanana Prompt)**: Create a clean educational illustration for “Packaging and Model Selection”, using a neutral VS Code-inspired desktop palette, legible monospace labels, a Windows workstation and a Mac Studio where relevant, and clearly marked “Illustration” text. Emphasize the lab's actual control or execution boundary. Include no real credentials, personal paths, or fabricated test results. Use even lighting and a flat technical-documentation style rather than decorative effects.
 
 **Continue:** [Previous](06-capstone-and-tests.md) · [Next](08-mcp-skills-and-next-steps.md) · [Workshop guide](index.md)
 
