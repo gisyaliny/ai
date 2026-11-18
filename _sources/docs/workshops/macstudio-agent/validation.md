@@ -1,68 +1,30 @@
 # 09 - Validation and Reproducibility
 
-Date: November 11, 2026 (America/New_York).
+Edition: November 18, 2026. Reference: Local Coding Assistant 0.3.0.
 
-This record applies to the English reference accompanying the original downloadable `COURSE.md`, derived from the existing Mac Studio Assistant 0.2.0 implementation. The installed extension was not replaced while preparing the course.
+This edition adds local Python transport, Windows/Linux/macOS instructions, SSH tunnel routing, neutral settings/UI, portable test configuration and scripts. Earlier live Windows-to-Mac evidence belongs to version 0.2.0; it is not a live pass for this changed release.
 
-| Check | Result | Evidence / scope |
-|---|---|---|
-| JavaScript, Python, and JSON snippets | Passed | JavaScript syntax checks, Python AST parsing, JSON parsing |
-| PowerShell snippets | Passed syntax parsing | Commands that change SSH setup or install software were not executed as a beginner would |
-| Core unit tests | 4 passed | Fragmented SSE, workspace traversal/link restrictions, edit anchors, invalid/cancelled SSH requests |
-| Python bridge regression | 1 passed | Fixture loopback server; direct mode without OpenClaw config; tested nonlocal URLs rejected |
-| Live smoke request | Passed | Real SSH bridge, model discovery, streamed reply |
-| Live tool protocol | Passed | Model tool call plus tool-result continuation returning the fixture marker |
-| VS Code extension-host integration | Passed | Activation, Webview ready, diff opening, file application, stale-edit rejection, file creation, traversal rejection, live model-driven read/propose/apply |
-| Packaging | Passed | VSCE produced an installable VSIX from the reference |
-| Beginner toy project | Intentionally broken | The course's initial subtraction implementation is expected to fail its addition test |
+| Check | Result / scope |
+|---|---|
+| Core and transport fixture tests | 6 passed on Windows: file restrictions, edit anchors, fragmented SSE, invalid/cancelled requests, actual local Python subprocess with UTF-8 tool continuation, SSH command construction |
+| Python bridge regression | 1 passed on Windows using a local HTTP fixture, including rejected non-loopback URLs |
+| Source and copyable blocks | JavaScript/Python/JSON checked during publication; shell examples reviewed and PowerShell parsed |
+| Packaging | VSIX packaging checked during publication; no Marketplace publication |
+| Linux/macOS runtime | Portable source and shell commands supplied; no fresh native end-to-end execution recorded for this edition |
+| Live model, SSH tunnel and optional SSH bridge | Learner/instructor checkpoints; fixture tests are not live inference evidence |
+| Current VS Code UI end-to-end | Learner checkpoint; the earlier release's UI results are historical |
+| Generic MCP / automatic skills / vision | Not implemented; Lab 8 marks extension exercises explicitly |
 
-## Environment and practical qualifications
+## Development dependency audit
 
-- Windows x64, Node 22.16.0, OpenSSH, and Python were used. The Mac was reached using the existing `macstudio` alias and authorized `id_ed25519` key.
-- Live requests selected `YOUR_MODEL_ID`. Model discovery also listed another ID at validation time; the reference continued to request its explicitly configured ID. This does not establish what weights the server may route behind a model alias.
-- The regular VS Code installation was updating and could not launch the initial test. The host test was rerun successfully with an existing separate VS Code 1.139.1 test build.
-- That archived test build logged an unrelated missing TextMate worker resource. The extension-host assertions, Webview readiness, and model edit flow still passed. This is not a claim of flawless editor installation or visual pixel-level review.
-- Packaging and host tests reused the existing development dependencies. A fresh-machine npm installation was not performed; the reference includes the resolved package lockfile for reproduction.
-- Tests needing subprocess/network or temporary directory-link access were run with permissions to perform those operations. Restricted execution environments may reject those operations before the application logic is reached.
-- The live host test automatically invokes the reviewed-edit application method on a disposable fixture. Manual command approval, keyboard accessibility, and visual review remain learner checkpoints, not fully automated coverage.
-- The command timeout, child-process cleanup limitations, UTF-8 assumptions, coarse context guard, and filesystem race limits are documented in the course.
-- Generic MCP client integration, automatic server-default model selection, image input, and automatic skill discovery are design exercises, not tested or installed capabilities.
+The lockfile was refreshed with nonbreaking audit fixes. The remaining npm audit findings concern packaging/development dependencies (8 reported: 2 moderate, 6 high), including glob/pattern parsing. They are not shipped in the VSIX; this is not a claim that the development toolchain has no known advisories. Review current upstream fixes before using packaging tools on untrusted repositories. No forced major-version upgrade was applied in this teaching release.
 
 ## Reproduce
 
-In the reference directory, install dependencies with `npm ci`. Run `npm test` and `npm run test:bridge`. For live checks, supply your own `MACSTUDIO_API_KEY` in the terminal environment and run `node test/smoke.js`, `npm run test:live`, and `npm run test:host` as described in the course. Change the explicit host/key/model values in test options if your deployment differs.
+Extract the ZIP. In `reference/`, use `npm.cmd ci` on Windows or `npm ci` on Linux/macOS. Run `scripts/check.cmd` in Windows CMD, `powershell -File scripts/check.ps1` in PowerShell when local policy permits, or `sh scripts/check.sh` on Linux/macOS. The individual npm commands in Lab 6 are equivalent and do not require running a PowerShell script file.
 
-Never infer success from a model's answer alone. Preserve actual test outputs, examine changed files, and distinguish a proposed change from an applied and verified change.
+Set `AGENT_PYTHON` if your local executable has a custom path. Complete Lab 1 for route A, B or C; configure endpoint/model overrides in Lab 3; use the password launcher for smoke, live tool continuation and the separate VS Code host test. Record OS, route, versions, exact test outcomes and limitations without personal identifiers or credentials.
 
-
-The Jupyter Book adaptation preserves the tested code and separates the 16 source lessons into eight workshop labs. Build-time rendering is a documentation check, not a repeat of the live Mac integration tests.
+The bundled toy project intentionally fails until the learner reviews and applies the addition fix. A book build is only a documentation check. A fixture service checks protocol plumbing, not whether a real model chooses useful tools. Do not report skipped checks as passed.
 
 [Return to the workshop](index.md).
-
-## Read More
-
-- [VS Code extension tutorial](https://code.visualstudio.com/api/get-started/your-first-extension) — Extension activation and debugging.
-- [Webview API](https://code.visualstudio.com/api/extension-guides/webview) — UI messages, resources, and content security.
-- [Workspace Trust](https://code.visualstudio.com/api/extension-guides/workspace-trust) — Trust boundaries for extension authors.
-- [MCP architecture](https://modelcontextprotocol.io/docs/learn/architecture) — Hosts, clients, servers, and capability discovery.
-- [OpenClaw skills](https://docs.openclaw.ai/tools/skills) — Optional server-side instruction packages.
-
-## Knowledge Quiz
-
-**1. Were optional MCP-client designs tested as installed features?**
-
-<details>
-<summary>Answer</summary>
-
-No. They remain design exercises.
-
-</details>
-
-**2. Does a successful book build prove the API is currently available?**
-
-<details>
-<summary>Answer</summary>
-
-No. A documentation build and a live service test are different checks.
-
-</details>

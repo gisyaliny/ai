@@ -22,7 +22,7 @@ Browse through the chapters using the sidebar to explore different topics. Each 
 
 ## Hands-on Workshops
 
-[Build a Mac Studio Coding Agent for VS Code](docs/workshops/macstudio-agent/index.md): eight beginner labs covering SSH, streaming, project tools, a reviewable coding workflow, UI design, packaging, model selection, MCP, and skills. Includes downloadable source, checkpoints, and quizzes.
+[Build Your Own Coding Agent for Windows, Linux and macOS](docs/workshops/macstudio-agent/index.md): eight beginner labs covering SSH, streaming, project tools, a reviewable coding workflow, UI design, packaging, model selection, MCP, and skills. Includes downloadable source, checkpoints, and quizzes.
 
 ## Contributing
 

@@ -1,5 +1,5 @@
-(macstudio-lab-03)=
-# 03 - SSH Bridge and Streaming Responses
+(localagent-lab-03)=
+# 03 - Local/SSH Transport and Streaming
 
 **Format:** hands-on lab · **Suggested time:** 50 minutes · **Original course lessons:** 5–6.
 
@@ -10,16 +10,16 @@ Write the Python bridge and Node transport; assemble SSE fragments; make a real 
 
 **Start here:** [Workshop guide](index.md). Download the reference bundle there before the lab. Each file block is complete unless marked Illustration. In this workshop, “Lesson” refers to the original numbered sections retained below.
 
-## 5. Build the remote Python bridge
+## 5. Build a portable Python bridge
 
-Create `src/bridge.py` in the Windows source tree. It is shipped as text with the extension. The Node transport will send its program text to Python on the Mac; you do not need to copy or install the file on the Mac manually.
+Create `src/bridge.py` in the client source tree. It is shipped as text with the extension. In local transport, Node runs this file with local Python. This works for a same-machine API or a manually opened SSH tunnel. In SSH transport, Node sends the program to a Linux/macOS server; no manual server copy is needed.
 
 Its input is one JSON object on standard input. A probe calls `/models`; an inference request calls `/chat/completions`. Successful standard output is protocol data only. Diagnostic errors go to standard error so they cannot corrupt the response stream.
 
 **Create `src/bridge.py`:**
 
 ```python
-"""Ephemeral SSH bridge. Credentials are passed over SSH or loaded remotely; stdout is protocol only."""
+"""Ephemeral local/SSH bridge. Credentials arrive on stdin or from configured JSON; stdout is protocol only."""
 import json
 import os
 import sys
@@ -40,7 +40,7 @@ def main():
         base = direct.get('baseUrl', '').rstrip('/')
         parsed = urlparse(base)
         if parsed.scheme not in ('http', 'https') or parsed.hostname not in ('localhost', '127.0.0.1', '::1') or parsed.username or parsed.password or parsed.query or parsed.fragment:
-            raise ValueError('Direct endpoint must be a loopback HTTP(S) URL on the Mac')
+            raise ValueError('Direct endpoint must be a loopback HTTP(S) URL on the bridge host')
         key = direct.get('apiKey')
         payload['model'] = direct.get('model')
         if not isinstance(payload['model'], str) or not payload['model'].strip():
@@ -57,7 +57,7 @@ def main():
         provider = config['models']['providers'][provider_id]
         base, key = provider['baseUrl'].rstrip('/'), provider.get('apiKey')
         if urlparse(base).hostname not in ('localhost', '127.0.0.1', '::1'):
-            raise ValueError('Direct model must run on the remote Mac loopback interface')
+            raise ValueError('Direct model must run on the bridge host loopback interface')
         payload['model'] = model_id
         payload['chat_template_kwargs'] = {'enable_thinking': False, 'reasoning_effort': 'none'}
         payload.update(temperature=0.7, top_p=0.8, presence_penalty=1.5)
@@ -81,7 +81,7 @@ def main():
     except urllib.error.HTTPError as error:
         detail = error.read(4096).decode(errors='replace').replace(key, '[redacted]')
         if error.code == 404 and mode == 'openclaw':
-            detail = 'Enable gateway.http.endpoints.chatCompletions.enabled on the Mac.'
+            detail = 'Enable gateway.http.endpoints.chatCompletions.enabled on the bridge host.'
         raise RuntimeError('Remote HTTP %s: %s' % (error.code, detail)) from None
 
 
@@ -98,17 +98,25 @@ Read the `direct` branch first. It validates a loopback HTTP(S) URL, uses the ex
 
 The loopback check avoids intentionally routing the direct-mode credential to an arbitrary host in the URL. It is not a comprehensive network sandbox: the trusted local service, redirects, local proxy configuration, and the account environment still matter. Do not use untrusted endpoints or treat this implementation as a security boundary against a hostile local service.
 
-The API key exists temporarily in the Windows extension and remote process memory. Base64 encoding of the program is not encryption. SSH provides transport encryption. The key travels through standard input, not as a command-line argument in the remote Python command.
+The API key exists temporarily in the extension and Python process memory. Base64 encoding of the program is not encryption. SSH provides transport encryption. The key travels through standard input, not as a command-line argument in the remote Python command.
 
 The source preserves legacy configuration behavior: `direct` needs no OpenClaw file; `qwen` and `openclaw` read the configured JSON file. This reader does not implement JSON5 or dynamically resolved secret references.
 
 **Checkpoint:** Compile without executing network requests:
 
+**Windows PowerShell:**
+
 ```powershell
 python -c "import ast,pathlib; ast.parse(pathlib.Path('src/bridge.py').read_text(encoding='utf-8')); print('Python syntax OK')"
 ```
 
-## 6. Add SSH transport and streaming
+**Linux Bash / macOS zsh:**
+
+```bash
+python -c "import ast,pathlib; ast.parse(pathlib.Path('src/bridge.py').read_text(encoding='utf-8')); print('Python syntax OK')"
+```
+
+## 6. Add transport and streaming
 
 ### 6.1 Understand streaming before parsing it
 
@@ -123,7 +131,7 @@ data: [DONE]
 
 ```
 
-This is an illustrative wire fragment, not a file to create. A chunk arriving from SSH is not necessarily a full event or even a full JSON string. Buffer until the blank line marking an event boundary. Tool names and argument strings may arrive in fragments too. Assemble them before parsing arguments or executing a tool.
+This is an illustrative wire fragment, not a file to create. A chunk arriving from the bridge is not necessarily a full event or even a full JSON string. Buffer until the blank line marking an event boundary. Tool names and argument strings may arrive in fragments too. Assemble them before parsing arguments or executing a tool.
 
 ### 6.2 Create the complete transport
 
@@ -153,20 +161,36 @@ class SSEReader {
   }
 }
 
-function sshRequest(options, request, signal, onData) {
+
+function sshCommand(options) {
+  if (!/^[a-zA-Z0-9_][a-zA-Z0-9_.@:\-]*$/.test(options.host || '')) throw new Error('Invalid SSH host');
+  const args = ['-T', '-o', 'BatchMode=yes', '-o', 'StrictHostKeyChecking=yes', '-o', 'ConnectTimeout=12', '-o', 'ServerAliveInterval=20', '-o', 'ServerAliveCountMax=3'];
+  if (options.identity) args.push('-o', 'IdentitiesOnly=yes', '-i', options.identity.replace(/^~(?=[/\\])/, os.homedir()));
+  const encoded = Buffer.from(bridge).toString('base64');
+  const code = `import base64;exec(compile(base64.b64decode('${encoded}'),'<agent-bridge>','exec'))`;
+  args.push(options.host, `${quote(options.python || 'python3')} -u -c ${quote(code)}`);
+  return { executable: options.executable || 'ssh', args };
+}
+
+function bridgeRequest(options, request, signal, onData) {
   return new Promise((resolve, reject) => {
     if (signal?.aborted) return reject(new Error('Stopped'));
-    if (!/^[a-zA-Z0-9_][a-zA-Z0-9_.@:\-]*$/.test(options.host || '')) return reject(new Error('Invalid SSH host'));
-    const args = ['-T', '-o', 'BatchMode=yes', '-o', 'StrictHostKeyChecking=yes', '-o', 'ConnectTimeout=12', '-o', 'ServerAliveInterval=20', '-o', 'ServerAliveCountMax=3'];
-    if (options.identity) args.push('-o', 'IdentitiesOnly=yes', '-i', options.identity.replace(/^~(?=[/\\])/, os.homedir()));
-    const encoded = Buffer.from(bridge).toString('base64');
-    const code = `import base64;exec(compile(base64.b64decode('${encoded}'),'<macstudio-bridge>','exec'))`;
-    args.push(options.host, `${quote(options.python || '/usr/bin/python3')} -u -c ${quote(code)}`);
-    const child = spawn(options.executable || 'ssh', args, { windowsHide: true, stdio: ['pipe', 'pipe', 'pipe'] });
+    const transport = options.transport || 'local';
+    let executable, args;
+    if (transport === 'local') {
+      executable = options.localPython || (process.platform === 'win32' ? 'python' : 'python3');
+      args = ['-u', path.join(__dirname, 'bridge.py')];
+    } else if (transport === 'ssh') {
+      ({ executable, args } = sshCommand(options));
+    } else return reject(new Error('Unknown transport: ' + transport));
+    const child = spawn(executable, args, {
+      windowsHide: true, stdio: ['pipe', 'pipe', 'pipe'],
+      env: { ...process.env, PYTHONIOENCODING: 'utf-8' }
+    });
     let stderr = '', output = '', failure, timer;
     const abort = () => { failure = new Error('Stopped; remote operations may still be finishing.'); child.kill(); };
     signal?.addEventListener('abort', abort, { once: true });
-    timer = setTimeout(() => { failure = new Error('Connection or inference timed out. Check the VPN and Mac service.'); child.kill(); }, ((request.timeout || 600) + 15) * 1000);
+    timer = setTimeout(() => { failure = new Error('Connection or inference timed out. Check Python, the tunnel (if used), and the model service.'); child.kill(); }, ((request.timeout || 600) + 15) * 1000);
     child.stdout.setEncoding('utf8'); child.stderr.setEncoding('utf8');
     child.stdout.on('data', data => {
       try {
@@ -180,7 +204,7 @@ function sshRequest(options, request, signal, onData) {
     child.on('close', code => {
       clearTimeout(timer); signal?.removeEventListener('abort', abort);
       if (failure) reject(failure);
-      else if (code !== 0) reject(new Error(stderr.trim() || `SSH exited (${code})`));
+      else if (code !== 0) reject(new Error(stderr.trim() || `Bridge exited (${code})`));
       else resolve(output);
     });
     child.stdin.end(JSON.stringify({ ...request, direct: options.direct, config: options.config || '~/.openclaw/openclaw.json' }));
@@ -210,7 +234,7 @@ async function completion(options, payload, signal, onText = () => {}) {
       calls.set(index, call);
     }
   });
-  await sshRequest(options, { mode: options.mode, timeout: options.timeout, payload: { ...payload, stream: true } }, signal, chunk => reader.push(chunk));
+  await bridgeRequest(options, { mode: options.mode, timeout: options.timeout, payload: { ...payload, stream: true } }, signal, chunk => reader.push(chunk));
   if (!done) throw new Error('Incomplete response. Unfinished tool calls were not executed.');
   if (finish === 'length') throw new Error('Output limit reached. Reduce the task or increase the output limit.');
   if (calls.size) {
@@ -221,10 +245,10 @@ async function completion(options, payload, signal, onText = () => {}) {
   return message;
 }
 
-module.exports = { SSEReader, sshRequest, completion };
+module.exports = { SSEReader, sshCommand, bridgeRequest, completion };
 ```
 
-`spawn()` receives an argument array so local shell expansion does not interpret the host or code. The remote command still requires shell quoting; `quote()` handles embedded single quotes. Host validation rejects option-shaped values such as `-oProxyCommand=...`.
+`bridgeRequest()` selects local Python by default; `sshCommand()` is used only for the optional Linux/macOS remote route. Local Python receives UTF-8 input and requires no shell quoting. `spawn()` receives an argument array so local shell expansion does not interpret the host or code. The optional remote command requires a POSIX login shell; `quote()` handles embedded single quotes. Host validation rejects option-shaped values such as `-oProxyCommand=...`.
 
 `BatchMode=yes` prevents hidden password waits. `StrictHostKeyChecking=yes` requires a previously trusted server. Specifying a key uses `IdentitiesOnly=yes` so the test matches the intended credential.
 
@@ -234,23 +258,38 @@ This parser expects the service behavior exercised by our live tests, including 
 
 ### 6.3 Make the first request without the sidebar
 
+Create `test/options.js` before the smoke test. All live tests share these environment-driven options. They do not read VS Code settings.
+
+```javascript
+// Shared by terminal tests; VS Code settings are configured separately.
+module.exports = function testOptions(mode = 'direct') {
+  const env = process.env;
+  return {
+    transport: env.AGENT_TRANSPORT || 'local',
+    localPython: env.AGENT_PYTHON,
+    host: env.AGENT_SSH_HOST || 'model-server',
+    identity: env.AGENT_SSH_IDENTITY || '',
+    python: env.AGENT_REMOTE_PYTHON || 'python3',
+    mode, timeout: 300,
+    direct: {
+      baseUrl: env.AGENT_BASE_URL || 'http://127.0.0.1:11434/v1',
+      model: env.AGENT_MODEL || 'YOUR_MODEL_ID',
+      apiKey: env.LOCALAGENT_API_KEY
+    }
+  };
+};
+```
+
+
 **Create `test/smoke.js`:**
 
 ```javascript
-const { sshRequest, completion } = require('../src/transport');
+const { bridgeRequest, completion } = require('../src/transport');
 
 async function main() {
-  if (!process.env.MACSTUDIO_API_KEY) throw new Error('Set MACSTUDIO_API_KEY first');
-  const options = {
-    host: 'macstudio', identity: '~/.ssh/macstudio_course',
-    python: '/usr/bin/python3', mode: 'direct', timeout: 120,
-    direct: {
-      baseUrl: 'http://127.0.0.1:11436/v1',
-      model: 'YOUR_MODEL_ID',
-      apiKey: process.env.MACSTUDIO_API_KEY
-    }
-  };
-  console.log(await sshRequest(options, {mode: 'direct', operation: 'probe', timeout: 20}));
+  if (!process.env.LOCALAGENT_API_KEY) throw new Error('Set LOCALAGENT_API_KEY first');
+  const options = require('./options')();
+  console.log(await bridgeRequest(options, {mode: 'direct', operation: 'probe', timeout: 20}));
   await completion(options, {
     messages: [{role: 'user', content: 'Explain what an extension host does in one sentence.'}],
     max_tokens: 256
@@ -261,15 +300,40 @@ async function main() {
 main().catch(error => { console.error(error.message); process.exitCode = 1; });
 ```
 
-For terminal-only tests, set the API key in this PowerShell process. The following works in Windows PowerShell by prompting for a secure string and converting it only for the child process environment. The environment value is still plaintext while the test runs; do not print it or save it in a script.
+**Create `test/with-key.py`:**
+
+```python
+import getpass
+import os
+import subprocess
+import sys
+
+if len(sys.argv) < 2:
+    raise SystemExit("Usage: python test/with-key.py node test/smoke.js")
+env = os.environ.copy()
+env["LOCALAGENT_API_KEY"] = getpass.getpass("API key (ollama for default local Ollama): ")
+raise SystemExit(subprocess.call(sys.argv[1:], env=env))
+```
+
+For terminal-only tests, configure the endpoint and model in the current process. The Python launcher prompts privately for a credential and passes it only to the test subprocess; it does not save it or place it in shell history. For default local Ollama enter `ollama`; for another service enter its configured key.
+
+**Windows PowerShell:**
 
 ```powershell
-$courseSecret = Read-Host 'Local API key' -AsSecureString
-$env:MACSTUDIO_API_KEY = [System.Net.NetworkCredential]::new('', $courseSecret).Password
-node test/smoke.js
-Remove-Item Env:MACSTUDIO_API_KEY
-Remove-Variable courseSecret
+$env:AGENT_BASE_URL = 'http://127.0.0.1:11434/v1'
+$env:AGENT_MODEL = 'qwen3:4b'
+python test/with-key.py node test/smoke.js
 ```
+
+**Linux Bash / macOS zsh:**
+
+```bash
+export AGENT_BASE_URL='http://127.0.0.1:11434/v1'
+export AGENT_MODEL='qwen3:4b'
+python3 test/with-key.py node test/smoke.js
+```
+
+For route B change the Base URL to port 11435 and keep the tunnel open. For route C set `AGENT_TRANSPORT=ssh`, `AGENT_SSH_HOST=model-server`, and the server-side Base URL; optionally set `AGENT_REMOTE_PYTHON` and `AGENT_SSH_IDENTITY`. PowerShell uses `$env:NAME = 'value'`; Bash/zsh uses `export NAME='value'`. `AGENT_PYTHON` overrides local Python for tests only; the installed extension uses `localagent.localPython`.
 
 **Checkpoint:** You see a model list followed by a streamed explanation. If this fails, fix the transport before debugging the UI. The production extension will use a password input and SecretStorage rather than this environment-variable workflow.
 
@@ -278,7 +342,6 @@ Remove-Variable courseSecret
 Run test/smoke.js and capture the advertised model IDs and a streamed reply without recording the API key.
 ```
 
-> **Image Suggestion (Nanobanana Prompt)**: Create a clean educational illustration for “SSH Bridge and Streaming Responses”, using a neutral VS Code-inspired desktop palette, legible monospace labels, a Windows workstation and a Mac Studio where relevant, and clearly marked “Illustration” text. Emphasize the lab's actual control or execution boundary. Include no real credentials, personal paths, or fabricated test results. Use even lighting and a flat technical-documentation style rather than decorative effects.
 
 **Continue:** [Previous](02-first-extension.md) · [Next](04-project-tools.md) · [Workshop guide](index.md)
 

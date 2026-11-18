@@ -1,4 +1,4 @@
-(macstudio-lab-04)=
+(localagent-lab-04)=
 # 04 - Project Tools and the Agent Loop
 
 **Format:** hands-on lab · **Suggested time:** 45 minutes · **Original course lessons:** 7–8.
@@ -93,7 +93,7 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs/promises');
 const path = require('node:path');
 const os = require('node:os');
-const { SSEReader, sshRequest } = require('../src/transport');
+const { SSEReader, bridgeRequest } = require('../src/transport');
 const { resolvePath, readText, listFiles, editText, hash } = require('../src/files');
 
 test('SSE handles fragmented CRLF, multiple events and comments', () => {
@@ -103,7 +103,7 @@ test('SSE handles fragmented CRLF, multiple events and comments', () => {
 });
 
 test('workspace access rejects traversal, credentials and escaping symlinks', async t => {
-  const temp = await fs.mkdtemp(path.join(os.tmpdir(), 'macstudio-path-'));
+  const temp = await fs.mkdtemp(path.join(os.tmpdir(), 'localagent-path-'));
   t.after(() => fs.rm(temp, { recursive: true, force: true }));
   const root = path.join(temp, 'project'), outside = path.join(temp, 'outside');
   await fs.mkdir(root); await fs.mkdir(outside);
@@ -131,16 +131,24 @@ test('edits require unique exact anchors and preserve surrounding content', () =
 });
 
 test('SSH refuses option-shaped host and pre-cancelled requests', async () => {
-  await assert.rejects(sshRequest({ host: '-oProxyCommand=bad' }, {}), /SSH/);
+  await assert.rejects(bridgeRequest({ transport: 'ssh', host: '-oProxyCommand=bad' }, {}), /SSH/);
   const controller = new AbortController(); controller.abort();
-  await assert.rejects(sshRequest({ host: 'macstudio' }, {}, controller.signal), /Stop/);
+  await assert.rejects(bridgeRequest({ transport: 'ssh', host: 'model-server' }, {}, controller.signal), /Stop/);
 });
 ```
 
-**Run on Windows:**
+**Run on your client:**
+
+**Windows PowerShell:**
 
 ```powershell
-npm.cmd test
+node --test test/core.test.js
+```
+
+**Linux Bash / macOS zsh:**
+
+```bash
+node --test test/core.test.js
 ```
 
 Expect four passing tests. The link test creates temporary directories and junctions. A permissions error creating the link is a test-environment failure, not proof that the path validation is correct. Run the test where temporary directory/junction creation is allowed rather than silently dropping the test.
@@ -216,7 +224,6 @@ The user can still approve a harmful command; a terminal command has the user's 
 Pass the four core tests and explain one read-tool exchange using a matching tool_call_id.
 ```
 
-> **Image Suggestion (Nanobanana Prompt)**: Create a clean educational illustration for “Project Tools and the Agent Loop”, using a neutral VS Code-inspired desktop palette, legible monospace labels, a Windows workstation and a Mac Studio where relevant, and clearly marked “Illustration” text. Emphasize the lab's actual control or execution boundary. Include no real credentials, personal paths, or fabricated test results. Use even lighting and a flat technical-documentation style rather than decorative effects.
 
 **Continue:** [Previous](03-ssh-and-streaming.md) · [Next](05-controller-and-interface.md) · [Workshop guide](index.md)
 

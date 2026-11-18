@@ -1,4 +1,4 @@
-(macstudio-lab-08)=
+(localagent-lab-08)=
 # 08 - MCP, Skills, and Next Steps
 
 **Format:** hands-on lab · **Suggested time:** 45 minutes · **Original course lessons:** 15–16.
@@ -16,7 +16,7 @@ Distinguish local tools, delegated remote tools, MCP, and skill instructions; pl
 
 | Layer | What it supplies | Current implementation |
 |---|---|---|
-| Model tool calling | Structured requests naming a function | Implemented and live-tested |
+| Model tool calling | Structured requests naming a function | Implemented; verify each new model with Lab 6 |
 | Built-in tools | JavaScript functions owned by this extension | Implemented |
 | MCP | A protocol between a host/client and capability servers | No general MCP client in direct mode |
 | Skills | Reusable instructions and optional supporting files/scripts | No automatic local skill loader |
@@ -25,20 +25,20 @@ An MCP server does not automatically attach itself to every program using the sa
 
 ### 15.2 Use remote capabilities through OpenClaw mode
 
-This route delegates to an already configured server agent. It is optional and is not required for the direct-model course. The reference reads a remote config file, gets the gateway endpoint and credential, and sends Chat Completions requests to `openclaw/main`.
+This route delegates to an already configured server agent. It is optional and is not required for the direct-model course. With SSH transport on a Linux/macOS host, the reference reads that host's config file, gets the gateway endpoint and credential, and sends Chat Completions requests to `openclaw/main`.
 
 OpenClaw documents a configurable Chat Completions endpoint; consult the [gateway API documentation](https://docs.openclaw.ai/gateway/openai-http-api) for the exact requirements of your installed server. Do not overwrite an existing gateway configuration with a tiny tutorial example. Endpoint availability and capability exposure must be verified on that installation.
 
 A disciplined capability check is:
 
-1. Confirm the gateway API is enabled and reachable on Mac loopback.
+1. Confirm the gateway API is enabled and reachable on the bridge host loopback.
 2. Confirm which agent is selected and inspect its allowed capabilities.
-3. Select OpenClaw mode in the sidebar and test a harmless chat.
+3. Use SSH transport for the remote config, then select OpenClaw mode in the sidebar and test a harmless chat.
 4. Test one read-only remote tool with an identifiable result and inspect the server trace.
 5. Test one known skill on a harmless fixture; inspect evidence that it was loaded.
-6. Separately verify that client file tools still target Windows.
+6. Separately verify that client file tools still target the workspace extension host.
 
-Do not accept “I have access to your MCP tools” as verification. Obtain the configured capability list and observe a real call. The current sidebar displays client tool dispatch, not a complete audit of internal server actions. Its Windows command-approval dialog does not automatically intercept remote server tools.
+Do not accept “I have access to your MCP tools” as verification. Obtain the configured capability list and observe a real call. The current sidebar displays client tool dispatch, not a complete audit of internal server actions. Its client command-approval dialog does not automatically intercept remote server tools.
 
 ### 15.3 Optional direct MCP architecture
 
@@ -94,9 +94,9 @@ A future loader should let the user select a trusted skill, display its source a
 |---|---|---|
 | Hostname cannot resolve | Network / SSH config | Check alias and network connectivity |
 | SSH permission denied | Authentication | Test the exact identity file with BatchMode |
-| Host-key verification failed | SSH host trust | Verify the Mac fingerprint; do not disable checks blindly |
+| Host-key verification failed | SSH host trust | Verify the server fingerprint; do not disable checks blindly |
 | Remote Python missing | Remote environment | Set the actual Python path |
-| Connection refused at API port | Inference service | Run the Mac-side API probe |
+| Connection refused at API port | Inference service | Run the API probe on the appropriate bridge host |
 | HTTP 401 | API authentication | Reset the key for the selected mode |
 | Model absent from `/models` | Model selection | Use the exact advertised model ID |
 | Plain chat works, tools fail | Model/server protocol | Run the forced-tool and continuation test |
@@ -128,8 +128,8 @@ Vision attachments need file selection, size/type validation, multimodal request
 ### 16.3 Completion checklist
 
 - [ ] I can explain the distinction between model inference and tool execution.
-- [ ] Noninteractive SSH works using the intended key.
-- [ ] The Mac API probe returns the expected model and response.
+- [ ] My chosen route works (SSH is optional for same-machine inference).
+- [ ] The Model API probe returns the expected model and response.
 - [ ] My own reconstructed extension activates in the Development Host.
 - [ ] Streaming text and tool-call continuation work.
 - [ ] File tools stay within the selected project under the tested conditions.
@@ -149,7 +149,7 @@ Vision attachments need file selection, size/type validation, multimodal request
 | Workspace | 工作区 | The project opened in VS Code |
 | Extension host | 扩展宿主 | Process executing extension code |
 | Webview | 网页视图 | Sidebar UI with HTML/CSS/JavaScript |
-| Inference | 推理 | Model generation on the Mac |
+| Inference | 推理 | Model generation on the selected inference host |
 | Tool calling | 工具调用 | Structured requests interpreted by the application |
 | Agent loop | 智能体循环 | Model request, tool execution, result, continuation |
 | Approval | 审批 | User authorization of a concrete proposed operation |
@@ -166,7 +166,6 @@ The final product is a small, inspectable coding assistant. Its usefulness comes
 Attach the example skill explicitly and write a capability matrix stating host, permissions, and verification evidence.
 ```
 
-> **Image Suggestion (Nanobanana Prompt)**: Create a clean educational illustration for “MCP, Skills, and Next Steps”, using a neutral VS Code-inspired desktop palette, legible monospace labels, a Windows workstation and a Mac Studio where relevant, and clearly marked “Illustration” text. Emphasize the lab's actual control or execution boundary. Include no real credentials, personal paths, or fabricated test results. Use even lighting and a flat technical-documentation style rather than decorative effects.
 
 **Continue:** [Previous](07-package-and-models.md) · [Next](index.md) · [Workshop guide](index.md)
 
@@ -198,7 +197,7 @@ No. It sends selected instructions as context; discovery, supporting-file loadin
 
 </details>
 
-**3. Do Windows approval dialogs govern remote agent tools?**
+**3. Do client approval dialogs govern remote agent tools?**
 
 <details>
 <summary>Answer</summary>
