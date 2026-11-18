@@ -16,6 +16,10 @@ This Jupyter Book contains my study notes and tutorials on various AI tools and 
 
 Browse through the chapters using the sidebar to explore different topics. Each section contains notebooks with examples, explanations, and hands-on tutorials.
 
+## Hands-on Workshops
+
+[Build a Mac Studio Coding Agent for VS Code](docs/workshops/macstudio-agent/index.md): eight beginner labs covering SSH, streaming, project tools, a reviewable coding workflow, UI design, packaging, model selection, MCP, and skills. Includes downloadable source, checkpoints, and quizzes.
+
 ## Contributing
 
 This is a personal learning repository, but suggestions and feedback are welcome!

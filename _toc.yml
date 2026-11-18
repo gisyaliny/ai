@@ -43,3 +43,19 @@ parts:
   #   maxdepth: 2
   #   chapters:
   #     - file: docs/skills/intro
+
+  - caption: Workshops
+    numbered: false
+    maxdepth: 2
+    chapters:
+      - file: docs/workshops/macstudio-agent/index
+        sections:
+          - file: docs/workshops/macstudio-agent/01-architecture-and-connection
+          - file: docs/workshops/macstudio-agent/02-first-extension
+          - file: docs/workshops/macstudio-agent/03-ssh-and-streaming
+          - file: docs/workshops/macstudio-agent/04-project-tools
+          - file: docs/workshops/macstudio-agent/05-controller-and-interface
+          - file: docs/workshops/macstudio-agent/06-capstone-and-tests
+          - file: docs/workshops/macstudio-agent/07-package-and-models
+          - file: docs/workshops/macstudio-agent/08-mcp-skills-and-next-steps
+          - file: docs/workshops/macstudio-agent/validation
