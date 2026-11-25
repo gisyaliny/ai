@@ -1,6 +1,28 @@
-# 09 - Validation and Reproducibility
+# 13 - Validation and Reproducibility
 
-Edition: November 18, 2026. Reference: Local Coding Assistant 0.3.0.
+## Advanced Studio 0.13 record — November 24, 2026
+
+The advanced kit contains source commit `0007645fdd8cb5f5d73d4270fce51ca7d5b87dbe` with documentation/installer follow-up. The original VSIX hash is recorded in Lab 9 and the kit. It is a development preview, not final 1.0.
+
+| Check | Recorded evidence |
+|---|---|
+| Node suite | 82 passed |
+| Python bridge suites | Model bridge: 2; ComfyUI bridge: 1, passed |
+| Cross-platform CI | Windows, Linux and macOS passed; seven native VS Code host runs per platform |
+| Live model | One M4 read-only bug-review exercise passed through SSH; no commands or file changes |
+| Native screenshots | Real Studio 0.13 in desktop VS Code 1.147.0, isolated demonstration profile, public arithmetic fixture; live model finding and staged diagnostics |
+| UI regression | Generated webview checked at 280/380/900 px English and 280/380 px Chinese, light/dark; separate from native screenshot capture |
+| Privacy | VSIX textual entries scanned; personal settings, credentials, session files and test profiles excluded |
+| Workshop publication | Zero-warning Jupyter Book build; four new lab pages and their local links/images checked in a browser; desktop and 390 px mobile rendering inspected |
+| Not complete | Full 20-case real-task acceptance; all provider/plugin combinations; parallel writing agents |
+
+Screenshots are captured from the actual extension's renderer, not the earlier HTML design board. They use only disposable project files and saved demonstration conversations. The capture used expanded child context/total budgets (32,768 / 131,072); defaults remain 16,384 / 64,000. The real-model report suggests a fix; it is not evidence of executed tests. This edition does not repeat every image-generation or OAuth-provider exercise.
+
+The portable fixture was executed on Windows: its baseline failed, the minimal source fix passed without changing tests, and recreating an existing folder was refused. The bundled MCP server completed an actual initialize/discover/read call returning `WORKSHOP-MCP-READ-OK`. These checks are separate from the 82 extension tests. Run the commands in Labs 9–12 and record your own live outcomes. A successful book build is not evidence that a model completed every exercise.
+
+## Beginner reference record — November 18, 2026
+
+Reference: Local Coding Assistant 0.3.0. The following evidence belongs to that frozen reference, not the newer Studio implementation.
 
 This edition adds local Python transport, Windows/Linux/macOS instructions, SSH tunnel routing, neutral settings/UI, portable test configuration and scripts. Earlier live Windows-to-Mac evidence belongs to version 0.2.0; it is not a live pass for this changed release.
 

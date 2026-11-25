@@ -10,7 +10,7 @@ author: AI Workshop Contributors # The author of the book
 copyright: "2026" # Copyright year to be placed in the footer
 logo: ""
 # Patterns to skip when building the book. Can be glob-style (e.g. "*skip.ipynb")
-exclude_patterns: [_build, Thumbs.db, .DS_Store, "**.ipynb_checkpoints", ".agents/**", ".idea/**", "scripts/**", "transcripts/**", "gisyaliny/**"]
+exclude_patterns: [_build, Thumbs.db, .DS_Store, "**.ipynb_checkpoints", ".agents/**", ".idea/**", "scripts/**", "transcripts/**", "gisyaliny/**", ".venv/**", "output/**", ".playwright-cli/**", "**/assets/*.md", "**/assets/**/*.md"]
 # Auto-exclude files not in the toc
 only_build_toc_files: true
 
@@ -55,9 +55,13 @@ html:
   # google_analytics_id: G-XXXXXXX
 
 sphinx:
+  local_extensions:
+    book_render: scripts
   extra_extensions:
     - sphinxcontrib.mermaid
   config:
+    html_context:
+      default_mode: auto
     myst_fence_as_directive: [mermaid]
     html_extra_path: ["CNAME", "robots.txt"]
     html_theme_options:
@@ -71,8 +75,6 @@ sphinx:
           binderhub_url: "https://mybinder.org",
           colab_url: "https://colab.research.google.com",
         }
-    bibtex_reference_style: author_year
-    rediraffe_branch: "main"
 # Define the name of the latex output file for PDF builds
 # latex:
 #   latex_documents:

@@ -18,3 +18,8 @@ transcripts/
 /fav.ico
 /gisyaliny/
 **/__pycache__/
+
+# Local documentation build tools and browser review
+/.venv/
+/output/
+/.playwright-cli/

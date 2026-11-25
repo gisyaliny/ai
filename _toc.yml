@@ -60,4 +60,8 @@ parts:
           - file: docs/workshops/macstudio-agent/06-capstone-and-tests
           - file: docs/workshops/macstudio-agent/07-package-and-models
           - file: docs/workshops/macstudio-agent/08-mcp-skills-and-next-steps
+          - file: docs/workshops/macstudio-agent/09-studio-preview-and-connection
+          - file: docs/workshops/macstudio-agent/10-reliable-coding-workflow
+          - file: docs/workshops/macstudio-agent/11-skills-mcp-and-hooks
+          - file: docs/workshops/macstudio-agent/12-subagents-history-and-context
           - file: docs/workshops/macstudio-agent/validation
