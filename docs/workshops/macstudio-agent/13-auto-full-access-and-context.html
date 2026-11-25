@@ -1,0 +1,890 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" data-theme="auto">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>13 - Use Auto, Full Access and Context Compaction &#8212; AI Tools Learning Handbook</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "auto";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "auto";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=6a604523" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../../../_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
+
+    <script src="../../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../../_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script data-sd-tabs-storage-prefix="sphinx-design-tab-id-" src="../../../_static/design-tabs.js?v=fcb327ea"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'docs/workshops/macstudio-agent/13-auto-full-access-and-context';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="canonical" href="https://gisyaliny.github.io/ai/docs/workshops/macstudio-agent/13-auto-full-access-and-context.html" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="14 - Validation and Reproducibility" href="validation.html" />
+    <link rel="prev" title="12 - Delegate Investigations and Continue Local Conversations" href="12-subagents-history-and-context.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../../../_static/searchtools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    <script src="../../../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="auto">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">AI Tools Learning Handbook</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Vibe Coding Workshops</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../vibe-coding/01-environment-and-basics.html">1. 01 - Build and Test a Small App Workshop</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../vibe-coding/02-complex-tasks-and-terminal.html">2. 02 - Refactor Without Losing Behavior Workshop</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../vibe-coding/03-multimodal-and-context.html">3. 03 - Reproduce a Design and Preserve Context Workshop</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../vibe-coding/04-advanced-features.html">4. 04 - Create a Reusable Review Skill Workshop</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Research Workshop</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../research/01-ai-prompts-for-research.html">5. 05 - Audit Claims Before Adding Citations Workshop</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Local LLM Workshops</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../local-llm/01-deploy-local-llm.html">6. 06 - Run a Local Model and Verify the Endpoint Workshop</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../local-llm/02-mastering-ollama.html">7. 07 - From Local Chat to a Grounded API Response Workshop</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">RAG Workshops</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../rag/01-what-is-rag.html">8. 08 - Observe Retrieval Before Generation Workshop</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rag/02-implementing-rag.html">9. 09 - Build a Small Grounded Question-Answering Pipeline Workshop</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rag/03-graph-rag.html">10. 10 - Retrieve a Two-Hop Evidence Path Workshop</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Workshops</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../index.html">AI Hands-on Workshops</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../invitation.html">Build Your Own Coding Agent — Workshop Invitation</a></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">00 - Build Your Own Coding Agent: Windows, Linux and macOS</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="01-architecture-and-connection.html">01 - Choose Your Platform and Connect a Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="02-first-extension.html">02 - Your First VS Code Extension</a></li>
+<li class="toctree-l2"><a class="reference internal" href="03-ssh-and-streaming.html">03 - Local/SSH Transport and Streaming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="04-project-tools.html">04 - Project Tools and the Agent Loop</a></li>
+<li class="toctree-l2"><a class="reference internal" href="05-controller-and-interface.html">05 - Controller and Sidebar Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="06-capstone-and-tests.html">06 - Capstone: Fix, Review, and Verify</a></li>
+<li class="toctree-l2"><a class="reference internal" href="07-package-and-models.html">07 - Packaging and Model Selection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="08-mcp-skills-and-next-steps.html">08 - MCP, Skills, and Next Steps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="09-studio-preview-and-connection.html">09 - Install Studio and Verify Your Model Connection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="10-reliable-coding-workflow.html">10 - Make Changes, Verify Them, and Recover Safely</a></li>
+<li class="toctree-l2"><a class="reference internal" href="11-skills-mcp-and-hooks.html">11 - Reuse Local Skills, Connect MCP, and Add a Reviewed Hook</a></li>
+<li class="toctree-l2"><a class="reference internal" href="12-subagents-history-and-context.html">12 - Delegate Investigations and Continue Local Conversations</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">13 - Use Auto, Full Access and Context Compaction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="validation.html">14 - Validation and Reproducibility</a></li>
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/gisyaliny/ai" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/gisyaliny/ai/edit/main/docs/workshops/macstudio-agent/13-auto-full-access-and-context.md" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/gisyaliny/ai/issues/new?title=Issue%20on%20page%20%2Fdocs/workshops/macstudio-agent/13-auto-full-access-and-context.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../../_sources/docs/workshops/macstudio-agent/13-auto-full-access-and-context.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>13 - Use Auto, Full Access and Context Compaction</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#outcomes">Outcomes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#find-the-right-control">1. Find the right control</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prove-the-auto-boundary">2. Prove the Auto boundary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#try-full-access-in-a-disposable-project">3. Try Full access in a disposable project</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#read-the-status-before-pressing-continue">4. Read the status before pressing Continue</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#understand-automatic-compaction">5. Understand automatic compaction</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#configure-early-and-idle-compaction">Configure early and idle compaction</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#read-structured-audit-data-without-a-line-reading-loop">Read structured audit data without a line-reading loop</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#manual-drill">Manual drill</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reproduce-the-automatic-path-without-sending-private-data">Reproduce the automatic path without sending private data</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#compare-the-strategy-with-claude-code">6. Compare the strategy with Claude Code</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="use-auto-full-access-and-context-compaction">
+<span id="studio-lab-13"></span><h1>13 - Use Auto, Full Access and Context Compaction<a class="headerlink" href="#use-auto-full-access-and-context-compaction" title="Link to this heading">#</a></h1>
+<p><strong>Time:</strong> 45 minutes. <strong>Version:</strong> Studio 0.14.1 preview. <strong>Updated:</strong> November 25, 2026. <strong>Requires:</strong> the disposable exercise from Lab 9 and a working model connection for the live drills.</p>
+<section id="outcomes">
+<h2>Outcomes<a class="headerlink" href="#outcomes" title="Link to this heading">#</a></h2>
+<p>Choose an execution mode deliberately, find the controls in the new workbench, distinguish waiting from stopping, and explain when <strong>context compaction（上下文压缩）</strong> happens automatically. Run the same drills on Windows, Linux or macOS; inference still follows the connection route configured in Lab 9.</p>
+</section>
+<section id="find-the-right-control">
+<h2>1. Find the right control<a class="headerlink" href="#find-the-right-control" title="Link to this heading">#</a></h2>
+<p>Install the <a class="reference internal" href="09-studio-preview-and-connection.html"><span class="std std-doc">0.14 kit from Lab 9</span></a>, save work and reload VS Code. Open a new chat: its mode should read <strong>Auto（自动）</strong>. A restored older chat can retain Review, Plan or Read only; restoring Full access downgrades it to Auto.</p>
+<figure class="align-default" id="id1">
+<a class="reference internal image-reference" href="../../../_images/studio014-workbench-dark.png"><img alt="Studio 0.14 actual webview renderer with grouped tool activity, a review action above the composer, Auto mode and model control beside Send." src="../../../_images/studio014-workbench-dark.png" style="width: 400px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 5 </span><span class="caption-text">Actual 0.14 webview HTML/CSS/JavaScript rendered in a browser fixture. All conversation and change data are synthetic. This screenshot demonstrates the interface, not a live model result or native VS Code command execution.</span><a class="headerlink" href="#id1" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Intent</p></th>
+<th class="head"><p>Where to go</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Connect or diagnose the model</p></td>
+<td><p>Header connection button; gear → Set up connection / Run diagnostics</p></td>
+</tr>
+<tr class="row-odd"><td><p>Load a previous chat</p></td>
+<td><p>Header History icon; search, then select a conversation</p></td>
+</tr>
+<tr class="row-even"><td><p>Attach context</p></td>
+<td><p><strong>+</strong>, or type <code class="docutils literal notranslate"><span class="pre">&#64;</span></code> in the input</p></td>
+</tr>
+<tr class="row-odd"><td><p>Change model/thinking</p></td>
+<td><p>Model chip beside Send; choose a supported thinking level</p></td>
+</tr>
+<tr class="row-even"><td><p>Inspect proposed changes</p></td>
+<td><p>Review action above the input, or <strong>Task details → Changes</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p>See the plan and fixed constraints</p></td>
+<td><p><strong>Task details → Plan</strong></p></td>
+</tr>
+<tr class="row-even"><td><p>Inspect or cancel a child investigation</p></td>
+<td><p><strong>Task details → Subagents</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p>Inspect background command output</p></td>
+<td><p><strong>Task details → Activity</strong></p></td>
+</tr>
+<tr class="row-even"><td><p>Inspect token information or compact</p></td>
+<td><p>Context percentage below the composer; <strong>Compact context</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p>See retained summary details</p></td>
+<td><p><strong>Task details → Plan → Context summary</strong></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>At wide widths, Task details opens beside the conversation. At narrow sidebar widths it replaces the conversation area while leaving the composer available. <strong>Hide details</strong> returns to chat. Tool activity expands when you need the underlying records; message actions copy a reply or place it in the input.</p>
+<figure class="align-default" id="id2">
+<a class="reference internal image-reference" href="../../../_images/studio014-workbench-wide-zh.png"><img alt="Wide Chinese Studio workbench with conversation on the left and pending changes on the right." src="../../../_images/studio014-workbench-wide-zh.png" style="width: 900px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 6 </span><span class="caption-text">Wide layout, following VS Code’s Chinese display language. This uses the same renderer and synthetic fixture as the English capture.</span><a class="headerlink" href="#id2" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<figure class="align-default" id="id3">
+<a class="reference internal image-reference" href="../../../_images/studio014-mode-menu.png"><img alt="Studio 0.14 execution-mode menu with Auto, Full access, Read only, Plan and Review." src="../../../_images/studio014-mode-menu.png" style="width: 400px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 7 </span><span class="caption-text">Choose permissions beside the plus button. Auto is the new-chat default; Full access requires explicit consent.</span><a class="headerlink" href="#id3" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="prove-the-auto-boundary">
+<h2>2. Prove the Auto boundary<a class="headerlink" href="#prove-the-auto-boundary" title="Link to this heading">#</a></h2>
+<p>Auto is the default for <strong>new</strong> chats. Read, search, diagnostics and read-only child investigations can continue without plan approval. Edits remain proposals. Terminal commands require approval unless you already granted that exact command and directory for this task. Review keeps the same effect-approval boundary for compatibility.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Read math.cjs and math.test.cjs. Make a short progress plan and investigate the
+bug. Propose the smallest fix, without changing tests. Wait for my file review.
+</pre></div>
+</div>
+<p>Check these outcomes:</p>
+<ol class="arabic simple">
+<li><p>A progress plan in Auto does not pause reading for approval. Plan mode intentionally does.</p></li>
+<li><p>The source file stays unchanged until you apply the proposed change.</p></li>
+<li><p><strong>Preview diff</strong> opens the actual VS Code diff. Apply only after checking the path and content.</p></li>
+<li><p>Ask for <code class="docutils literal notranslate"><span class="pre">node</span> <span class="pre">math.test.cjs</span></code>. Inspect the native command approval before allowing it.</p></li>
+<li><p>Record the real output; a model claim is not a passing test.</p></li>
+</ol>
+<p><strong>Acceptance:</strong> an unchanged file before review, a reviewed application, and an actual approved command result. An API timeout is a failed live drill, not evidence that the permission boundary failed.</p>
+</section>
+<section id="try-full-access-in-a-disposable-project">
+<h2>3. Try Full access in a disposable project<a class="headerlink" href="#try-full-access-in-a-disposable-project" title="Link to this heading">#</a></h2>
+<p><strong>Full access（完全访问）</strong> is optional. It allows newly proposed local changes to apply through the checkpoint/conflict pipeline, and local terminal commands to run without individual prompts. It is not an OS sandbox: commands run with your system user’s permissions and may affect files or networks beyond the project.</p>
+<p>Use a fresh fixture, not a personal repository. From the extracted kit:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="c"># Windows PowerShell</span>
+<span class="n">python</span> <span class="n">exercises</span><span class="p">/</span><span class="n">make_fixture</span><span class="p">.</span><span class="n">py</span> <span class="n">studio-full-demo</span>
+<span class="n">code</span> <span class="n">studio-full-demo</span>
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Linux / macOS</span>
+python3<span class="w"> </span>exercises/make_fixture.py<span class="w"> </span>studio-full-demo
+code<span class="w"> </span>studio-full-demo
+</pre></div>
+</div>
+<p>Open a new chat, choose the mode beside <strong>+</strong>, select Full access and read its consent dialog. The grant is scoped to this task/project. Then ask:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>For this disposable exercise, I authorize applying the minimal fix to math.cjs
+and running node math.test.cjs without another per-action review. Keep the
+public API and existing tests unchanged. Inspect the file first, apply the
+fix using the file tool, then report the actual test output and checkpoint.
+</pre></div>
+</div>
+<p>Inspect <strong>Task details → Changes → Verification and checkpoints</strong> for the saved edit and <strong>Activity</strong> for the command result. A direct command result is execution evidence; it is not necessarily a completed named verification recipe.</p>
+<figure class="align-default" id="id4">
+<a class="reference internal image-reference" href="../../../_images/studio014-full-access.png"><img alt="Studio 0.14 showing the Full access mode and persistent current-task permission notice." src="../../../_images/studio014-full-access.png" style="width: 400px;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 8 </span><span class="caption-text">The renderer’s Full access notice. Selecting the mode in real VS Code first requires its native consent dialog; a screenshot cannot grant permission.</span><a class="headerlink" href="#id4" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Switch back to Auto. Request another harmless edit and verify it waits for review. Reload after saving work and restore the chat: Full access must not survive. New chats and branches do not inherit the grant either.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Boundary</p></th>
+<th class="head"><p>Full access behavior</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>New local file proposals</p></td>
+<td><p>Auto-apply with checkpoints and conflict checks</p></td>
+</tr>
+<tr class="row-odd"><td><p>Local commands and enabled local hooks</p></td>
+<td><p>No individual prompt while the scoped grant remains valid; unsandboxed</p></td>
+</tr>
+<tr class="row-even"><td><p>Previously pending proposals</p></td>
+<td><p>Still require review; enabling Full access does not apply the old queue</p></td>
+</tr>
+<tr class="row-odd"><td><p>Disabled file/command tools</p></td>
+<td><p>Stay disabled</p></td>
+</tr>
+<tr class="row-even"><td><p>Read-only child agents</p></td>
+<td><p>Stay read-only; no commands or writes</p></td>
+</tr>
+<tr class="row-odd"><td><p>MCP writes and image generation</p></td>
+<td><p>Still require their separate approval</p></td>
+</tr>
+<tr class="row-even"><td><p>Interrupted or unknown outcomes</p></td>
+<td><p>Inspect actual state before retrying; no blind replay</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Acceptance:</strong> one real applied edit, a checkpoint and executed test output; after switching to Auto, another edit waits. Do not publish a private chat export as evidence.</p>
+</section>
+<section id="read-the-status-before-pressing-continue">
+<h2>4. Read the status before pressing Continue<a class="headerlink" href="#read-the-status-before-pressing-continue" title="Link to this heading">#</a></h2>
+<p>The strip above the composer distinguishes context preparation, model waiting/thinking, tool execution, review and pause. A long first-token delay can be model loading, queueing or inference; it is not automatically a round-limit failure.</p>
+<p>During execution, type a clarification and press Enter to guide the next safe tool boundary. This does not launch a second top-level task. Pause aborts the current foreground request and cancels child investigations. Background commands have their own stop controls in Activity.</p>
+<p>If a run stops, read its reason before continuing. Main runs default to <strong>48 model/tool rounds</strong>, not 48 individual tool calls. Several tools returned in one model response use one round. Continue starts another bounded run with saved context; it is not unlimited unattended execution. The latest substantive request is preserved separately so a generic Continue does not replace it with the original project-overview request.</p>
+<p>An output-limit response gets at most <strong>one</strong> concise retry with lower supported thinking. Truncated tool calls are not executed. Other failures, repeated identical tool calls, unknown effects and exhausted limits can still stop the run.</p>
+</section>
+<section id="understand-automatic-compaction">
+<h2>5. Understand automatic compaction<a class="headerlink" href="#understand-automatic-compaction" title="Link to this heading">#</a></h2>
+<p><strong>Yes: automatic compaction is independent of Auto permission mode.</strong> Version 0.14.1 adds both proactive checks and idle compaction (空闲压缩). With default settings:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>contextTokens       = 32,768
+maxOutputTokens     =  4,096
+safety reserve      =  1,024
+input budget        = 27,648
+</pre></div>
+</div>
+<p>Before each main model request, Studio measures the messages and tool definitions. Direct API mode tries the server tokenizer by default; unavailable/unsupported counting or image-containing requests use a conservative estimate plus image reservation. The configured context capacity must reflect the actual serving configuration, not just a model’s advertised maximum.</p>
+<p>At 75% of the available input budget (20,736 tokens with these defaults), Studio attempts semantic compaction before the hard limit:</p>
+<ol class="arabic simple">
+<li><p>Summarize older turns. A long active turn can also compact its older exchanges, retaining at least eight recent messages and never splitting tool calls from their results. An incremental pass starts after the previous saved summary.</p></li>
+<li><p>Preserve pinned constraints separately, together with task state and the latest substantive user request. A very long request supplies a marked bounded excerpt; the original remains in local storage.</p></li>
+<li><p>Re-measure. If needed, reduce long tool-result previews and older context while keeping call/result pairing. A single long active turn can need this trimming even when there is no older turn to summarize.</p></li>
+<li><p>If semantic summarization fails, keep the previous summary and attempt bounded trimming. If the request still cannot fit, stop with a reason rather than send an oversized request.</p></li>
+</ol>
+<p>The context percentage represents input relative to the reserved <strong>input budget</strong>, not the full model capacity. Full history on disk does not mean every token is sent on every call.</p>
+<section id="configure-early-and-idle-compaction">
+<h3>Configure early and idle compaction<a class="headerlink" href="#configure-early-and-idle-compaction" title="Link to this heading">#</a></h3>
+<p>Open VS Code Settings, search <code class="docutils literal notranslate"><span class="pre">macstudio</span> <span class="pre">compact</span></code>, or edit your settings:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">"macstudio.autoCompactPercent"</span><span class="p">:</span><span class="w"> </span><span class="mi">75</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"macstudio.idleCompactMinutes"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"macstudio.idleCompactMinPercent"</span><span class="p">:</span><span class="w"> </span><span class="mi">50</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The percentage uses available <strong>input</strong> budget, after output and safety reservation. Idle compaction requires a saved direct API key/connection, sufficient context, compressible history, and no active foreground operation, command or subagent. It never prompts for a key in the background. Typing in the Studio composer or invoking a Studio action cancels it; the prior summary and transcript stay intact. Set idle minutes to <code class="docutils literal notranslate"><span class="pre">0</span></code> to disable it. Failed or cancelled attempts are not repeatedly retried on the same history boundary; new conversation progress permits another attempt. The idle timer checks every 15 seconds, so five minutes is a minimum, not an exact deadline.</p>
+</section>
+<section id="read-structured-audit-data-without-a-line-reading-loop">
+<h3>Read structured audit data without a line-reading loop<a class="headerlink" href="#read-structured-audit-data-without-a-line-reading-loop" title="Link to this heading">#</a></h3>
+<p>A minified JSON record can occupy one very long line. Changing line ranges repeatedly does not reveal new records. In a disposable project, create <code class="docutils literal notranslate"><span class="pre">audit-demo.json</span></code>:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="nt">"packet"</span><span class="p">:[{</span><span class="nt">"item_id"</span><span class="p">:</span><span class="s2">"A01"</span><span class="p">,</span><span class="nt">"text"</span><span class="p">:</span><span class="s2">"Coffee with friends"</span><span class="p">},{</span><span class="nt">"item_id"</span><span class="p">:</span><span class="s2">"A02"</span><span class="p">,</span><span class="nt">"text"</span><span class="p">:</span><span class="s2">"Great place"</span><span class="p">}]}</span>
+</pre></div>
+</div>
+<p>Ask Studio:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Inspect audit-demo.json with local_read_json. Select /packet, offset 0,
+limit 1. Review each record, advance using nextOffset, and report the
+IDs covered, evidence quotes and unresolved cases. Do not review the UI.
+</pre></div>
+</div>
+<p>A JSON Pointer (JSON 路径) such as <code class="docutils literal notranslate"><span class="pre">/packet</span></code> selects the array. Pages contain whole records; an oversized individual record explicitly asks for a narrower pointer. The tool follows the same project/sensitive-path policy and sees unsaved editor text. Read-only subagents have the same capability.</p>
+<p>Studio detects identical results and already-covered line ranges. After repeated reads without new evidence it requests a substantive findings/coverage report; the last allowed round is also reserved for that report. This does not turn incomplete work into completed work. Large audits still benefit from small batches, persisted decisions and explicit coverage checks. Automated annotations must remain distinguishable from human judgments.</p>
+</section>
+<section id="manual-drill">
+<h3>Manual drill<a class="headerlink" href="#manual-drill" title="Link to this heading">#</a></h3>
+<p>Save the three constraints from Lab 12, complete at least two short turns, then use:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>/compact
+</pre></div>
+</div>
+<p>Inspect the summary and verify the pinned constraints remain verbatim. To request an extracted summary without a summarizing model call:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>/compact extract
+</pre></div>
+</div>
+<p>The context popover’s <strong>Compact context</strong> button requests semantic compaction. Studio 0.14 does not implement <code class="docutils literal notranslate"><span class="pre">/compact</span> <span class="pre">&lt;focus</span> <span class="pre">instructions&gt;</span></code> or <code class="docutils literal notranslate"><span class="pre">/autocompact</span></code>. Put persistent requirements in Fixed constraints instead.</p>
+<p>Semantic summarization itself consumes model time/tokens. It uses off/low thinking when supported, at most 2,048 output tokens per batch and at most eight batches. It does not change the main model’s chosen thinking setting. A summary can omit details; re-read source evidence before acting on it.</p>
+</section>
+<section id="reproduce-the-automatic-path-without-sending-private-data">
+<h3>Reproduce the automatic path without sending private data<a class="headerlink" href="#reproduce-the-automatic-path-without-sending-private-data" title="Link to this heading">#</a></h3>
+<p>From the kit’s <code class="docutils literal notranslate"><span class="pre">source/</span></code>, after <code class="docutils literal notranslate"><span class="pre">npm</span> <span class="pre">ci</span></code> (<code class="docutils literal notranslate"><span class="pre">npm.cmd</span> <span class="pre">ci</span></code> on Windows):</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>node --test --test-name-pattern="compaction|repeated|JSON" test/controller.test.js test/compaction14.test.js
+</pre></div>
+</div>
+<p>These controlled tests exercise early/idle compaction, cancellation, pair preservation, structured JSON pages and repeated-read recovery. They use synthetic model responses and are not live-provider validation. For a live drill, use only disposable text, observe the context meter and compaction notice, and record the actual result. Do not repeatedly paste huge content just to force a model call.</p>
+</section>
+</section>
+<section id="compare-the-strategy-with-claude-code">
+<h2>6. Compare the strategy with Claude Code<a class="headerlink" href="#compare-the-strategy-with-claude-code" title="Link to this heading">#</a></h2>
+<p>The design direction is similar, but <strong>0.14 is not feature-equivalent</strong>. Comparison checked against official documentation on November 25, 2026:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Mechanism</p></th>
+<th class="head"><p>Studio 0.14</p></th>
+<th class="head"><p>Claude Code documentation</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Automatic compaction</p></td>
+<td><p>Pre-call budget check, reserved output and safety margin</p></td>
+<td><p>Automatic as context approaches its configured window</p></td>
+</tr>
+<tr class="row-odd"><td><p>Earlier threshold</p></td>
+<td><p>Configurable, default 75% of available input budget</p></td>
+<td><p>Configurable auto-compact window</p></td>
+</tr>
+<tr class="row-even"><td><p>Manual compaction</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">/compact</span></code>, <code class="docutils literal notranslate"><span class="pre">/compact</span> <span class="pre">extract</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">/compact</span></code> can include focus instructions</p></td>
+</tr>
+<tr class="row-odd"><td><p>Idle compaction</p></td>
+<td><p>Default 5 minutes, at least 50% budget; no active commands/agents; cancellable</p></td>
+<td><p>Documented idle-compaction behavior/settings</p></td>
+</tr>
+<tr class="row-even"><td><p>After compaction</p></td>
+<td><p>Task state, pinned constraints, latest request and loaded guidance; tool-result trimming when necessary</p></td>
+<td><p>Documented instruction/memory/skill reinjection and selected file re-reading</p></td>
+</tr>
+<tr class="row-odd"><td><p>Permission mode named Auto</p></td>
+<td><p>Read-only progress continues; file/command effects require review</p></td>
+<td><p>Uses an action classifier in addition to permission rules</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Sources: <a class="reference external" href="https://code.claude.com/docs/en/context-window">Claude Code context and compaction</a>, <a class="reference external" href="https://code.claude.com/docs/en/model-config#context-window-and-auto-compaction">auto-compact window configuration</a>, and <a class="reference external" href="https://code.claude.com/docs/en/auto-mode-config">auto-mode configuration</a>. Product behavior can change; this table describes the documented mechanisms, not an assertion about their private implementation.</p>
+<p>Remaining differences include focused partial compaction and targeted file re-reading after summaries. The new early/idle controls align the broad workflow, not Claude Code’s private implementation or model quality.</p>
+<p><strong>Quiz:</strong> Does Auto mean compaction only runs in Auto mode? <strong>Answer:</strong> No. Permission mode controls effects; the context budget check runs independently.</p>
+<p><strong>Submission:</strong> mode chosen, observed permission boundary, actual test output, compaction type, retained constraints, and one clearly identified limitation. Use only synthetic screenshots and remove machine/account details.</p>
+<p><a class="reference internal" href="12-subagents-history-and-context.html"><span class="std std-doc">Previous</span></a> · <a class="reference internal" href="validation.html"><span class="std std-doc">Validation</span></a> · <a class="reference internal" href="index.html"><span class="std std-doc">Workshop guide</span></a></p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./docs\workshops\macstudio-agent"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="12-subagents-history-and-context.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">12 - Delegate Investigations and Continue Local Conversations</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="validation.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">14 - Validation and Reproducibility</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#outcomes">Outcomes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#find-the-right-control">1. Find the right control</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prove-the-auto-boundary">2. Prove the Auto boundary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#try-full-access-in-a-disposable-project">3. Try Full access in a disposable project</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#read-the-status-before-pressing-continue">4. Read the status before pressing Continue</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#understand-automatic-compaction">5. Understand automatic compaction</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#configure-early-and-idle-compaction">Configure early and idle compaction</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#read-structured-audit-data-without-a-line-reading-loop">Read structured audit data without a line-reading loop</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#manual-drill">Manual drill</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reproduce-the-automatic-path-without-sending-private-data">Reproduce the automatic path without sending private data</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#compare-the-strategy-with-claude-code">6. Compare the strategy with Claude Code</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By AI Workshop Contributors
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2026.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
+<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

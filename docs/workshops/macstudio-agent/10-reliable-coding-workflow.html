@@ -34,7 +34,7 @@
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
     <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=6a604523" />
   
@@ -244,7 +244,8 @@
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">10 - Make Changes, Verify Them, and Recover Safely</a></li>
 <li class="toctree-l2"><a class="reference internal" href="11-skills-mcp-and-hooks.html">11 - Reuse Local Skills, Connect MCP, and Add a Reviewed Hook</a></li>
 <li class="toctree-l2"><a class="reference internal" href="12-subagents-history-and-context.html">12 - Delegate Investigations and Continue Local Conversations</a></li>
-<li class="toctree-l2"><a class="reference internal" href="validation.html">13 - Validation and Reproducibility</a></li>
+<li class="toctree-l2"><a class="reference internal" href="13-auto-full-access-and-context.html">13 - Use Auto, Full Access and Context Compaction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="validation.html">14 - Validation and Reproducibility</a></li>
 </ul>
 </details></li>
 </ul>
@@ -493,25 +494,25 @@ references. Create a short plan. Keep exports.add unchanged and do not edit test
 Do not run commands or propose executable changes yet.
 </pre></div>
 </div>
-<p>Save those two constraints under <strong>Work → Fixed constraints</strong> and inspect <code class="docutils literal notranslate"><span class="pre">/context</span></code>. Insert file references with <code class="docutils literal notranslate"><span class="pre">&#64;</span></code> completion or <strong>+</strong>. Plan mode blocks effectful tools at dispatch; a prompt alone is not the permission boundary.</p>
+<p>Save those two constraints under <strong>Task details → Plan → Fixed constraints</strong> and inspect <code class="docutils literal notranslate"><span class="pre">/context</span></code>. Insert file references with <code class="docutils literal notranslate"><span class="pre">&#64;</span></code> completion or <strong>+</strong>. Plan mode blocks effectful tools at dispatch; a prompt alone is not the permission boundary.</p>
 <figure class="align-default" id="id1">
 <a class="reference internal image-reference" href="../../../_images/studio013-native-chat.png"><img alt="Real VS Code editor containing a buggy arithmetic helper and an actual model review in Studio." src="../../../_images/studio013-native-chat.png" style="width: 860px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 2 </span><span class="caption-text">Actual model review. The editor still contains <code class="docutils literal notranslate"><span class="pre">a</span> <span class="pre">-</span> <span class="pre">b</span></code>: a suggested fix is not an applied change or a passing test.</span><a class="headerlink" href="#id1" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 2 </span><span class="caption-text">Historical 0.13 model review. The editor still contains <code class="docutils literal notranslate"><span class="pre">a</span> <span class="pre">-</span> <span class="pre">b</span></code>: a suggested fix is not an applied change or a passing test.</span><a class="headerlink" href="#id1" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 </section>
 <section id="review-and-apply">
 <h2>2. Review and apply<a class="headerlink" href="#review-and-apply" title="Link to this heading">#</a></h2>
-<p>Approve the plan, choose <strong>Review</strong> mode, and ask:</p>
+<p>Approve the plan, use the default <strong>Auto</strong> mode, and ask:</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Propose the smallest fix in math.cjs. Add a short comment to usage.cjs explaining
 that add returns the sum. Group the source changes for review. Leave
 math.test.cjs unchanged. Wait for me to inspect the diff before applying.
 </pre></div>
 </div>
 <p>Open each Diff and check the paths/lines. Apply the reviewed group. Grouped operations support edits, creates, renames and deletes; this exercise needs only two edits.</p>
-<p>Under <strong>Work → Verification and checkpoints</strong>, save this recipe:</p>
+<p>Under <strong>Task details → Changes → Verification and checkpoints</strong>, save this recipe:</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>node math.test.cjs
 node usage.cjs
 </pre></div>
@@ -534,12 +535,12 @@ node usage.cjs
 <span class="p">},</span><span class="w"> </span><span class="mf">1000</span><span class="p">);</span>
 </pre></div>
 </div>
-<p>Ask Studio to run <code class="docutils literal notranslate"><span class="pre">node</span> <span class="pre">slow-check.cjs</span></code> and approve it in the exercise project. After the default 10-second foreground threshold, Work shows a job ID and output. Ask it to check that job rather than launch another copy. Identical live commands in the same task/directory reuse their ID.</p>
+<p>Ask Studio to run <code class="docutils literal notranslate"><span class="pre">node</span> <span class="pre">slow-check.cjs</span></code> and approve it in the exercise project. After the default 10-second foreground threshold, <strong>Task details → Activity</strong> shows a job ID and output. Ask it to check that job rather than launch another copy. Identical live commands in the same task/directory reuse their ID.</p>
 <p>Cancel a second run using its card and observe its final status. Cancellation requests termination of owned processes; it cannot promise to reverse remote effects or stop deliberately detached descendants.</p>
 </section>
 <section id="queue-steer-and-resume">
 <h2>5. Queue, steer and resume<a class="headerlink" href="#queue-steer-and-resume" title="Link to this heading">#</a></h2>
-<p>During a reply, Enter queues another message. <strong>Guide next step</strong> inserts guidance at a safe model boundary. Pause retains queued input; Stop also requests termination of owned command jobs.</p>
+<p>During a reply, Enter sends guidance for the next safe tool boundary; it does not start a parallel top-level task. <strong>Pause</strong> aborts the foreground request and cancels child investigations while retaining local records. Pause does not promise to terminate background commands: stop those explicitly from <strong>Task details → Activity</strong>. See Lab 13 for the mode boundaries and status strip.</p>
 <p>After completing the exercise, save work, reload VS Code and load the chat from History. Pending work and old results should remain, but interrupted operations must not replay. Exact-command task approvals do not become permanent permissions after reload.</p>
 <p>Verification can become <strong>stale（过期）</strong> after file edits, reload or uncertain completion. Re-run checks for fresh evidence. This version does not infer a complete build-system dependency graph.</p>
 </section>

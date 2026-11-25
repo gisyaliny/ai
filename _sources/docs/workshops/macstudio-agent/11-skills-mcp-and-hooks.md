@@ -76,7 +76,7 @@ Expected marker: `WORKSHOP-MCP-READ-OK`. Inspect the tool log, not just the assi
 
 ## 4. Understand effects and authentication
 
-Selected tools with read-only, non-destructive annotations can be available in Plan. Write/unknown-effect tools require Review mode, enabled reviewed effects and argument approval. Metadata changes invalidate prior selections. A server annotation is not an OS sandbox.
+Selected tools with read-only, non-destructive annotations can be available in Plan. Write/unknown-effect tools require Auto, Review or Full access, enabled reviewed effects and separate argument approval. Full access does not remove MCP review. Metadata changes invalidate prior selections. A server annotation is not an OS sandbox.
 
 OAuth uses discovery, PKCE, a loopback callback and SecretStorage. Provider registration requirements differ. Tests use controlled providers; this workshop does not require creating a production OAuth application.
 
@@ -99,7 +99,7 @@ Preserve existing hooks when adding:
 }
 ```
 
-Run `/hooks`, inspect the command and enable it for the disposable project. Review/apply a source change in Review mode. The hook still requires command approval. Changing its definition requires enablement again; it cannot bypass Plan mode or selected skill restrictions.
+Run `/hooks`, inspect the command and enable it for the disposable project. Review/apply a source change in Auto mode. The hook requires command approval in Auto; task-scoped Full access also covers enabled local hook commands. Changing its definition requires enablement again; it cannot bypass Plan mode or selected skill restrictions.
 
 Supported events: before-tool, after-apply, after-verification and task-end. Start with after-apply; before-tool may run frequently. A failed before-tool hook blocks dispatch. Other failures remain visible without undoing edits. Interrupted effects never replay automatically.
 

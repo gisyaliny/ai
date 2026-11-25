@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>13 - Validation and Reproducibility &#8212; AI Tools Learning Handbook</title>
+    <title>14 - Validation and Reproducibility &#8212; AI Tools Learning Handbook</title>
   
   
   
@@ -34,7 +34,7 @@
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
     <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=6a604523" />
   
@@ -64,7 +64,7 @@
     <link rel="canonical" href="https://gisyaliny.github.io/ai/docs/workshops/macstudio-agent/validation.html" />
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="prev" title="12 - Delegate Investigations and Continue Local Conversations" href="12-subagents-history-and-context.html" />
+    <link rel="prev" title="13 - Use Auto, Full Access and Context Compaction" href="13-auto-full-access-and-context.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
@@ -243,7 +243,8 @@
 <li class="toctree-l2"><a class="reference internal" href="10-reliable-coding-workflow.html">10 - Make Changes, Verify Them, and Recover Safely</a></li>
 <li class="toctree-l2"><a class="reference internal" href="11-skills-mcp-and-hooks.html">11 - Reuse Local Skills, Connect MCP, and Add a Reviewed Hook</a></li>
 <li class="toctree-l2"><a class="reference internal" href="12-subagents-history-and-context.html">12 - Delegate Investigations and Continue Local Conversations</a></li>
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">13 - Validation and Reproducibility</a></li>
+<li class="toctree-l2"><a class="reference internal" href="13-auto-full-access-and-context.html">13 - Use Auto, Full Access and Context Compaction</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">14 - Validation and Reproducibility</a></li>
 </ul>
 </details></li>
 </ul>
@@ -445,7 +446,7 @@
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>13 - Validation and Reproducibility</h1>
+    <h1>14 - Validation and Reproducibility</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -455,7 +456,8 @@
             </div>
             <nav aria-label="Page">
                 <ul class="pst-show_toc_level nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-studio-0-13-record-november-24-2026">Advanced Studio 0.13 record — November 24, 2026</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-studio-0-14-record-november-25-2026">Advanced Studio 0.14 record — November 25, 2026</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#historical-advanced-studio-0-13-record-november-24-2026">Historical advanced Studio 0.13 record — November 24, 2026</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#beginner-reference-record-november-18-2026">Beginner reference record — November 18, 2026</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#development-dependency-audit">Development dependency audit</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reproduce">Reproduce</a></li>
@@ -471,10 +473,53 @@
                 <article class="bd-article">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="validation-and-reproducibility">
-<h1>13 - Validation and Reproducibility<a class="headerlink" href="#validation-and-reproducibility" title="Link to this heading">#</a></h1>
-<section id="advanced-studio-0-13-record-november-24-2026">
-<h2>Advanced Studio 0.13 record — November 24, 2026<a class="headerlink" href="#advanced-studio-0-13-record-november-24-2026" title="Link to this heading">#</a></h2>
-<p>The advanced kit contains source commit <code class="docutils literal notranslate"><span class="pre">0007645fdd8cb5f5d73d4270fce51ca7d5b87dbe</span></code> with documentation/installer follow-up. The original VSIX hash is recorded in Lab 9 and the kit. It is a development preview, not final 1.0.</p>
+<h1>14 - Validation and Reproducibility<a class="headerlink" href="#validation-and-reproducibility" title="Link to this heading">#</a></h1>
+<section id="advanced-studio-0-14-record-november-25-2026">
+<h2>Advanced Studio 0.14 record — November 25, 2026<a class="headerlink" href="#advanced-studio-0-14-record-november-25-2026" title="Link to this heading">#</a></h2>
+<p>The current advanced kit contains the exact 0.14.1 VSIX, its pinned installer/checksum, source snapshot, disposable exercises and <code class="docutils literal notranslate"><span class="pre">RELEASE-MANIFEST.json</span></code>. Lab 9 records the package hash. The manifest records the source commit; use it to distinguish the bundle from a newer branch checkout.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Check</p></th>
+<th class="head"><p>Recorded evidence</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Node suite</p></td>
+<td><p>110 tests passed on Windows, including early/idle compaction, cancellation, JSON paging and repeated-read recovery</p></td>
+</tr>
+<tr class="row-odd"><td><p>Native host</p></td>
+<td><p>Actual WorkspaceEdit/group apply, checkpoints, command execution, expired Full access blocked, restored chat downgraded to Auto; existing apply/verify/repair/rewind tests also passed</p></td>
+</tr>
+<tr class="row-even"><td><p>UI</p></td>
+<td><p>Actual generated webview checked in English/Chinese and light/dark at 280/320/400/900 px; mode actions, model/thinking, grouped records, message copy/reuse, steering, pause/resume, settings and responsive task pane</p></td>
+</tr>
+<tr class="row-odd"><td><p>Distribution</p></td>
+<td><p>VSIX runtime/privacy checks passed; installed runtime/webview matched the packaged bytes; pinned PowerShell checksum verification passed</p></td>
+</tr>
+<tr class="row-even"><td><p>Screenshot provenance</p></td>
+<td><p>New 0.14 captures use the actual renderer with synthetic browser-fixture data. They are not live-model or native-desktop captures. Older 0.13 native captures are explicitly historical.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Publication privacy</p></td>
+<td><p>Candidate source, downloadable archives, package text/metadata and generated book checked; screenshots inspected; private settings, chats, credentials and test profiles excluded</p></td>
+</tr>
+<tr class="row-even"><td><p>Live orchestration</p></td>
+<td><p>A bounded real-project smoke test completed through the normal send path in five main rounds and two child rounds, saved through the checkpointed file tool and read back. Private inputs/traces are excluded; reproduce with the disposable exercises.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Live compaction</p></td>
+<td><p>Synthetic conversation compacted through the actual Mac API from an isolated VS Code host; full history and pinned constraint preserved. This does not certify every provider.</p></td>
+</tr>
+<tr class="row-even"><td><p>Limits</p></td>
+<td><p>The 0.14.0 baseline passed Windows/macOS/Linux CI; 0.14.1 also passed all three platforms (<a class="reference external" href="https://github.com/gisyaliny/skills/actions/runs/45665467875">exact CI run</a>); results are recorded in the release manifest. These checks do not certify every provider. The earlier 0.13 cross-platform/live-model checks below remain historical. Full 1.0 acceptance is still incomplete.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The installed VS Code launcher was temporarily blocked by its updater during testing. A cached portable VS Code host completed the isolated native tests. The new fixture screenshots illustrate UI behavior; permission enforcement is separately covered by unit and native-host tests. No screenshot is presented as evidence of completed model work.</p>
+<p>The CI link requires repository access. The public kit includes pinned source and tests for local reproduction; no private research traces are included.</p>
+</section>
+<section id="historical-advanced-studio-0-13-record-november-24-2026">
+<h2>Historical advanced Studio 0.13 record — November 24, 2026<a class="headerlink" href="#historical-advanced-studio-0-13-record-november-24-2026" title="Link to this heading">#</a></h2>
+<p>The advanced kit contains source commit <code class="docutils literal notranslate"><span class="pre">0007645fdd8cb5f5d73d4270fce51ca7d5b87dbe</span></code> with documentation/installer follow-up. The original VSIX hash belongs to the historical 0.13 kit; Lab 9 now records the current package. It is a development preview, not final 1.0.</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
 <tr class="row-odd"><th class="head"><p>Check</p></th>
@@ -598,12 +643,12 @@
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="12-subagents-history-and-context.html"
+       href="13-auto-full-access-and-context.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">12 - Delegate Investigations and Continue Local Conversations</p>
+        <p class="prev-next-title">13 - Use Auto, Full Access and Context Compaction</p>
       </div>
     </a>
 </div>
@@ -624,7 +669,8 @@
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-studio-0-13-record-november-24-2026">Advanced Studio 0.13 record — November 24, 2026</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-studio-0-14-record-november-25-2026">Advanced Studio 0.14 record — November 25, 2026</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#historical-advanced-studio-0-13-record-november-24-2026">Historical advanced Studio 0.13 record — November 24, 2026</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#beginner-reference-record-november-18-2026">Beginner reference record — November 18, 2026</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#development-dependency-audit">Development dependency audit</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reproduce">Reproduce</a></li>

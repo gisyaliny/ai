@@ -23,18 +23,18 @@ references. Create a short plan. Keep exports.add unchanged and do not edit test
 Do not run commands or propose executable changes yet.
 ```
 
-Save those two constraints under **Work → Fixed constraints** and inspect `/context`. Insert file references with `@` completion or **+**. Plan mode blocks effectful tools at dispatch; a prompt alone is not the permission boundary.
+Save those two constraints under **Task details → Plan → Fixed constraints** and inspect `/context`. Insert file references with `@` completion or **+**. Plan mode blocks effectful tools at dispatch; a prompt alone is not the permission boundary.
 
 ```{figure} assets/studio013-native-chat.png
 :alt: Real VS Code editor containing a buggy arithmetic helper and an actual model review in Studio.
 :width: 860px
 
-Actual model review. The editor still contains `a - b`: a suggested fix is not an applied change or a passing test.
+Historical 0.13 model review. The editor still contains `a - b`: a suggested fix is not an applied change or a passing test.
 ```
 
 ## 2. Review and apply
 
-Approve the plan, choose **Review** mode, and ask:
+Approve the plan, use the default **Auto** mode, and ask:
 
 ```text
 Propose the smallest fix in math.cjs. Add a short comment to usage.cjs explaining
@@ -44,7 +44,7 @@ math.test.cjs unchanged. Wait for me to inspect the diff before applying.
 
 Open each Diff and check the paths/lines. Apply the reviewed group. Grouped operations support edits, creates, renames and deletes; this exercise needs only two edits.
 
-Under **Work → Verification and checkpoints**, save this recipe:
+Under **Task details → Changes → Verification and checkpoints**, save this recipe:
 
 ```text
 node math.test.cjs
@@ -73,13 +73,13 @@ const timer = setInterval(() => {
 }, 1000);
 ```
 
-Ask Studio to run `node slow-check.cjs` and approve it in the exercise project. After the default 10-second foreground threshold, Work shows a job ID and output. Ask it to check that job rather than launch another copy. Identical live commands in the same task/directory reuse their ID.
+Ask Studio to run `node slow-check.cjs` and approve it in the exercise project. After the default 10-second foreground threshold, **Task details → Activity** shows a job ID and output. Ask it to check that job rather than launch another copy. Identical live commands in the same task/directory reuse their ID.
 
 Cancel a second run using its card and observe its final status. Cancellation requests termination of owned processes; it cannot promise to reverse remote effects or stop deliberately detached descendants.
 
 ## 5. Queue, steer and resume
 
-During a reply, Enter queues another message. **Guide next step** inserts guidance at a safe model boundary. Pause retains queued input; Stop also requests termination of owned command jobs.
+During a reply, Enter sends guidance for the next safe tool boundary; it does not start a parallel top-level task. **Pause** aborts the foreground request and cancels child investigations while retaining local records. Pause does not promise to terminate background commands: stop those explicitly from **Task details → Activity**. See Lab 13 for the mode boundaries and status strip.
 
 After completing the exercise, save work, reload VS Code and load the chat from History. Pending work and old results should remain, but interrupted operations must not replay. Exact-command task approvals do not become permanent permissions after reload.
 

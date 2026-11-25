@@ -1,8 +1,28 @@
-# 13 - Validation and Reproducibility
+# 14 - Validation and Reproducibility
 
-## Advanced Studio 0.13 record — November 24, 2026
+## Advanced Studio 0.14 record — November 25, 2026
 
-The advanced kit contains source commit `0007645fdd8cb5f5d73d4270fce51ca7d5b87dbe` with documentation/installer follow-up. The original VSIX hash is recorded in Lab 9 and the kit. It is a development preview, not final 1.0.
+The current advanced kit contains the exact 0.14.1 VSIX, its pinned installer/checksum, source snapshot, disposable exercises and `RELEASE-MANIFEST.json`. Lab 9 records the package hash. The manifest records the source commit; use it to distinguish the bundle from a newer branch checkout.
+
+| Check | Recorded evidence |
+|---|---|
+| Node suite | 110 tests passed on Windows, including early/idle compaction, cancellation, JSON paging and repeated-read recovery |
+| Native host | Actual WorkspaceEdit/group apply, checkpoints, command execution, expired Full access blocked, restored chat downgraded to Auto; existing apply/verify/repair/rewind tests also passed |
+| UI | Actual generated webview checked in English/Chinese and light/dark at 280/320/400/900 px; mode actions, model/thinking, grouped records, message copy/reuse, steering, pause/resume, settings and responsive task pane |
+| Distribution | VSIX runtime/privacy checks passed; installed runtime/webview matched the packaged bytes; pinned PowerShell checksum verification passed |
+| Screenshot provenance | New 0.14 captures use the actual renderer with synthetic browser-fixture data. They are not live-model or native-desktop captures. Older 0.13 native captures are explicitly historical. |
+| Publication privacy | Candidate source, downloadable archives, package text/metadata and generated book checked; screenshots inspected; private settings, chats, credentials and test profiles excluded |
+| Live orchestration | A bounded real-project smoke test completed through the normal send path in five main rounds and two child rounds, saved through the checkpointed file tool and read back. Private inputs/traces are excluded; reproduce with the disposable exercises. |
+| Live compaction | Synthetic conversation compacted through the actual Mac API from an isolated VS Code host; full history and pinned constraint preserved. This does not certify every provider. |
+| Limits | The 0.14.0 baseline passed Windows/macOS/Linux CI; 0.14.1 also passed all three platforms ([exact CI run](https://github.com/gisyaliny/skills/actions/runs/45665467875)); results are recorded in the release manifest. These checks do not certify every provider. The earlier 0.13 cross-platform/live-model checks below remain historical. Full 1.0 acceptance is still incomplete. |
+
+The installed VS Code launcher was temporarily blocked by its updater during testing. A cached portable VS Code host completed the isolated native tests. The new fixture screenshots illustrate UI behavior; permission enforcement is separately covered by unit and native-host tests. No screenshot is presented as evidence of completed model work.
+
+The CI link requires repository access. The public kit includes pinned source and tests for local reproduction; no private research traces are included.
+
+## Historical advanced Studio 0.13 record — November 24, 2026
+
+The advanced kit contains source commit `0007645fdd8cb5f5d73d4270fce51ca7d5b87dbe` with documentation/installer follow-up. The original VSIX hash belongs to the historical 0.13 kit; Lab 9 now records the current package. It is a development preview, not final 1.0.
 
 | Check | Recorded evidence |
 |---|---|

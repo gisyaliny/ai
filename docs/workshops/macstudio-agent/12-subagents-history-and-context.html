@@ -34,7 +34,7 @@
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
     <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=6a604523" />
   
@@ -64,7 +64,7 @@
     <link rel="canonical" href="https://gisyaliny.github.io/ai/docs/workshops/macstudio-agent/12-subagents-history-and-context.html" />
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="13 - Validation and Reproducibility" href="validation.html" />
+    <link rel="next" title="13 - Use Auto, Full Access and Context Compaction" href="13-auto-full-access-and-context.html" />
     <link rel="prev" title="11 - Reuse Local Skills, Connect MCP, and Add a Reviewed Hook" href="11-skills-mcp-and-hooks.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -244,7 +244,8 @@
 <li class="toctree-l2"><a class="reference internal" href="10-reliable-coding-workflow.html">10 - Make Changes, Verify Them, and Recover Safely</a></li>
 <li class="toctree-l2"><a class="reference internal" href="11-skills-mcp-and-hooks.html">11 - Reuse Local Skills, Connect MCP, and Add a Reviewed Hook</a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">12 - Delegate Investigations and Continue Local Conversations</a></li>
-<li class="toctree-l2"><a class="reference internal" href="validation.html">13 - Validation and Reproducibility</a></li>
+<li class="toctree-l2"><a class="reference internal" href="13-auto-full-access-and-context.html">13 - Use Auto, Full Access and Context Compaction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="validation.html">14 - Validation and Reproducibility</a></li>
 </ul>
 </details></li>
 </ul>
@@ -457,7 +458,10 @@
             <nav aria-label="Page">
                 <ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#outcomes">Outcomes</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#delegate-a-focused-question">1. Delegate a focused question</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#delegate-a-focused-question">1. Delegate a focused question</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#keep-a-structured-data-investigation-small">Keep a structured-data investigation small</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prove-the-read-only-boundary">2. Prove the read-only boundary</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#search-and-resume-history">3. Search and resume history</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#preserve-constraints-while-compacting">4. Preserve constraints while compacting</a></li>
@@ -483,7 +487,7 @@
 </section>
 <section id="delegate-a-focused-question">
 <h2>1. Delegate a focused question<a class="headerlink" href="#delegate-a-focused-question" title="Link to this heading">#</a></h2>
-<p>In Plan mode, choose <strong>Work → New investigation → Review</strong>:</p>
+<p>In Plan mode, choose <strong>Task details → Subagents → New investigation → Review</strong>:</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Read math.cjs. Explain its arithmetic behavior with file and line references.
 If it contains a bug, suggest the correct operator. Do not edit files or run tests.
 </pre></div>
@@ -493,16 +497,29 @@ If it contains a bug, suggest the correct operator. Do not edit files or run tes
 <a class="reference internal image-reference" href="../../../_images/studio013-native-agents.png"><img alt="A completed read-only investigation in the actual Studio Work view, with model, rounds, budget and findings." src="../../../_images/studio013-native-agents.png" style="width: 860px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 3 </span><span class="caption-text">Actual desktop VS Code capture after real model inference. The exercise file remains unchanged. The child did not execute commands or tests.</span><a class="headerlink" href="#id1" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 3 </span><span class="caption-text">Historical 0.13 desktop VS Code capture after real model inference; the 0.14 equivalent lives under Task details → Subagents. The exercise file remains unchanged. The child did not execute commands or tests.</span><a class="headerlink" href="#id1" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p>Expand the row and inspect its evidence paths. <strong>Add findings to context</strong> inserts the report once without sending another request. <strong>Open agent record</strong> opens a private local file; do not publish records containing project data.</p>
+<p>As of 0.14, child inputs use the server tokenizer when available and otherwise a conservative estimate; reported usage replaces the provisional per-call reservation. The final round is reserved for a tool-free report.</p>
 <p>Defaults: one concurrent child (maximum two), 16,384 context tokens, conservative cumulative 64,000-token budget, six rounds and 180 seconds per running investigation. A foreground parent request may overlap a child. Reported usage and conservative estimates differ. Oversized guidance can exceed the budget before the first request: simplify it or deliberately adjust the limit.</p>
+<section id="keep-a-structured-data-investigation-small">
+<h3>Keep a structured-data investigation small<a class="headerlink" href="#keep-a-structured-data-investigation-small" title="Link to this heading">#</a></h3>
+<p>For a supplied JSON page and a known codebook, ask the parent to delegate a bounded investigation:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Delegate one read-only review with maxRounds=2. Read audit-demo.json with
+local_read_json, pointer /packet, offset 0, limit 2. Use the supplied rules
+and return the two item IDs, proposed labels, exact evidence quotes and
+uncertainties. Do not scan the repository or request another page.
+</pre></div>
+</div>
+<p>The first round can read the page; the second is reserved for the result. Larger code investigations need more rounds. Studio 0.14.1 detects repeated covered JSON pages in both the parent and children and requests findings instead of more reads. Keep child concurrency at one when the model server has one serving slot. Raising concurrency cannot create additional server capacity and can consume a child’s time limit while it waits.</p>
+<p>Validate response structure, item coverage and verbatim evidence before accepting a batch. A model can return valid JSON with incorrect judgments. Preserve original observations and keep automated development annotations separate from human validation.</p>
+</section>
 </section>
 <section id="prove-the-read-only-boundary">
 <h2>2. Prove the read-only boundary<a class="headerlink" href="#prove-the-read-only-boundary" title="Link to this heading">#</a></h2>
 <p>Request an investigation that asks to edit <code class="docutils literal notranslate"><span class="pre">math.cjs</span></code> or run <code class="docutils literal notranslate"><span class="pre">node</span> <span class="pre">math.test.cjs</span></code>. The dispatch allowlist offers neither edits nor terminal commands, MCP effects, hooks or nested delegation. Compare the file and executed command jobs: neither should change because of the child.</p>
-<p>Start another investigation and cancel its Work card. It may finish first; record that honestly instead of claiming cancellation passed. Pause/Stop also cancels investigations. Finish or cancel children before changing chats or connection settings.</p>
+<p>Start another investigation and cancel its Subagents card. It may finish first; record that honestly instead of claiming cancellation passed. Pause/Stop also cancels investigations. Finish or cancel children before changing chats or connection settings.</p>
 <p>After reload, unfinished child records become interrupted without automatic replay. Evidence paths are not immutable snapshots: re-read relevant files before acting on old findings.</p>
 </section>
 <section id="search-and-resume-history">
@@ -521,7 +538,7 @@ If it contains a bug, suggest the correct operator. Do not edit files or run tes
 </section>
 <section id="preserve-constraints-while-compacting">
 <h2>4. Preserve constraints while compacting<a class="headerlink" href="#preserve-constraints-while-compacting" title="Link to this heading">#</a></h2>
-<p>Save these under <strong>Work → Fixed constraints</strong>:</p>
+<p>Save these under <strong>Task details → Plan → Fixed constraints</strong>:</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Keep the public API unchanged.
 Do not edit existing tests.
 Do not add runtime dependencies.
@@ -529,6 +546,7 @@ Do not add runtime dependencies.
 </div>
 <p>Use <code class="docutils literal notranslate"><span class="pre">/context</span></code> to inspect sources, then <code class="docutils literal notranslate"><span class="pre">/compact</span></code> after accumulating useful history. Check the goal, decisions, results and remaining work. Semantic compression uses the model; extractive fallback retains selected evidence. Pinned constraints remain authoritative; model-generated constraint candidates require review.</p>
 <p>Ask a follow-up that could tempt an unnecessary dependency. Confirm the saved constraints remain present. Constraints guide the model; permission enforcement belongs to execution code.</p>
+<p>Compaction also triggers automatically before a model request when input exceeds its reserved input budget and older turns exist. It is independent of Auto permission mode. The active turn is retained, then tool previews may be reduced if needed; this is not an unlimited-memory guarantee. <a class="reference internal" href="13-auto-full-access-and-context.html"><span class="std std-doc">Lab 13</span></a> gives the exact calculation, a reproducible drill and the comparison with Claude Code.</p>
 </section>
 <section id="trace-and-test">
 <h2>5. Trace and test<a class="headerlink" href="#trace-and-test" title="Link to this heading">#</a></h2>
@@ -564,7 +582,7 @@ node<span class="w"> </span>test/run-host-suite.js
 <h2>Remaining release work<a class="headerlink" href="#remaining-release-work" title="Link to this heading">#</a></h2>
 <p>Parallel writing agents, automatic worktree merges and complete Claude/Codex plugin runtimes are outside this preview. The 20-case real-task release evaluation is incomplete. Local records are not encrypted by Studio. Multi-window metadata updates are last-writer-wins; large history searches may be slow.</p>
 <p><strong>Quiz:</strong> Does a child’s “looks correct” mean verified? <strong>Answer:</strong> No. The parent needs current file evidence and actual authorized checks.</p>
-<p><a class="reference internal" href="11-skills-mcp-and-hooks.html"><span class="std std-doc">Previous</span></a> · <a class="reference internal" href="index.html"><span class="std std-doc">Workshop guide</span></a> · <a class="reference internal" href="validation.html"><span class="std std-doc">Validation</span></a></p>
+<p><a class="reference internal" href="11-skills-mcp-and-hooks.html"><span class="std std-doc">Previous</span></a> · <a class="reference internal" href="index.html"><span class="std std-doc">Workshop guide</span></a> · <a class="reference internal" href="13-auto-full-access-and-context.html"><span class="std std-doc">Next: modes and context</span></a> · <a class="reference internal" href="validation.html"><span class="std std-doc">Validation</span></a></p>
 </section>
 </section>
 
@@ -608,11 +626,11 @@ node<span class="w"> </span>test/run-host-suite.js
       </div>
     </a>
     <a class="right-next"
-       href="validation.html"
+       href="13-auto-full-access-and-context.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">13 - Validation and Reproducibility</p>
+        <p class="prev-next-title">13 - Use Auto, Full Access and Context Compaction</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -635,7 +653,10 @@ node<span class="w"> </span>test/run-host-suite.js
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#outcomes">Outcomes</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#delegate-a-focused-question">1. Delegate a focused question</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#delegate-a-focused-question">1. Delegate a focused question</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#keep-a-structured-data-investigation-small">Keep a structured-data investigation small</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prove-the-read-only-boundary">2. Prove the read-only boundary</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#search-and-resume-history">3. Search and resume history</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#preserve-constraints-while-compacting">4. Preserve constraints while compacting</a></li>

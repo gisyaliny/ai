@@ -34,7 +34,7 @@
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
     <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=6a604523" />
   
@@ -244,7 +244,8 @@
 <li class="toctree-l2"><a class="reference internal" href="10-reliable-coding-workflow.html">10 - Make Changes, Verify Them, and Recover Safely</a></li>
 <li class="toctree-l2"><a class="reference internal" href="11-skills-mcp-and-hooks.html">11 - Reuse Local Skills, Connect MCP, and Add a Reviewed Hook</a></li>
 <li class="toctree-l2"><a class="reference internal" href="12-subagents-history-and-context.html">12 - Delegate Investigations and Continue Local Conversations</a></li>
-<li class="toctree-l2"><a class="reference internal" href="validation.html">13 - Validation and Reproducibility</a></li>
+<li class="toctree-l2"><a class="reference internal" href="13-auto-full-access-and-context.html">13 - Use Auto, Full Access and Context Compaction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="validation.html">14 - Validation and Reproducibility</a></li>
 </ul>
 </details></li>
 </ul>
@@ -476,17 +477,17 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="install-studio-and-verify-your-model-connection">
 <span id="studio-lab-09"></span><h1>09 - Install Studio and Verify Your Model Connection<a class="headerlink" href="#install-studio-and-verify-your-model-connection" title="Link to this heading">#</a></h1>
-<p><strong>Time:</strong> 35–50 minutes. <strong>Edition:</strong> November 24, 2026. <strong>Reference:</strong> Studio 0.13.0 development preview. <strong>Client:</strong> Windows, Linux or macOS desktop VS Code.</p>
-<p>Labs 1–8 reconstruct the smaller <strong>Local Coding Assistant 0.3.0</strong>. Labs 9–12 use <strong>Studio 0.13.0</strong>, the implementation developed from that idea. Their extension IDs, settings and capabilities differ. Installing Studio does not add these features to the beginner reference’s source code.</p>
+<p><strong>Time:</strong> 35–50 minutes. <strong>Edition:</strong> November 25, 2026. <strong>Reference:</strong> Studio 0.14.1 development preview. <strong>Client:</strong> Windows, Linux or macOS desktop VS Code.</p>
+<p>Labs 1–8 reconstruct the smaller <strong>Local Coding Assistant 0.3.0</strong>. Labs 9–13 use <strong>Studio 0.14.1</strong>, the implementation developed from that idea. Their extension IDs, settings and capabilities differ. Installing Studio does not add these features to the beginner reference’s source code.</p>
 <section id="outcomes">
 <h2>Outcomes<a class="headerlink" href="#outcomes" title="Link to this heading">#</a></h2>
 <p>Install a verified preview, locate the machines doing inference and file operations, test a real model, and recognize unsupported capabilities before starting a coding task.</p>
 </section>
 <section id="download-and-inspect">
 <h2>1. Download and inspect<a class="headerlink" href="#download-and-inspect" title="Link to this heading">#</a></h2>
-<p>Download <a class="reference download internal" download="" href="../../../_downloads/14f6d47393a1c88c9d779699a32a66dd/Studio-0.13-Workshop.zip"><code class="xref download docutils literal notranslate"><span class="pre">Studio</span> <span class="pre">0.13</span> <span class="pre">workshop</span> <span class="pre">kit</span></code></a> and extract it:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Studio-0.13-Workshop/
-  macstudio-assistant-0.13.0-preview.vsix
+<p>Download <a class="reference download internal" download="" href="../../../_downloads/9f809a38ec00c096a3dd142f056e01b7/Studio-0.14-Workshop.zip"><code class="xref download docutils literal notranslate"><span class="pre">Studio</span> <span class="pre">0.14</span> <span class="pre">workshop</span> <span class="pre">kit</span></code></a> and extract it:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Studio-0.14-Workshop/
+  macstudio-assistant-0.14.1-preview.vsix
   install-preview.ps1
   SHA256SUMS.txt
   source/                       # Version-pinned implementation
@@ -496,29 +497,29 @@
 </div>
 <p>The kit is public and self-contained; no private-repository access is required. It contains no model weights, keys, personal configuration or real chat database. Keep <code class="docutils literal notranslate"><span class="pre">source/</span></code> separate from the exercise folder the agent edits.</p>
 <p><strong>Windows PowerShell</strong>, inside the extracted folder:</p>
-<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Get-FileHash</span> <span class="p">.\</span><span class="n">macstudio-assistant</span><span class="p">-</span><span class="n">0</span><span class="p">.</span><span class="n">13</span><span class="p">.</span><span class="n">0-preview</span><span class="p">.</span><span class="n">vsix</span> <span class="n">-Algorithm</span> <span class="n">SHA256</span>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="nb">Get-FileHash</span> <span class="p">.\</span><span class="n">macstudio-assistant</span><span class="p">-</span><span class="n">0</span><span class="p">.</span><span class="n">14</span><span class="p">.</span><span class="n">1-preview</span><span class="p">.</span><span class="n">vsix</span> <span class="n">-Algorithm</span> <span class="n">SHA256</span>
 <span class="n">powershell</span> <span class="n">-NoProfile</span> <span class="n">-ExecutionPolicy</span> <span class="n">Bypass</span> <span class="o">-File</span> <span class="p">.\</span><span class="nb">install-preview</span><span class="p">.</span><span class="n">ps1</span>
 <span class="n">code</span> <span class="p">-</span><span class="n">-list-extensions</span> <span class="p">-</span><span class="n">-show-versions</span> <span class="p">|</span> <span class="nb">Select-String</span> <span class="s1">'macstudio-assistant'</span>
 </pre></div>
 </div>
 <p>The installer checks the pinned hash and installed version. The execution-policy override applies only to that process.</p>
 <p><strong>Linux Bash:</strong></p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sha256sum<span class="w"> </span>macstudio-assistant-0.13.0-preview.vsix
-code<span class="w"> </span>--install-extension<span class="w"> </span>macstudio-assistant-0.13.0-preview.vsix<span class="w"> </span>--force
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sha256sum<span class="w"> </span>macstudio-assistant-0.14.1-preview.vsix
+code<span class="w"> </span>--install-extension<span class="w"> </span>macstudio-assistant-0.14.1-preview.vsix<span class="w"> </span>--force
 code<span class="w"> </span>--list-extensions<span class="w"> </span>--show-versions<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>macstudio-assistant
 </pre></div>
 </div>
 <p><strong>macOS Terminal:</strong></p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>shasum<span class="w"> </span>-a<span class="w"> </span><span class="m">256</span><span class="w"> </span>macstudio-assistant-0.13.0-preview.vsix
-code<span class="w"> </span>--install-extension<span class="w"> </span>macstudio-assistant-0.13.0-preview.vsix<span class="w"> </span>--force
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>shasum<span class="w"> </span>-a<span class="w"> </span><span class="m">256</span><span class="w"> </span>macstudio-assistant-0.14.1-preview.vsix
+code<span class="w"> </span>--install-extension<span class="w"> </span>macstudio-assistant-0.14.1-preview.vsix<span class="w"> </span>--force
 code<span class="w"> </span>--list-extensions<span class="w"> </span>--show-versions<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>macstudio-assistant
 </pre></div>
 </div>
 <p>Expected package SHA-256（完整性校验）:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>2fda545ff1c3e05f2febfdc994196c3a59c9249231e83cd251105ffcec4a4a66
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>10058672ccbde08cca5632b59851ad9917ff50981e0c3a3918b4e846632079f6
 </pre></div>
 </div>
-<p>Expected extension: <code class="docutils literal notranslate"><span class="pre">yyang-local.macstudio-assistant&#64;0.13.0</span></code>. If <code class="docutils literal notranslate"><span class="pre">code</span></code> is unavailable, use Extensions → <strong>Install from VSIX</strong>. On macOS, the command palette offers <strong>Shell Command: Install ‘code’ command in PATH</strong>. Save work before <strong>Developer: Reload Window</strong>. This is a preview, not final 1.0.</p>
+<p>Expected extension: <code class="docutils literal notranslate"><span class="pre">yyang-local.macstudio-assistant&#64;0.14.1</span></code>. If <code class="docutils literal notranslate"><span class="pre">code</span></code> is unavailable, use Extensions → <strong>Install from VSIX</strong>. On macOS, the command palette offers <strong>Shell Command: Install ‘code’ command in PATH</strong>. Save work before <strong>Developer: Reload Window</strong>. This is a preview, not final 1.0.</p>
 </section>
 <section id="prepare-the-exercise">
 <h2>2. Prepare the exercise<a class="headerlink" href="#prepare-the-exercise" title="Link to this heading">#</a></h2>
@@ -543,7 +544,7 @@ code<span class="w"> </span>studio-demo
 </pre></div>
 </div>
 <p>Replace the alias with yours. Verify the fingerprint through a trusted source on first connection. Studio uses non-interactive SSH and never bypasses host-key checking; make key/SSH-agent login work first.</p>
-<p>Open <strong>Studio → Tools → Set up connection</strong>:</p>
+<p>Open <strong>Studio → Settings (gear) → Set up connection</strong>:</p>
 <ol class="arabic simple">
 <li><p>Enter the SSH alias or <code class="docutils literal notranslate"><span class="pre">user&#64;host</span></code>.</p></li>
 <li><p>Enter an optional identity file and the server’s Python executable.</p></li>
@@ -551,16 +552,17 @@ code<span class="w"> </span>studio-demo
 <li><p>Enter your API key in the password field. It goes into <strong>SecretStorage（密钥存储）</strong>, not the webview.</p></li>
 <li><p>Select an actual model ID reported by the server. The wizard probes the draft before saving. Cancelling before save preserves the old configuration.</p></li>
 </ol>
+<p>The settings panel is also available under <strong>+ → Tools and services</strong>. <strong>VS Code settings</strong> at the bottom opens the complete configuration.</p>
 <p>Here <code class="docutils literal notranslate"><span class="pre">127.0.0.1</span></code> means the <strong>SSH server</strong>. Inference runs there; file reads, edits, diagnostics and approved commands run on the VS Code extension host, normally your client. With Remote-SSH, the extension-host location can differ. Verify the execution directory before approving a command.</p>
 </section>
 <section id="diagnose-then-test-a-reply">
 <h2>4. Diagnose, then test a reply<a class="headerlink" href="#diagnose-then-test-a-reply" title="Link to this heading">#</a></h2>
 <p>Click <strong>Run diagnostics</strong>: SSH/Python, API, model selection and optional capabilities are reported separately. Missing capability metadata is <strong>unreported</strong>, not evidence that a capability is unsupported. <strong>Test model response</strong> additionally sends a small completion without tools.</p>
 <figure class="align-default" id="id1">
-<a class="reference internal image-reference" href="../../../_images/studio013-native-tools.png"><img alt="Real Studio Tools view inside desktop VS Code showing successful connection diagnostic stages." src="../../../_images/studio013-native-tools.png" style="width: 860px;" />
+<a class="reference internal image-reference" href="../../../_images/studio014-settings.png"><img alt="Studio 0.14 settings panel rendered with synthetic service data." src="../../../_images/studio014-settings.png" style="width: 860px;" />
 </a>
 <figcaption>
-<p><span class="caption-number">Fig. 1 </span><span class="caption-text">Actual VS Code capture from an isolated workshop profile. Diagnostics reached a real model over SSH. No address or credential is shown. This is a running extension, not a design mockup.</span><a class="headerlink" href="#id1" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 1 </span><span class="caption-text">Actual 0.14 webview renderer with synthetic service data. The gear opens these connection and tool controls. This browser fixture is not evidence of a live connection; run the diagnostic steps above on your own server.</span><a class="headerlink" href="#id1" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p>The model/thinking control sits beside Send. Use levels supported by the serving protocol: Qwen on/off templates and graded reasoning-effort APIs are different. A selected level is not proof the server honored it. Finish or cancel investigations before switching models, then reconnect and repeat a harmless tool task.</p>

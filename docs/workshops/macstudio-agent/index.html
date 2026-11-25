@@ -34,7 +34,7 @@
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
     <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=6a604523" />
   
@@ -609,7 +609,8 @@ window.addEventListener("load", load);
 <li class="toctree-l2"><a class="reference internal" href="10-reliable-coding-workflow.html">10 - Make Changes, Verify Them, and Recover Safely</a></li>
 <li class="toctree-l2"><a class="reference internal" href="11-skills-mcp-and-hooks.html">11 - Reuse Local Skills, Connect MCP, and Add a Reviewed Hook</a></li>
 <li class="toctree-l2"><a class="reference internal" href="12-subagents-history-and-context.html">12 - Delegate Investigations and Continue Local Conversations</a></li>
-<li class="toctree-l2"><a class="reference internal" href="validation.html">13 - Validation and Reproducibility</a></li>
+<li class="toctree-l2"><a class="reference internal" href="13-auto-full-access-and-context.html">13 - Use Auto, Full Access and Context Compaction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="validation.html">14 - Validation and Reproducibility</a></li>
 </ul>
 </details></li>
 </ul>
@@ -846,20 +847,20 @@ window.addEventListener("load", load);
   <section class="tex2jax_ignore mathjax_ignore" id="build-your-own-coding-agent-windows-linux-and-macos">
 <span id="localagent-workshop"></span><h1>00 - Build Your Own Coding Agent: Windows, Linux and macOS<a class="headerlink" href="#build-your-own-coding-agent-windows-linux-and-macos" title="Link to this heading">#</a></h1>
 <p>Build an inspectable coding assistant from a blank VS Code extension folder. Use <strong>Windows, Linux, or macOS</strong> for your project and a local or remote OpenAI-compatible model. You will implement streaming, tool calling, reviewed edits, command approval, and a sidebar interface.</p>
-<p><strong>Audience:</strong> beginners with basic JavaScript or Python experience. <strong>Language:</strong> English, with Chinese annotations for key terminology. <strong>Updated:</strong> November 24, 2026. <strong>Beginner reference:</strong> Local Coding Assistant 0.3.0. <strong>Advanced reference:</strong> Studio 0.13.0 preview.</p>
+<p><strong>Audience:</strong> beginners with basic JavaScript or Python experience. <strong>Language:</strong> English, with Chinese annotations for key terminology. <strong>Updated:</strong> November 25, 2026. <strong>Beginner reference:</strong> Local Coding Assistant 0.3.0. <strong>Advanced reference:</strong> Studio 0.14.1 preview.</p>
 <p>The URL retains the original <code class="docutils literal notranslate"><span class="pre">macstudio-agent</span></code> slug so existing shared links keep working; the course and code are now platform-neutral. Mac Studio is an optional model host, not a prerequisite. The beginner edition uses a new extension ID and <code class="docutils literal notranslate"><span class="pre">localagent.*</span></code> settings; re-enter settings and the API key if coming from the older extension.</p>
 <section id="choose-your-starting-point">
 <h2>Choose your starting point<a class="headerlink" href="#choose-your-starting-point" title="Link to this heading">#</a></h2>
 <ul class="simple">
 <li><p><strong>Build from scratch:</strong> Labs 1–8 retain the small, understandable 0.3 reference and its platform-neutral local/tunnel transports.</p></li>
-<li><p><strong>Use and inspect the advanced agent:</strong> <a class="reference internal" href="09-studio-preview-and-connection.html"><span class="std std-doc">Lab 9</span></a> installs Studio 0.13, then Labs 10–12 cover verified changes, local Skills/MCP, child investigations and durable history. Allow another 3.5–4 hours.</p></li>
+<li><p><strong>Use and inspect the advanced agent:</strong> <a class="reference internal" href="09-studio-preview-and-connection.html"><span class="std std-doc">Lab 9</span></a> installs Studio 0.14, then Labs 10–13 cover verified changes, local Skills/MCP, child investigations and durable history. Allow another 4–5 hours.</p></li>
 </ul>
 <p>The advanced preview uses <code class="docutils literal notranslate"><span class="pre">macstudio.*</span></code> settings and a distinct extension ID. Its client runs on Windows/Linux/macOS, while its SSH/Python bridge expects a POSIX server. Mac hardware is optional. Neither installing Studio nor changing settings upgrades the beginner reference’s source automatically.</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
 <tr class="row-odd"><th class="head"><p>Capability</p></th>
 <th class="head"><p>Beginner 0.3</p></th>
-<th class="head"><p>Studio 0.13 advanced track</p></th>
+<th class="head"><p>Studio 0.14 advanced track</p></th>
 </tr>
 </thead>
 <tbody>
@@ -867,27 +868,31 @@ window.addEventListener("load", load);
 <td><p>Built step by step</p></td>
 <td><p>Included with grouped operations and conflict checks</p></td>
 </tr>
-<tr class="row-odd"><td><p>Commands</p></td>
+<tr class="row-odd"><td><p>Execution modes</p></td>
+<td><p>Reviewed operations</p></td>
+<td><p>Auto by default; optional task-scoped Full access</p></td>
+</tr>
+<tr class="row-even"><td><p>Commands</p></td>
 <td><p>Foreground approval</p></td>
 <td><p>Durable jobs, background output, cancel and bounded repair</p></td>
 </tr>
-<tr class="row-even"><td><p>Project context</p></td>
+<tr class="row-odd"><td><p>Project context</p></td>
 <td><p>Selected files</p></td>
 <td><p>Instructions, diagnostics/navigation, constraints and compaction</p></td>
 </tr>
-<tr class="row-odd"><td><p>Skills/MCP</p></td>
+<tr class="row-even"><td><p>Skills/MCP</p></td>
 <td><p>Manual instructions / design exercises</p></td>
 <td><p>Selected local libraries, slash commands, reviewed MCP and OAuth</p></td>
 </tr>
-<tr class="row-even"><td><p>Local history</p></td>
+<tr class="row-odd"><td><p>Local history</p></td>
 <td><p>Not implemented</p></td>
 <td><p>Search, pin, rename, archive, branch and export</p></td>
 </tr>
-<tr class="row-odd"><td><p>Subagents</p></td>
+<tr class="row-even"><td><p>Subagents</p></td>
 <td><p>Not implemented</p></td>
 <td><p>Read-only investigations with budgets and persistent records</p></td>
 </tr>
-<tr class="row-even"><td><p>Images</p></td>
+<tr class="row-odd"><td><p>Images</p></td>
 <td><p>Not implemented</p></td>
 <td><p>Vision attachments and bounded ComfyUI workflows</p></td>
 </tr>
@@ -909,7 +914,7 @@ window.addEventListener("load", load);
 <h2>Download the workshop materials<a class="headerlink" href="#download-the-workshop-materials" title="Link to this heading">#</a></h2>
 <ul class="simple">
 <li><p><a class="reference download internal" download="" href="../../../_downloads/f3d25bbcac1c25c899ce5b9eb91ad4ac/Coding-Agent-Workshop.zip"><code class="xref download docutils literal notranslate"><span class="pre">Complete</span> <span class="pre">tutorial</span> <span class="pre">and</span> <span class="pre">reference</span> <span class="pre">source</span></code></a> — includes the English reference project, lockfile, intentionally broken exercise, and current validation record. Extract it locally; do not run it inside a browser notebook.</p></li>
-<li><p><a class="reference download internal" download="" href="../../../_downloads/14f6d47393a1c88c9d779699a32a66dd/Studio-0.13-Workshop.zip"><code class="xref download docutils literal notranslate"><span class="pre">Studio</span> <span class="pre">0.13</span> <span class="pre">advanced</span> <span class="pre">kit</span></code></a> — VSIX, checksum installer, complete version-pinned source and disposable exercises. Public download; no private repository access required.</p></li>
+<li><p><a class="reference download internal" download="" href="../../../_downloads/9f809a38ec00c096a3dd142f056e01b7/Studio-0.14-Workshop.zip"><code class="xref download docutils literal notranslate"><span class="pre">Studio</span> <span class="pre">0.14</span> <span class="pre">advanced</span> <span class="pre">kit</span></code></a> — VSIX, checksum installer, complete version-pinned source and disposable exercises. Public download; no private repository access required.</p></li>
 <li><p><a class="reference internal" href="validation.html"><span class="std std-doc">Validation and reproducibility notes</span></a> — what was tested, when, and what remains a learner check.</p></li>
 </ul>
 <div class="admonition note">
@@ -984,6 +989,7 @@ window.addEventListener("load", load);
 </tbody>
 </table>
 </div>
+<p>| 13 | <a class="reference internal" href="13-auto-full-access-and-context.html"><span class="std std-doc">Auto, Full access and context strategy</span></a> | 45 min |</p>
 </section>
 <section id="how-to-work-through-each-lab">
 <h2>How to work through each lab<a class="headerlink" href="#how-to-work-through-each-lab" title="Link to this heading">#</a></h2>
@@ -1035,7 +1041,7 @@ window.addEventListener("load", load);
 </section>
 <section id="scope-and-follow-up">
 <h2>Scope and follow-up<a class="headerlink" href="#scope-and-follow-up" title="Link to this heading">#</a></h2>
-<p>The beginner 0.3 reference implements streaming, list/read/search, reviewed edits and approved commands; Lab 8 is a design/manual-instruction exercise. The advanced 0.13 implementation adds the capabilities in the comparison table. Neither is an OS sandbox. Studio 0.13 is a development preview: parallel writing agents, complete foreign plugin runtimes and the full 20-case 1.0 acceptance evaluation are not completed.</p>
+<p>The beginner 0.3 reference implements streaming, list/read/search, reviewed edits and approved commands; Lab 8 is a design/manual-instruction exercise. The advanced 0.14 implementation adds the capabilities in the comparison table. Neither is an OS sandbox. Studio 0.14 is a development preview: parallel writing agents, complete foreign plugin runtimes and the full 20-case 1.0 acceptance evaluation are not completed.</p>
 </section>
 <section id="read-more">
 <h2>Read More<a class="headerlink" href="#read-more" title="Link to this heading">#</a></h2>
