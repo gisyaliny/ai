@@ -64,4 +64,5 @@ parts:
           - file: docs/workshops/macstudio-agent/10-reliable-coding-workflow
           - file: docs/workshops/macstudio-agent/11-skills-mcp-and-hooks
           - file: docs/workshops/macstudio-agent/12-subagents-history-and-context
+          - file: docs/workshops/macstudio-agent/13-auto-full-access-and-context
           - file: docs/workshops/macstudio-agent/validation

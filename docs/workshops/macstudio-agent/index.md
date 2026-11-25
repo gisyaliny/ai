@@ -3,20 +3,21 @@
 
 Build an inspectable coding assistant from a blank VS Code extension folder. Use **Windows, Linux, or macOS** for your project and a local or remote OpenAI-compatible model. You will implement streaming, tool calling, reviewed edits, command approval, and a sidebar interface.
 
-**Audience:** beginners with basic JavaScript or Python experience. **Language:** English, with Chinese annotations for key terminology. **Updated:** November 24, 2026. **Beginner reference:** Local Coding Assistant 0.3.0. **Advanced reference:** Studio 0.13.0 preview.
+**Audience:** beginners with basic JavaScript or Python experience. **Language:** English, with Chinese annotations for key terminology. **Updated:** November 25, 2026. **Beginner reference:** Local Coding Assistant 0.3.0. **Advanced reference:** Studio 0.14.1 preview.
 
 The URL retains the original `macstudio-agent` slug so existing shared links keep working; the course and code are now platform-neutral. Mac Studio is an optional model host, not a prerequisite. The beginner edition uses a new extension ID and `localagent.*` settings; re-enter settings and the API key if coming from the older extension.
 
 ## Choose your starting point
 
 - **Build from scratch:** Labs 1–8 retain the small, understandable 0.3 reference and its platform-neutral local/tunnel transports.
-- **Use and inspect the advanced agent:** [Lab 9](09-studio-preview-and-connection.md) installs Studio 0.13, then Labs 10–12 cover verified changes, local Skills/MCP, child investigations and durable history. Allow another 3.5–4 hours.
+- **Use and inspect the advanced agent:** [Lab 9](09-studio-preview-and-connection.md) installs Studio 0.14, then Labs 10–13 cover verified changes, local Skills/MCP, child investigations and durable history. Allow another 4–5 hours.
 
 The advanced preview uses `macstudio.*` settings and a distinct extension ID. Its client runs on Windows/Linux/macOS, while its SSH/Python bridge expects a POSIX server. Mac hardware is optional. Neither installing Studio nor changing settings upgrades the beginner reference's source automatically.
 
-| Capability | Beginner 0.3 | Studio 0.13 advanced track |
+| Capability | Beginner 0.3 | Studio 0.14 advanced track |
 |---|---|---|
 | Streaming, file tools, reviewed edits | Built step by step | Included with grouped operations and conflict checks |
+| Execution modes | Reviewed operations | Auto by default; optional task-scoped Full access |
 | Commands | Foreground approval | Durable jobs, background output, cancel and bounded repair |
 | Project context | Selected files | Instructions, diagnostics/navigation, constraints and compaction |
 | Skills/MCP | Manual instructions / design exercises | Selected local libraries, slash commands, reviewed MCP and OAuth |
@@ -39,7 +40,7 @@ flowchart LR
 ## Download the workshop materials
 
 - {download}`Complete tutorial and reference source <assets/Coding-Agent-Workshop.zip>` — includes the English reference project, lockfile, intentionally broken exercise, and current validation record. Extract it locally; do not run it inside a browser notebook.
-- {download}`Studio 0.13 advanced kit <assets/Studio-0.13-Workshop.zip>` — VSIX, checksum installer, complete version-pinned source and disposable exercises. Public download; no private repository access required.
+- {download}`Studio 0.14 advanced kit <assets/Studio-0.14-Workshop.zip>` — VSIX, checksum installer, complete version-pinned source and disposable exercises. Public download; no private repository access required.
 - [Validation and reproducibility notes](validation.md) — what was tested, when, and what remains a learner check.
 
 ```{note}
@@ -70,6 +71,8 @@ The eight beginner labs total approximately **6 hours 15 minutes**, excluding in
 | 10 | [Changes, verification and recovery](10-reliable-coding-workflow.md) | 60–75 min |
 | 11 | [Local Skills, MCP and hooks](11-skills-mcp-and-hooks.md) | 60 min |
 | 12 | [Subagents, history and context](12-subagents-history-and-context.md) | 45–60 min |
+
+| 13 | [Auto, Full access and context strategy](13-auto-full-access-and-context.md) | 45 min |
 
 ## How to work through each lab
 
@@ -102,7 +105,7 @@ Do not distribute a private SSH key or shared production credentials. Use indivi
 
 ## Scope and follow-up
 
-The beginner 0.3 reference implements streaming, list/read/search, reviewed edits and approved commands; Lab 8 is a design/manual-instruction exercise. The advanced 0.13 implementation adds the capabilities in the comparison table. Neither is an OS sandbox. Studio 0.13 is a development preview: parallel writing agents, complete foreign plugin runtimes and the full 20-case 1.0 acceptance evaluation are not completed.
+The beginner 0.3 reference implements streaming, list/read/search, reviewed edits and approved commands; Lab 8 is a design/manual-instruction exercise. The advanced 0.14 implementation adds the capabilities in the comparison table. Neither is an OS sandbox. Studio 0.14 is a development preview: parallel writing agents, complete foreign plugin runtimes and the full 20-case 1.0 acceptance evaluation are not completed.
 
 
 ## Read More
