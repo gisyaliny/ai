@@ -16,7 +16,7 @@ Choose a track and complete its acceptance evidence before moving on. English in
 | rag | [Observe Retrieval Before Generation](../rag/01-what-is-rag.md) | 35 min |
 | rag | [Build a Small Grounded Question-Answering Pipeline](../rag/02-implementing-rag.md) | 60 min |
 | rag | [Retrieve a Two-Hop Evidence Path](../rag/03-graph-rag.md) | 45 min |
-| Coding agent | [Build your cross-platform coding agent](macstudio-agent/index.md) | 8 labs |
+| Coding agent | [Build your cross-platform coding agent](macstudio-agent/index.md) | 8 beginner + 4 advanced labs |
 
 ## Materials and facilitation
 

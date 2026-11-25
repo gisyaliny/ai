@@ -10,6 +10,10 @@ Distinguish local tools, delegated remote tools, MCP, and skill instructions; pl
 
 **Start here:** [Workshop guide](index.md). Download the reference bundle there before the lab. Each file block is complete unless marked Illustration. In this workshop, “Lesson” refers to the original numbered sections retained below.
 
+```{note}
+This lab describes the frozen beginner 0.3 reference. Studio 0.13 has additional implemented capabilities. Continue to [Lab 9](09-studio-preview-and-connection.md) and [Lab 11](11-skills-mcp-and-hooks.md) for its installation and local Skills/MCP exercises.
+```
+
 ## 15. Add MCP and skills deliberately
 
 ### 15.1 Three different layers
